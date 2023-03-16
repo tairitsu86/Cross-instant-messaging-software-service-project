@@ -8,7 +8,7 @@ JDK 17
 Docker 20.0.4  
 SQL Server 2012
 ## How to use dockerfile?
-Ofcourse you need docker  
+Of course you need docker  
 1.Use 'mvn clean install' in command line to build your project to a jar file.  
 2.Use 'docker build -t microservice-instant-message -f Dockerfile-microservice-instant-message-${version} .'  
 and you should have a docker image named microservice-instant-message!  
