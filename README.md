@@ -1,1 +1,1 @@
-# microservice-instant-message
+# microservice-instant-message 0.0.0-DEMO
