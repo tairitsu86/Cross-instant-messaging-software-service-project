@@ -7,7 +7,7 @@ import com.pengrad.telegrambot.TelegramBot;
 
 @Configuration
 public class TelegramBotBean {
-	private final String BOT_TOKEN = "6016022424:AAGw6pyWTq6wZb4OeJiTwvpKsJ5fTbEnLZo";
+	private final String BOT_TOKEN = "";
 	@Bean
 	public TelegramBot getTelegramBot() {
 		return new TelegramBot(BOT_TOKEN);
