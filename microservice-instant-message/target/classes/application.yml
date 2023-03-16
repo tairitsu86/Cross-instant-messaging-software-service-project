@@ -1,0 +1,32 @@
+server:
+  port: 8080
+info: 
+  app: 
+    name: microservice-instant-message
+    encoding: UTF-8
+    java:
+      source: 17.0.6
+      target: 17.0.6
+management:
+  security:
+    enabled: false
+line.bot:
+  channel-token: 'DILr8RNEVLt85XzEMDH2ed2aRMwipqKyIE+NRgdVA3oO8PrUThlUnQQ4ccF57+E4wStNqvdamR+BDbfcKf39SghpF2XM7BSoxVqaFW3NWUzu/Y2mDMJA54TSJDvAw4873uVvR8x7/S5eT7Qoro9gjwdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'aaaeb51fe28b7d5818c878a79f982506'
+  handler.path: /lineWebhook
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    hibernate:
+      ddl-auto: none
+    properties.hibernate.dialect: org.hibernate.dialect.SQLServerDialect
+  datasource:
+    ##host.docker.internal = localhost, set by etc/hosts
+    url: jdbc:sqlserver://host.docker.internal:1433;databaseName=IMService;encrypt=false
+    username: JAVAconnect
+    password: 123
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  liquibase.change-log: db/changelog/db.changelog-master.sql
+##logging:
+  ##level:
+    ##org.springframework: DEBUG
