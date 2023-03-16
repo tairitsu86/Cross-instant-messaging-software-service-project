@@ -1,7 +1,6 @@
 # microservice-instant-message
 A project of connect telegram and line!  
 See introduce and updata log on https://hackmd.io/sUxf18wWTHCNEO4dYwu4sg  
-See image on https://hub.docker.com/r/tairitsu86/microservice-instant-message
 ## Software version
 Springframework 3.0.4  
 JDK 17  
