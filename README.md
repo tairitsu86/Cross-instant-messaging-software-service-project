@@ -10,7 +10,7 @@ SQL Server 2012
 ## How to use dockerfile?
 Ofcourse you need docker  
 1.Use 'mvn clean install' in command line to build your project to a jar file.  
-2.Use 'docker build -t microservice-instant-message -f Dockerfile-microservice-instant-message-${version} .'
+2.Use 'docker build -t microservice-instant-message -f Dockerfile-microservice-instant-message-${version} .'  
 and you should have a docker image named microservice-instant-message!  
-3.Use 'docker run -d -p 8080:8080 -p 1433:1433 --add-host=host.docker.internal:host-gateway --name mim microservice-instant-message '  
+3.Use 'docker run -d -p 8080:8080 -p 1433:1433 --add-host=host.docker.internal:host-gateway --name mim microservice-instant-message '    
 than it should working on docker, port 8080 for webhook and api, port 1433 for sql server!
