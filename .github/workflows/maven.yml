@@ -9,10 +9,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
+    
     - name: Checkout
       uses: actions/checkout@v3
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
 
     - name: Build
       run: mvn -B -f /home/runner/work/microservice-instant-message-project/microservice-instant-message-project/microservice-instant-message/pom.xml clean package
