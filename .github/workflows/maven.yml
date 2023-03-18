@@ -27,11 +27,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Debug
-      run: |
-        pwd
-        ls -la
-        ls -la microservice-instant-message
+    - name: maven
+      run: mvn -B -f /home/runner/work/microservice-instant-message-project/microservice-instant-message-project/microservice-instant-message/pom.xml package
+    
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
