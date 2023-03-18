@@ -42,6 +42,7 @@ jobs:
       run: |
         docker build -t microservice-instant-message:latest -f Dockerfile-microservice-instant-message .
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        docker tag microservice-instant-message tairitsu86/microservice-instant-message
         docker push microservice-instant-message:latest
 
 
