@@ -32,6 +32,7 @@ jobs:
         pwd
         ls -la
         ls -la microservice-instant-message
+        ls -la target
       
     - name: Build and push Docker image
       env:
