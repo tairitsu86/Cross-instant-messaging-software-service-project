@@ -11,9 +11,9 @@ management:
   security:
     enabled: false
 line.bot:
-  channel-token: 
-  channel-secret: 
-  handler.path: 
+  channel-token: 'DILr8RNEVLt85XzEMDH2ed2aRMwipqKyIE+NRgdVA3oO8PrUThlUnQQ4ccF57+E4wStNqvdamR+BDbfcKf39SghpF2XM7BSoxVqaFW3NWUzu/Y2mDMJA54TSJDvAw4873uVvR8x7/S5eT7Qoro9gjwdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'aaaeb51fe28b7d5818c878a79f982506'
+  handler.path: /lineWebhook
 spring:
   jpa:
     database-platform: org.hibernate.dialect.SQLServer2012Dialect
