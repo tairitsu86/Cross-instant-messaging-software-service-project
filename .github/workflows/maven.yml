@@ -26,7 +26,13 @@ jobs:
 
     - name: Test
       run: mvn -B -f /home/runner/work/microservice-instant-message-project/microservice-instant-message-project/microservice-instant-message/pom.xml test
-
+      
+    - name: Debug
+      run: |
+        pwd
+        ls -la
+        ls -la microservice-instant-message
+      
     - name: Build and push Docker image
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
