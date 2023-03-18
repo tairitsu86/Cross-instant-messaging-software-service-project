@@ -33,7 +33,7 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       shell: bash
       run: |
-        docker build -t -f /home/runner/work/microservice-instant-message-project/microservice-instant-message-project/Dockerfile-microservice-instant-message microservice-instant-message:latest .
+        docker build -t microservice-instant-message:latest -f /home/runner/work/microservice-instant-message-project/microservice-instant-message-project/Dockerfile-microservice-instant-message .
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         docker push microservice-instant-message:latest
 
