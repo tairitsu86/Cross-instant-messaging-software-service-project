@@ -100,6 +100,7 @@
     </dependencies>
     <!-- 添加spring-boot的maven插件 -->
     <build>
+	    <finalName>microservice-instant-message</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
