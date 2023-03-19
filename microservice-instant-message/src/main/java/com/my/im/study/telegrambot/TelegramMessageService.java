@@ -15,7 +15,8 @@ import com.pengrad.telegrambot.response.SendResponse;
 public class TelegramMessageService {
 	
 	@Autowired
-	TelegramBot telegramBot;
+	private TelegramBot telegramBot;
+	
 	SendMessage request;
 	
 	public void sendTextMessage(Long chatId, String message) {

@@ -2,24 +2,20 @@ package com.my.im.study.linebot;
 
 import java.util.concurrent.ExecutionException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.profile.UserProfileResponse;
-import com.linecorp.bot.spring.boot.LineBotProperties;
 import com.linecorp.bot.model.response.BotApiResponse;
 
 @Service
 public class LineMessageService {
-	private final LineMessagingClient lineMessagingClient;
-	private final LineBotProperties lineBotProperties;
-
-    public LineMessageService(LineMessagingClient lineMessagingClient, LineBotProperties lineBotProperties) {
-        this.lineMessagingClient = lineMessagingClient;
-        this.lineBotProperties = lineBotProperties;
-    }
+	
+	@Autowired
+	private LineMessagingClient lineMessagingClient;
     
 	public void pushTextMessage(String userId, String messageText){
 		TextMessage message = new TextMessage(messageText);

@@ -3,7 +3,6 @@ package com.my.im.study.telegrambot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import com.my.im.study.service.CommandEvent;
@@ -12,7 +11,6 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 
 @Component
-@ComponentScan
 public class TelegramHandlerImpl implements TelegramHandler {
 
 	private Logger LOG = LoggerFactory.getLogger(TelegramHandlerImpl.class);
@@ -37,6 +35,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 			telegramMessageService.sendTextMessage(chatId, commandResult);
 			return;
 		}
+		
 		telegramMessageService.sendTextMessage(chatId, text);
 	}
 

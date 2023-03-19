@@ -17,7 +17,9 @@ import com.my.im.study.service.InstantMessagingSoftwareList;
 
 @LineMessageHandler
 public class LineHandler {
+	
     private final Logger log = LoggerFactory.getLogger(InstantMessageApplication.class);
+    
     @Autowired
     private CommandEvent commandEvent;
     
