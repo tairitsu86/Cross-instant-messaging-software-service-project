@@ -1,0 +1,35 @@
+指令列表:
+
+新增群組(不會自動加入該群組)
+/newgroup <groupname>
+
+加入群組
+/join <groupId>
+
+目前已加入的群組
+/mygroups
+
+列出所有群組成員
+/groupmembers <groupId>
+
+進行群組內廣播
+/broadcast <groupId> <message>
+
+退出群組(尚未實作)
+/leave <groupId>
+
+查詢指令格式
+/?
+
+備註:
+1.任何以/開頭之文字訊息皆被視為指令
+2.指令中英文字母皆為小寫
+3.以角括號<>框起之文字皆為參數
+4.參數不能包括空格
+5.參數需用空格與指令隔開
+6.複數參數也應用空格隔開
+7.參數輸入時不應該帶有角括號<>
+
+範例:
+新增名為MyGroup的群組
+/newgroup MyGroup
