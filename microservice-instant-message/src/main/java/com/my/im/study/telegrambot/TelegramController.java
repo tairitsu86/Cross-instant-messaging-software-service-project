@@ -13,7 +13,7 @@ public class TelegramController {
 	@Autowired
 	private TelegramHandler handler;
 	
-	@PostMapping("/telegramWebhook")
+	@PostMapping("${TELEGRAM_WEBHOOK}")
 	public void tgWebhook(@RequestBody String update) {
 		handler.handleUpdate(BotUtils.parseUpdate(update));
 	}
