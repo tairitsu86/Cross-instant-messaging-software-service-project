@@ -1,0 +1,22 @@
+version: "1"
+services:
+  microservice-instant-message:
+    image: microservice-instant-message
+    container_name: mim
+    ports:
+       - 8080:8080
+       - 1433:1433
+    ##for the connect with localhost and container
+    ##extra_hosts:
+      ##- "host.docker.internal:host-gateway"
+    volumes:
+       - microservice-instant-message-data:/usr/src/microservice/src/main/resources/db/h2file
+    restart: always
+    environment:
+      LINE_BOT_TOKEN: DILr8RNEVLt85XzEMDH2ed2aRMwipqKyIE+NRgdVA3oO8PrUThlUnQQ4ccF57+E4wStNqvdamR+BDbfcKf39SghpF2XM7BSoxVqaFW3NWUzu/Y2mDMJA54TSJDvAw4873uVvR8x7/S5eT7Qoro9gjwdB04t89/1O/w1cDnyilFU=
+      LINE_BOT_SECRET: aaaeb51fe28b7d5818c878a79f982506
+      LINE_WEBHOOK: /lineWebhook
+      TELEGRAM_BOT_TOKEN: 6016022424:AAGw6pyWTq6wZb4OeJiTwvpKsJ5fTbEnLZo
+      TELEGRAM_WEBHOOK: /telegramWebhook
+volumes:
+  microservice-instant-message-data:
