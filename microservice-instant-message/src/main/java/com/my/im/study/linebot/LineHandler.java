@@ -13,7 +13,6 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.my.im.study.InstantMessageApplication;
 import com.my.im.study.service.CommandEvent;
-import com.my.im.study.service.InstantMessagingSoftwareList;
 
 @LineMessageHandler
 public class LineHandler {
