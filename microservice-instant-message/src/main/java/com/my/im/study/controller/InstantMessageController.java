@@ -1,9 +1,13 @@
 package com.my.im.study.controller;
 
+import com.linecorp.bot.model.response.BotApiResponse;
+import com.my.im.study.APIBody.*;
+import com.my.im.study.service.CrossPlatformService;
+import com.pengrad.telegrambot.response.SendResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.my.im.study.linebot.LineMessageService;
 import com.my.im.study.telegrambot.TelegramMessageService;
@@ -12,27 +16,22 @@ import com.my.im.study.telegrambot.TelegramMessageService;
 public class InstantMessageController {
 	
 	@Autowired
-    private LineMessageService lineMessageService;
-	@Autowired
-	private TelegramMessageService telegramMessageService;
-	
+    private CrossPlatformService crossPlatformService;
+
+	@Operation(summary = "Home test")
 	@GetMapping("/")
-	public String home() {
-		return "{\"Message\":\"OAO\"}";
+	public MessageBody home() {
+		return new MessageBody("OAO");
 	}
-	
-	//http://localhost:8080/linebot/send/U577163e408ae2140e205910efd46f143/OWO
-	@GetMapping("/linebot/send/{userId}/{message}")
-	public String linebotSendText(@PathVariable String userId,@PathVariable String message) {
-		lineMessageService.pushTextMessage(userId, message);
-		return "{\"Message\":\"OWO\"}";
-	}
-	
-	//http://localhost:8080/telegrambot/send/6200393693/OWO
-	@GetMapping("/telegrambot/send/{chatId}/{message}")
-	public String telegrambotSendText(@PathVariable Long chatId,@PathVariable String message) {
-		telegramMessageService.sendTextMessage(chatId, message);
-		return "{\"Message\":\"OWO\"}";
+
+	@Operation(summary = "Send text message")
+	@PostMapping("/send/{userId}")
+	public MessageBody sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
+									   @RequestHeader(name = "Platform") String platform,
+											@Parameter(description = "Instant messaging software user id")@PathVariable String userId,
+											@RequestBody MessageBody messageBody) {
+		System.out.printf("%s %s %s\n",platform,userId,messageBody.getMessage());
+		return new MessageBody(crossPlatformService.sendTextMessage(platform,userId,messageBody.getMessage()));
 	}
 
 	

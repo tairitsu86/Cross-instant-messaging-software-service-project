@@ -17,7 +17,7 @@ public class LineMessageService {
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
     
-	public void pushTextMessage(String userId, String messageText){
+	public BotApiResponse pushTextMessage(String userId, String messageText){
 		TextMessage message = new TextMessage(messageText);
 		PushMessage pushMessage = new PushMessage(userId, message);
 		System.out.println(pushMessage.getTo()+"\n"+pushMessage.getMessages());
@@ -27,7 +27,7 @@ public class LineMessageService {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-        System.out.println(response);
+        return response;
 	}
 	
 	public UserProfileResponse getUserProfile(String userId){
