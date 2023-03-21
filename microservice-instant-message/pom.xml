@@ -6,6 +6,7 @@
     <artifactId>microservice-instant-message</artifactId>
     <version>0.0.1-DEMO</version>
     <name>Spring</name>
+    
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -13,22 +14,26 @@
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        
         <!-- lombok -->
         <dependency>
 			<groupId>org.projectlombok</groupId>
@@ -36,6 +41,7 @@
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
+		
 		<!-- database management -->
 		<dependency>
 		    <groupId>org.liquibase</groupId>
@@ -57,6 +63,19 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <!-- swagger -->
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
+		<dependency>
+		    <groupId>org.springdoc</groupId>
+		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		    <version>2.0.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator</artifactId>
+		    <version>8.0.0.Final</version>
+		</dependency>
         <!-- SQL Server drive -->
         <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
         <!-- stop use
@@ -66,6 +85,7 @@
 		    <scope>runtime</scope>
 		</dependency>
 		-->
+		
         <!-- line bot dependency -->
         <!-- https://github.com/line/line-bot-sdk-java -->
         <dependency>
@@ -98,6 +118,7 @@
             <artifactId>line-bot-model</artifactId>
             <version>6.0.0</version>
         </dependency>
+        
         <!-- telegram bot dependency -->
         <!-- https://github.com/pengrad/java-telegram-bot-api -->
         <dependency>
