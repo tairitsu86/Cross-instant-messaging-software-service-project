@@ -1,0 +1,53 @@
+server:
+  port: 8080
+info: 
+  app: 
+    name: @project.artifactId@
+    encoding: @project.build.sourceEncoding@
+    java:
+      source: @java.version@
+      target: @java.version@
+management:
+  security:
+    enabled: false
+line.bot:
+  channel-token: '${LINE_BOT_TOKEN}'
+  channel-secret: '${LINE_BOT_SECRET}'
+  handler.path: ${LINE_WEBHOOK}
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: h2
+    url: jdbc:h2:file:./src/main/resources/db/h2file/h2
+  liquibase.change-log: db/changelog/db.changelog-master-h2.sql
+logging:                                
+  level:
+    root: INFO
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+    
+
+
+
+##setting of sql server
+  ##jpa:
+    ##database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    ##hibernate:
+      ##ddl-auto: none
+    ##properties.hibernate.dialect: org.hibernate.dialect.SQLServerDialect
+  ##datasource:
+    ####host.docker.internal = localhost, set by etc/hosts
+    ##url: jdbc:sqlserver://host.docker.internal:1433;databaseName=IMService;encrypt=false
+    ##username: JAVAconnect
+    ##password: 123
+    ##driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  ##liquibase.change-log: db/changelog/db.changelog-master-mssql.sql
+
+##for debug
+##logging:
+  ##level:
+    ##org.springframework: DEBUG
