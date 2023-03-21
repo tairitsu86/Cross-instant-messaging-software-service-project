@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.my.im.study.service.CommandEvent;
-import com.my.im.study.service.InstantMessagingSoftwareList;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 
@@ -29,12 +28,12 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		
-		if(text.startsWith("/")) {
-			String commandResult = commandEvent.handleCommandEvent(message, InstantMessagingSoftwareList.TELEGRAM);
-			telegramMessageService.sendTextMessage(chatId, commandResult);
-			return;
-		}
+
+//		if(text.startsWith("/")) {
+//			String commandResult = commandEvent.handleCommandEvent(message, InstantMessagingSoftwareList.TELEGRAM);
+//			telegramMessageService.sendTextMessage(chatId, commandResult);
+//			return;
+//		}
 		
 		telegramMessageService.sendTextMessage(chatId, text);
 	}

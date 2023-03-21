@@ -27,10 +27,10 @@ public class LineHandler {
     public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
-        if(text.startsWith("/")) {
-        	String commandResult = commandEvent.handleCommandEvent(event,InstantMessagingSoftwareList.LINE);
-        	return new TextMessage(commandResult);
-        }
+//        if(text.startsWith("/")) {
+//        	String commandResult = commandEvent.handleCommandEvent(event,InstantMessagingSoftwareList.LINE);
+//        	return new TextMessage(commandResult);
+//        }
         return new TextMessage(text);
     }
 

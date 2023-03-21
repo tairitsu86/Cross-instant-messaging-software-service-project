@@ -27,7 +27,7 @@ public class CommandEvent {
 	@Autowired
     private MemberService memberService;
     @Autowired
-    private Broadcast broadcast;
+    private CrossPlatformService crossPlatformService;
     @Autowired
     private LineMessageService lineMessageService;
     
@@ -109,7 +109,7 @@ public class CommandEvent {
         		executeResult += String.format("\nuser: %s\nuser id:%s\nfrom:%s\n",user.getUserName(),user.getInstantMessagingSoftwareUserId(),user.getInstantMessagingSoftware());
         }else if(command.startsWith("/broadcast")) {
         	if(parameterNumber!=2) return ERRORMESSAGE;
-        	broadcast.broadcast(parameter[1], parameter[2]);
+			crossPlatformService.broadcast("OWO",parameter[1], parameter[2]);
         	executeResult = String.format("Broadcast done!");
         }else if(command.startsWith("/leave")) {
         	if(parameterNumber!=1) return ERRORMESSAGE;
