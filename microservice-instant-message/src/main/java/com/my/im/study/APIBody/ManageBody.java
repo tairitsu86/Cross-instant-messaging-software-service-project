@@ -1,6 +1,8 @@
 package com.my.im.study.APIBody;
 
 import com.my.im.study.database.entity.Group;
+import com.my.im.study.database.entity.Manager;
+import com.my.im.study.database.entity.Member;
 import com.my.im.study.database.entity.User;
 import lombok.*;
 
@@ -13,12 +15,14 @@ import java.util.List;
 @ToString
 public class ManageBody {
     private String command;
-    private String group_id;
-    private String group_name;
-    private List<Group> group_list;
-    private String user_id;
-    private String user_name;
+    private String groupId;
+    private String groupName;
+    private List<Group> groupList;
+    private String userName;
+    private String platform;
     private String instantMessagingSoftwareUserId;
-    private List<User> user_list;
+    private List<User> userList;
+    private List<Member> memberList;
+    private List<Manager> managerList;
     private String message;
 }

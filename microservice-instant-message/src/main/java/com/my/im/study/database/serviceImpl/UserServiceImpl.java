@@ -1,6 +1,6 @@
 package com.my.im.study.database.serviceImpl;
 
-import com.my.im.study.database.entity.Manage;
+import com.my.im.study.database.entity.Manager;
 import com.my.im.study.database.entity.Member;
 import com.my.im.study.database.entity.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkManage(Manage manage, UserId userId) {
-        return userId.equals(new UserId(manage.getInstantMessagingSoftwareForeignKey(), manage.getInstantMessagingSoftwareUserIdForeignKey()));
+    public boolean checkManage(Manager manager, UserId userId) {
+        return userId.equals(new UserId(manager.getInstantMessagingSoftwareForeignKey(), manager.getInstantMessagingSoftwareUserIdForeignKey()));
     }
 }

@@ -1,13 +1,11 @@
 package com.my.im.study.service;
 
-import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.my.im.study.database.ManageService;
+
+import com.my.im.study.database.ManagerService;
 import com.my.im.study.database.MemberService;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.linebot.LineMessageService;
 import com.my.im.study.telegrambot.TelegramMessageService;
-import com.pengrad.telegrambot.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +20,11 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     @Autowired
     private TelegramMessageService telegramMessageService;
     @Autowired
-    private ManageService manageService;
+    private ManagerService managerService;
 
     @Override
     public String broadcast(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId,String text) {
-        if(!manageService.checkPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "No permission!";
+        if(!managerService.checkPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "No permission!";
         List<User> users = memberService.getUsers(groupId);
         for(User user:users) {
             switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {

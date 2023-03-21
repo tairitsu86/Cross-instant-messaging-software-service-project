@@ -31,6 +31,11 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
+	public void leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		memberRepository.delete(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	}
+
+	@Override
 	public List<User> getUsers(String groupId) {
 		List<Member> members = memberRepository.findAll();
 		List<User> users = new ArrayList<User>();
@@ -49,6 +54,11 @@ public class MemberServicImpl implements MemberService {
 			if(userService.checkMember(member,userId))
 				groups.add(groupService.getGroupById(member.getGroupIdForeignKey()));
 		return groups;
+	}
+
+	@Override
+	public List<Member> getAllMembers() {
+		return memberRepository.findAll();
 	}
 
 }

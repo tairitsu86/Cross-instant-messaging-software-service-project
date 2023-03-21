@@ -43,8 +43,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public void deleteGroup(String groupId) {
-		// TODO Auto-generated method stub
-		
+		groupRepository.deleteById(groupId);
 	}
 
 }

@@ -81,24 +81,24 @@ public class CommandEvent {
 		parameter = command.split(" ");
 		parameterNumber = parameter.length-1;	
 		
-//    	if(command.startsWith("/newgroup")) {
+    	if(command.startsWith("/newgroup")) {
 //        	if(parameterNumber!=1) return ERRORMESSAGE;
 //        	Group newGroup = groupService.createGroup(new Group(null,parameter[1]));
 //        	executeResult = String.format("New group success!\nThere is your group id:\n%s",newGroup.getGroupId());
-//        }else if(command.startsWith("/join")) {
+        }else if(command.startsWith("/join")) {
 //        	if(parameterNumber!=1) return ERRORMESSAGE;
 //        	userService.createUser(new User(userId, name, instantMessagingSoftwareName, instantMessageUserId));
 //        	Group group = groupService.getGroupById(parameter[1]);
 //        	if(group==null) return "Group not exist!";
 //        	memberService.join(userId, parameter[1]);
 //        	executeResult = String.format("Join group %s success!",group.getGroupName());
-//        }else if(command.startsWith("/mygroups")) {
+        }else if(command.startsWith("/mygroups")) {
 //        	List<Group> groups = memberService.getGroups(userId);
 //        	if(groups.size()==0) return "Not in any group!";
 //        	executeResult = "Groups:";
 //        	for(Group group:groups)
 //        		executeResult += String.format("\ngroup: %s\ngroup id:%s\n",group.getGroupName(),group.getGroupId());
-//        }else if(command.startsWith("/groupmembers")) {
+        }else if(command.startsWith("/groupmembers")) {
 //        	if(parameterNumber!=1) return ERRORMESSAGE;
 //        	Group group = groupService.getGroupById(parameter[1]);
 //        	if(group==null) return "Group not exist!";
@@ -116,7 +116,7 @@ public class CommandEvent {
 //        	executeResult = "Not yet implemented!";
 //        }else if(command.startsWith("/?")) {
 //        	executeResult = CHATBOTCOMMAND;
-//        }
+        }
     	return executeResult;
     }
 }

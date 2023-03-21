@@ -2,7 +2,6 @@ package com.my.im.study.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 @Getter
 @Setter
@@ -11,8 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 @ToString
 @Entity
 @Table(name = "[manage]")
-@IdClass(ManageId.class)
-public class Manage {
+@IdClass(ManagerId.class)
+public class Manager {
     @Id
     private String instantMessagingSoftwareForeignKey;
     @Id

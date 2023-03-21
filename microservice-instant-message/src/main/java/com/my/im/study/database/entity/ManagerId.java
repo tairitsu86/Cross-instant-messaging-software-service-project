@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManageId implements Serializable {
+public class ManagerId implements Serializable {
 
     private String instantMessagingSoftwareForeignKey;
     private String instantMessagingSoftwareUserIdForeignKey;
@@ -18,10 +18,10 @@ public class ManageId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ManageId manageId = (ManageId) o;
-        return instantMessagingSoftwareForeignKey.equals(manageId.instantMessagingSoftwareForeignKey) &&
-                instantMessagingSoftwareUserIdForeignKey.equals(manageId.instantMessagingSoftwareUserIdForeignKey)&&
-                groupIdForeignKey.equals(manageId.groupIdForeignKey);
+        ManagerId managerId = (ManagerId) o;
+        return instantMessagingSoftwareForeignKey.equals(managerId.instantMessagingSoftwareForeignKey) &&
+                instantMessagingSoftwareUserIdForeignKey.equals(managerId.instantMessagingSoftwareUserIdForeignKey)&&
+                groupIdForeignKey.equals(managerId.groupIdForeignKey);
     }
 
     @Override
