@@ -10,14 +10,13 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @ToString
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @Table(name = "[manage]")
+@IdClass(ManageId.class)
 public class Manage {
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    private String manageId;
-    @Column
-    private String userIdForeignKey;
-    @Column
+    private String instantMessagingSoftwareForeignKey;
+    @Id
+    private String instantMessagingSoftwareUserIdForeignKey;
+    @Id
     private String groupIdForeignKey;
 }

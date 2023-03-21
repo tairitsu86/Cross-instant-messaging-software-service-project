@@ -25,8 +25,8 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     private ManageService manageService;
 
     @Override
-    public String broadcast(String userId,String groupId,String text) {
-        if(!manageService.checkPermission(userId,groupId)) return "No permission!";
+    public String broadcast(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId,String text) {
+        if(!manageService.checkPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "No permission!";
         List<User> users = memberService.getUsers(groupId);
         for(User user:users) {
             switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {

@@ -81,42 +81,42 @@ public class CommandEvent {
 		parameter = command.split(" ");
 		parameterNumber = parameter.length-1;	
 		
-    	if(command.startsWith("/newgroup")) {
-        	if(parameterNumber!=1) return ERRORMESSAGE;
-        	Group newGroup = groupService.createGroup(new Group(null,parameter[1]));
-        	executeResult = String.format("New group success!\nThere is your group id:\n%s",newGroup.getGroupId());
-        }else if(command.startsWith("/join")) {
-        	if(parameterNumber!=1) return ERRORMESSAGE;
-        	userService.createUser(new User(userId, name, instantMessagingSoftwareName, instantMessageUserId));
-        	Group group = groupService.getGroupById(parameter[1]);
-        	if(group==null) return "Group not exist!";
-        	memberService.join(userId, parameter[1]);
-        	executeResult = String.format("Join group %s success!",group.getGroupName());	
-        }else if(command.startsWith("/mygroups")) {
-        	List<Group> groups = memberService.getGroups(userId);
-        	if(groups.size()==0) return "Not in any group!";
-        	executeResult = "Groups:";
-        	for(Group group:groups) 
-        		executeResult += String.format("\ngroup: %s\ngroup id:%s\n",group.getGroupName(),group.getGroupId());
-        }else if(command.startsWith("/groupmembers")) {
-        	if(parameterNumber!=1) return ERRORMESSAGE;
-        	Group group = groupService.getGroupById(parameter[1]);
-        	if(group==null) return "Group not exist!";
-        	List<User> users = memberService.getUsers(parameter[1]);
-        	if(users.size()==0) return "No member in this group!";
-        	executeResult = "Members:";
-        	for(User user:users) 
-        		executeResult += String.format("\nuser: %s\nuser id:%s\nfrom:%s\n",user.getUserName(),user.getInstantMessagingSoftwareUserId(),user.getInstantMessagingSoftware());
-        }else if(command.startsWith("/broadcast")) {
-        	if(parameterNumber!=2) return ERRORMESSAGE;
-			crossPlatformService.broadcast("OWO",parameter[1], parameter[2]);
-        	executeResult = String.format("Broadcast done!");
-        }else if(command.startsWith("/leave")) {
-        	if(parameterNumber!=1) return ERRORMESSAGE;
-        	executeResult = "Not yet implemented!";
-        }else if(command.startsWith("/?")) {
-        	executeResult = CHATBOTCOMMAND;
-        }
+//    	if(command.startsWith("/newgroup")) {
+//        	if(parameterNumber!=1) return ERRORMESSAGE;
+//        	Group newGroup = groupService.createGroup(new Group(null,parameter[1]));
+//        	executeResult = String.format("New group success!\nThere is your group id:\n%s",newGroup.getGroupId());
+//        }else if(command.startsWith("/join")) {
+//        	if(parameterNumber!=1) return ERRORMESSAGE;
+//        	userService.createUser(new User(userId, name, instantMessagingSoftwareName, instantMessageUserId));
+//        	Group group = groupService.getGroupById(parameter[1]);
+//        	if(group==null) return "Group not exist!";
+//        	memberService.join(userId, parameter[1]);
+//        	executeResult = String.format("Join group %s success!",group.getGroupName());
+//        }else if(command.startsWith("/mygroups")) {
+//        	List<Group> groups = memberService.getGroups(userId);
+//        	if(groups.size()==0) return "Not in any group!";
+//        	executeResult = "Groups:";
+//        	for(Group group:groups)
+//        		executeResult += String.format("\ngroup: %s\ngroup id:%s\n",group.getGroupName(),group.getGroupId());
+//        }else if(command.startsWith("/groupmembers")) {
+//        	if(parameterNumber!=1) return ERRORMESSAGE;
+//        	Group group = groupService.getGroupById(parameter[1]);
+//        	if(group==null) return "Group not exist!";
+//        	List<User> users = memberService.getUsers(parameter[1]);
+//        	if(users.size()==0) return "No member in this group!";
+//        	executeResult = "Members:";
+//        	for(User user:users)
+//        		executeResult += String.format("\nuser: %s\nuser id:%s\nfrom:%s\n",user.getUserName(),user.getInstantMessagingSoftwareUserId(),user.getInstantMessagingSoftware());
+//        }else if(command.startsWith("/broadcast")) {
+//        	if(parameterNumber!=2) return ERRORMESSAGE;
+//			crossPlatformService.broadcast("OWO",parameter[1], parameter[2]);
+//        	executeResult = String.format("Broadcast done!");
+//        }else if(command.startsWith("/leave")) {
+//        	if(parameterNumber!=1) return ERRORMESSAGE;
+//        	executeResult = "Not yet implemented!";
+//        }else if(command.startsWith("/?")) {
+//        	executeResult = CHATBOTCOMMAND;
+//        }
     	return executeResult;
     }
 }

@@ -1,5 +1,8 @@
 package com.my.im.study.database.serviceImpl;
 
+import com.my.im.study.database.entity.Manage;
+import com.my.im.study.database.entity.Member;
+import com.my.im.study.database.entity.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +25,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
+    public User getUserById(String instantMessagingSoftware,String instantMessagingSoftwareUserId) {
+        Optional<User> optionalUser = userRepository.findById(new UserId(instantMessagingSoftware, instantMessagingSoftwareUserId));
         return optionalUser.get();
     }
 
@@ -33,15 +36,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        User existingUser = userRepository.findById(user.getUserId()).get();
-        existingUser.setUserName(null);
-        User updatedUser = userRepository.save(existingUser);
-        return updatedUser;
+    public void deleteUser(String instantMessagingSoftware,String instantMessagingSoftwareUserId) {
+        userRepository.deleteById(new UserId(instantMessagingSoftware, instantMessagingSoftwareUserId));
     }
 
     @Override
-    public void deleteUser(String userId) {
-        userRepository.deleteById(userId);
+    public boolean checkMember(Member member, UserId userId) {
+        return userId.equals(new UserId(member.getInstantMessagingSoftwareForeignKey(), member.getInstantMessagingSoftwareUserIdForeignKey()));
+    }
+
+    @Override
+    public boolean checkManage(Manage manage, UserId userId) {
+        return userId.equals(new UserId(manage.getInstantMessagingSoftwareForeignKey(), manage.getInstantMessagingSoftwareUserIdForeignKey()));
     }
 }

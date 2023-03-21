@@ -28,13 +28,13 @@ public class InstantMessageController {
 	@PostMapping("/send/{userId}")
 	public MessageBody sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
 									   @RequestHeader(name = "Platform") String platform,
-											@Parameter(description = "Instant messaging software user id")@PathVariable String userId,
-											@RequestBody MessageBody messageBody) {
+									   @Parameter(description = "Instant messaging software user id")@PathVariable String userId,
+									   @RequestBody MessageBody messageBody) {
 		System.out.printf("%s %s %s\n",platform,userId,messageBody.getMessage());
 		return new MessageBody(crossPlatformService.sendTextMessage(platform,userId,messageBody.getMessage()));
 	}
 
-	
+
 	
 	
 	

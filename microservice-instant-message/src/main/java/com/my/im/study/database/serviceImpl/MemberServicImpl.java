@@ -3,6 +3,7 @@ package com.my.im.study.database.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.my.im.study.database.entity.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,8 @@ public class MemberServicImpl implements MemberService {
 	private GroupService groupService;
 	
 	@Override
-	public void join(String userId, String groupId) {
-		memberRepository.save(new Member(null,userId,groupId));
+	public void join(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
+		memberRepository.save(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
 	}
 
 	@Override
@@ -35,16 +36,17 @@ public class MemberServicImpl implements MemberService {
 		List<User> users = new ArrayList<User>();
 		for(Member member: members) 
 			if(member.getGroupIdForeignKey().equals(groupId))
-				users.add(userService.getUserById(member.getUserIdForeignKey()));
+				users.add(userService.getUserById(member.getInstantMessagingSoftwareForeignKey(),member.getInstantMessagingSoftwareUserIdForeignKey()));
 		return users;
 	}
 
 	@Override
-	public List<Group> getGroups(String userId) {
+	public List<Group> getGroups(String instantMessagingSoftware,String instantMessagingSoftwareUserId) {
 		List<Member> members = memberRepository.findAll();
 		List<Group> groups = new ArrayList<Group>();
+		UserId userId = new UserId(instantMessagingSoftware, instantMessagingSoftwareUserId);
 		for(Member member: members) 
-			if(member.getUserIdForeignKey().equals(userId))
+			if(userService.checkMember(member,userId))
 				groups.add(groupService.getGroupById(member.getGroupIdForeignKey()));
 		return groups;
 	}

@@ -14,13 +14,12 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "[user]")
+@IdClass(UserId.class)
 public class User {
 	@Id
-	private String userId;
+	private String instantMessagingSoftware;
+	@Id
+	private String instantMessagingSoftwareUserId;
 	@Column
 	private String userName;
-	@Column
-	private String instantMessagingSoftware;
-	@Column
-	private String instantMessagingSoftwareUserId;
 }

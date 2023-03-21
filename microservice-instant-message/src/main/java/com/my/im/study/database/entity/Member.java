@@ -1,12 +1,8 @@
 package com.my.im.study.database.entity;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,14 +15,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @Table(name = "[member]")
+@IdClass(MemberId.class)
 public class Member {
 	@Id
-	@GeneratedValue(generator = "jpa-uuid")
-	private String memberId;
-	@Column
-	private String userIdForeignKey;
-	@Column
+	private String instantMessagingSoftwareForeignKey;
+	@Id
+	private String instantMessagingSoftwareUserIdForeignKey;
+	@Id
 	private String groupIdForeignKey;
 }	
