@@ -1,11 +1,12 @@
 package com.my.im.study.telegrambot;
 
+import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.service.InstantMessagingSoftwareList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.my.im.study.service.CommandEvent;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 
@@ -15,10 +16,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 	private Logger LOG = LoggerFactory.getLogger(TelegramHandlerImpl.class);
 	
 	@Autowired
-	private TelegramMessageService telegramMessageService;
-	
-	@Autowired
-	private CommandEvent commandEvent;
+	private CrossPlatformService crossPlatformService;
 	
 	@Override
 	public void handleUpdate(Update update) {
@@ -28,14 +26,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-
-//		if(text.startsWith("/")) {
-//			String commandResult = commandEvent.handleCommandEvent(message, InstantMessagingSoftwareList.TELEGRAM);
-//			telegramMessageService.sendTextMessage(chatId, commandResult);
-//			return;
-//		}
-		
-		telegramMessageService.sendTextMessage(chatId, text);
+		crossPlatformService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
 	}
 
 }

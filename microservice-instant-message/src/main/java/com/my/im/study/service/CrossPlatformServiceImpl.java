@@ -3,6 +3,7 @@ package com.my.im.study.service;
 
 import com.my.im.study.database.ManagerService;
 import com.my.im.study.database.MemberService;
+import com.my.im.study.database.UserService;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.linebot.LineMessageService;
 import com.my.im.study.telegrambot.TelegramMessageService;
@@ -21,10 +22,12 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     private TelegramMessageService telegramMessageService;
     @Autowired
     private ManagerService managerService;
+    @Autowired
+    private UserService userService;
 
     @Override
     public String broadcast(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId,String text) {
-        if(!managerService.checkPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "No permission!";
+//        if(!managerService.checkPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "No permission!";
         List<User> users = memberService.getUsers(groupId);
         for(User user:users) {
             switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {
@@ -53,4 +56,11 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
         }
         return "Success";
     }
+
+    @Override
+    public User userRegister(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String userName) {
+        return userService.createUser(new User(instantMessagingSoftware,instantMessagingSoftwareUserId,userName));
+    }
+
+
 }

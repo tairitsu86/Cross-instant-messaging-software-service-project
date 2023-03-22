@@ -25,15 +25,20 @@ public class InstantMessageController {
 	}
 
 	@Operation(summary = "Send text message")
-	@PostMapping("/send/{userId}")
+	@PostMapping("/send")
 	public MessageBody sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
-									   @RequestHeader(name = "Platform") String platform,
-									   @Parameter(description = "Instant messaging software user id")@PathVariable String userId,
+									   @RequestHeader(name = "Platform",required = false) String platform,
 									   @RequestBody MessageBody messageBody) {
-		System.out.printf("%s %s %s\n",platform,userId,messageBody.getMessage());
-		return new MessageBody(crossPlatformService.sendTextMessage(platform,userId,messageBody.getMessage()));
+		System.out.println(messageBody);
+		return new MessageBody(crossPlatformService.sendTextMessage(messageBody.getPlatform(),messageBody.getInstantMessagingSoftwareUserId(),messageBody.getMessage()));
 	}
-
+	@PostMapping("/broadcast")
+	public MessageBody broadcast(@RequestHeader(name = "Authorization") String accessToken,
+									   @RequestHeader(name = "Platform",required = false) String platform,
+									   @RequestBody MessageBody messageBody) {
+		System.out.println(messageBody);
+		return new MessageBody(crossPlatformService.broadcast(null,null,messageBody.getGroupId(),messageBody.getMessage()));
+	}
 
 	
 	

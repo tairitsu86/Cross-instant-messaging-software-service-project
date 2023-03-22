@@ -1,5 +1,8 @@
 package com.my.im.study.linebot;
 
+import com.my.im.study.database.entity.User;
+import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.service.InstantMessagingSoftwareList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,6 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.my.im.study.InstantMessageApplication;
-import com.my.im.study.service.CommandEvent;
 
 @LineMessageHandler
 public class LineHandler {
@@ -20,17 +22,16 @@ public class LineHandler {
     private final Logger log = LoggerFactory.getLogger(InstantMessageApplication.class);
     
     @Autowired
-    private CommandEvent commandEvent;
+    private CrossPlatformService crossPlatformService;
+
+    @Autowired
+    private LineMessageService lineMessageService;
     
     @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
-//        if(text.startsWith("/")) {
-//        	String commandResult = commandEvent.handleCommandEvent(event,InstantMessagingSoftwareList.LINE);
-//        	return new TextMessage(commandResult);
-//        }
-        return new TextMessage(text);
+        crossPlatformService.userRegister(InstantMessagingSoftwareList.LINE.getName(),event.getSource().getUserId(),lineMessageService.getUserProfile(event.getSource().getUserId()).getDisplayName());
     }
 
     @EventMapping
