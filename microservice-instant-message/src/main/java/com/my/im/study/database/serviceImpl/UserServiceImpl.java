@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService {
     public boolean checkManage(Manager manager, UserId userId) {
         return userId.equals(new UserId(manager.getInstantMessagingSoftwareForeignKey(), manager.getInstantMessagingSoftwareUserIdForeignKey()));
     }
+
+    @Override
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
 }

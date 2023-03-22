@@ -14,4 +14,6 @@ public interface GroupService {
     Group updateGroup(Group group);
 
     void deleteGroup(String groupId);
+
+    void deleteAllGroups();
 }

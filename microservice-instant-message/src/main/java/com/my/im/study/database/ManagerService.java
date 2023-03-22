@@ -13,4 +13,6 @@ public interface ManagerService {
     boolean checkPermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 
     List<Manager> getAllManagers();
+
+    void deleteAllManagers();
 }

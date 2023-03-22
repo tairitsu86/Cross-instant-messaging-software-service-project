@@ -61,4 +61,9 @@ public class MemberServicImpl implements MemberService {
 		return memberRepository.findAll();
 	}
 
+	@Override
+	public void deleteAllMembers() {
+		memberRepository.deleteAll();
+	}
+
 }

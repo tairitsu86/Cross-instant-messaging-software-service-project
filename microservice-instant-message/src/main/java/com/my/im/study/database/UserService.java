@@ -17,6 +17,9 @@ public interface UserService {
     void deleteUser(String instantMessagingSoftware,String instantMessagingSoftwareUserId);
 
     boolean checkMember(Member member, UserId userId);
+
     boolean checkManage(Manager manager, UserId userId);
+
+    void deleteAllUsers();
 
 }

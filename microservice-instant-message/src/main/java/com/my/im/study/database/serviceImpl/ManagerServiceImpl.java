@@ -45,4 +45,9 @@ public class ManagerServiceImpl implements ManagerService {
     public List<Manager> getAllManagers() {
         return managerRespository.findAll();
     }
+
+    @Override
+    public void deleteAllManagers() {
+        managerRespository.deleteAll();
+    }
 }

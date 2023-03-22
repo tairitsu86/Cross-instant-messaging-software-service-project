@@ -46,4 +46,9 @@ public class GroupServiceImpl implements GroupService {
 		groupRepository.deleteById(groupId);
 	}
 
+	@Override
+	public void deleteAllGroups() {
+		groupRepository.deleteAll();
+	}
+
 }
