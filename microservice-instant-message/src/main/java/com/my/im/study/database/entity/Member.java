@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "[member]")
+@Table(name = "[MEMBER]")
 @IdClass(MemberId.class)
 public class Member {
 	@Id

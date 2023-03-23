@@ -17,6 +17,6 @@ public class MessageBody {
     @Schema(description = "String message", minLength = 1, example = "Hello!")
     private String message;
     private String instantMessagingSoftwareUserId;
-    private String platform;
+    private String instantMessagingSoftware;
     private String groupId;
 }

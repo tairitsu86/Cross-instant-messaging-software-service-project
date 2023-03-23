@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "[manage]")
+@Table(name = "[MANAGER]")
 @IdClass(ManagerId.class)
 public class Manager {
     @Id

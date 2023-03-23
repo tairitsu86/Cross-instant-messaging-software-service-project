@@ -16,11 +16,15 @@ import lombok.ToString;
 @ToString
 @Entity
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
-@Table(name = "[group]")
+@Table(name = "[GROUP]")
 public class Group {
 	@Id
 	@GeneratedValue(generator = "jpa-uuid")
 	private String groupId;
 	@Column
 	private String groupName;
+
+    public Group(String groupName) {
+		this.groupName = groupName;
+    }
 }

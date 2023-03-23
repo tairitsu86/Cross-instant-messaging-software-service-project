@@ -1,10 +1,7 @@
 package com.my.im.study.controller;
 
 import com.my.im.study.APIBody.ManageBody;
-import com.my.im.study.database.GroupService;
-import com.my.im.study.database.ManagerService;
-import com.my.im.study.database.MemberService;
-import com.my.im.study.database.UserService;
+import com.my.im.study.database.*;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.Manager;
 import com.my.im.study.database.entity.Member;
@@ -26,17 +23,24 @@ public class DatabaseManagementController {
     private ManagerService managerService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private DatabaseService databaseService;
+
+    @GetMapping("/deletealldata")
+    public void deletealldata(@RequestHeader(name = "Authorization") String accessToken){
+        databaseService.deleteAllData();
+    }
 
     @PostMapping("/adduser")
     public User addUser(@RequestHeader(name = "Authorization") String accessToken,
                         @RequestBody ManageBody manageBody){
-        return userService.createUser(new User(manageBody.getPlatform(),manageBody.getInstantMessagingSoftwareUserId(),manageBody.getUserName()));
+        return userService.createUser(new User(manageBody.getInstantMessagingSoftware(),manageBody.getInstantMessagingSoftwareUserId(),manageBody.getUserName()));
     }
 
     @PostMapping("/removeuser")
     public ManageBody removeUser(@RequestHeader(name = "Authorization") String accessToken,
                                  @RequestBody ManageBody manageBody){
-        userService.deleteUser(manageBody.getPlatform(),manageBody.getInstantMessagingSoftwareUserId());
+        userService.deleteUser(manageBody.getInstantMessagingSoftware(),manageBody.getInstantMessagingSoftwareUserId());
         return manageBody;
     }
 
@@ -66,14 +70,14 @@ public class DatabaseManagementController {
     @PostMapping("/addmanager")
     public ManageBody addManager(@RequestHeader(name = "Authorization") String accessToken,
                                  @RequestBody ManageBody manageBody){
-        managerService.grantPermission(manageBody.getPlatform(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
+        managerService.grantPermission(manageBody.getInstantMessagingSoftware(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
         return manageBody;
     }
 
     @PostMapping("/removemanager")
     public ManageBody removeManager(@RequestHeader(name = "Authorization") String accessToken,
                                     @RequestBody ManageBody manageBody){
-        managerService.revokePermission(manageBody.getPlatform(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
+        managerService.revokePermission(manageBody.getInstantMessagingSoftware(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
         return manageBody;
     }
 
@@ -85,14 +89,14 @@ public class DatabaseManagementController {
     @PostMapping("/addmember")
     public ManageBody addMember(@RequestHeader(name = "Authorization") String accessToken,
                                 @RequestBody ManageBody manageBody){
-        memberService.join(manageBody.getPlatform(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
+        memberService.join(manageBody.getInstantMessagingSoftware(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
         return manageBody;
     }
 
     @PostMapping("/removemember")
     public ManageBody removeMember(@RequestHeader(name = "Authorization") String accessToken,
                                    @RequestBody ManageBody manageBody){
-        memberService.leave(manageBody.getPlatform(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
+        memberService.leave(manageBody.getInstantMessagingSoftware(), manageBody.getInstantMessagingSoftwareUserId(), manageBody.getGroupId());
         return manageBody;
     }
 

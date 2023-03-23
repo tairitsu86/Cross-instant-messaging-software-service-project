@@ -1,9 +1,11 @@
 package com.my.im.study.service;
 
 
+import com.my.im.study.database.GroupService;
 import com.my.im.study.database.ManagerService;
 import com.my.im.study.database.MemberService;
 import com.my.im.study.database.UserService;
+import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.linebot.LineMessageService;
 import com.my.im.study.telegrambot.TelegramMessageService;
@@ -24,10 +26,11 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     private ManagerService managerService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private GroupService groupService;
 
     @Override
-    public String broadcast(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId,String text) {
-//        if(!managerService.checkPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "No permission!";
+    public String broadcast(String groupId,String text) {
         List<User> users = memberService.getUsers(groupId);
         for(User user:users) {
             switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {
@@ -60,6 +63,21 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     @Override
     public User userRegister(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String userName) {
         return userService.createUser(new User(instantMessagingSoftware,instantMessagingSoftwareUserId,userName));
+    }
+
+    @Override
+    public String join(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+        try{
+            memberService.join(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "Success!";
+    }
+
+    @Override
+    public Group newGroup(String groupName) {
+        return groupService.createGroup(new Group(groupName));
     }
 
 

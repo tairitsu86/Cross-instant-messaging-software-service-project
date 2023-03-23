@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "[user]")
+@Table(name = "[USER]")
 @IdClass(UserId.class)
 public class User {
 	@Id

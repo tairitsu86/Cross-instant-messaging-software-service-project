@@ -19,7 +19,7 @@ public class ManageBody {
     private String groupName;
     private List<Group> groupList;
     private String userName;
-    private String platform;
+    private String instantMessagingSoftware;
     private String instantMessagingSoftwareUserId;
     private List<User> userList;
     private List<Member> memberList;
