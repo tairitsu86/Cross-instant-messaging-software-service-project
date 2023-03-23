@@ -1,6 +1,7 @@
 package com.my.im.study.controller;
 
 import com.my.im.study.APIBody.*;
+import com.my.im.study.database.entity.Group;
 import com.my.im.study.service.CrossPlatformService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +15,38 @@ public class InstantMessageController {
 
 	@Operation(summary = "Home test")
 	@GetMapping("/")
-	public MessageBody home() {
-		return new MessageBody("OAO");
+	public ManageBody home() {
+		return new ManageBody("OAO");
 	}
 
 	@Operation(summary = "Send text message")
 	@PostMapping("/send")
-	public MessageBody sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
+	public ManageBody sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
 									   @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-									   @RequestBody MessageBody messageBody) {
-		System.out.println(messageBody);
-		return new MessageBody(crossPlatformService.sendTextMessage(messageBody.getInstantMessagingSoftware(),messageBody.getInstantMessagingSoftwareUserId(),messageBody.getMessage()));
+									   @RequestBody ManageBody manageBody) {
+		System.out.println(manageBody);
+		return new ManageBody(crossPlatformService.sendTextMessage(manageBody.getInstantMessagingSoftware(),manageBody.getInstantMessagingSoftwareUserId(),manageBody.getMessage()));
 	}
 	@PostMapping("/broadcast")
-	public MessageBody broadcast(@RequestHeader(name = "Authorization") String accessToken,
+	public ManageBody broadcast(@RequestHeader(name = "Authorization") String accessToken,
 									   @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-									   @RequestBody MessageBody messageBody) {
-		System.out.println(messageBody);
-		return new MessageBody(crossPlatformService.broadcast(messageBody.getGroupId(),messageBody.getMessage()));
+									   @RequestBody ManageBody manageBody) {
+		System.out.println(manageBody);
+		return new ManageBody(crossPlatformService.broadcast(manageBody.getGroupId(),manageBody.getMessage()));
+	}
+	@PostMapping("/newgroup")
+	public Group newGroup(@RequestHeader(name = "Authorization") String accessToken,
+						  @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
+						  @RequestBody ManageBody manageBody) {
+		System.out.println(manageBody);
+		return crossPlatformService.newGroup(manageBody.getGroupName());
 	}
 
+	@PostMapping("/join")
+	public ManageBody join(@RequestHeader(name = "Authorization") String accessToken,
+							@RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
+							@RequestBody ManageBody manageBody) {
+		System.out.println(manageBody);
+		return new ManageBody(crossPlatformService.join(manageBody.getInstantMessagingSoftware(),manageBody.getInstantMessagingSoftwareUserId(),manageBody.getGroupId()));
+	}
 }

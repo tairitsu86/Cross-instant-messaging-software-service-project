@@ -25,4 +25,7 @@ public class ManageBody {
     private List<Member> memberList;
     private List<Manager> managerList;
     private String message;
+    public ManageBody(String message){
+        this.message = message;
+    }
 }

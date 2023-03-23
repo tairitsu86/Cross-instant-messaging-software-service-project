@@ -46,6 +46,22 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     }
 
     @Override
+    public String broadcastAll(String text) {
+        List<User> users = userService.getAllUsers();
+        for(User user:users) {
+            switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {
+                case LINE:
+                    lineMessageService.pushTextMessage(user.getInstantMessagingSoftwareUserId(),text);
+                    break;
+                case TELEGRAM:
+                    telegramMessageService.sendTextMessage(Long.parseLong(user.getInstantMessagingSoftwareUserId()), text);
+                    break;
+            }
+        }
+        return "Broadcast to every user done!";
+    }
+
+    @Override
     public String sendTextMessage(String platform, String userid, String textMessage) {
         InstantMessagingSoftwareList instantMessagingSoftware = InstantMessagingSoftwareList.valueOf(platform);
         if(instantMessagingSoftware==null) return "Wrong platform!";
