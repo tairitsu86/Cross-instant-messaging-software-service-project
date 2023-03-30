@@ -24,6 +24,7 @@ public class WebhookServiceImpl  implements WebhookService{
 
     @Override
     public void testWebhook(String groupId) {
+        System.out.println(groupService.getWebhook(groupId));
         webhookSendEvent(groupService.getWebhook(groupId),new EventBean("Webhook test",""));
     }
 
