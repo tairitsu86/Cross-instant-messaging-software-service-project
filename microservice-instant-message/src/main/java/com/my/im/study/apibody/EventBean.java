@@ -10,12 +10,18 @@ import lombok.*;
 public class EventBean {
     private String eventType;
     private String instantMessagingSoftware;
+    private String instantMessagingSoftwareUserId;
     private String message;
     private Object eventObject;
-    public EventBean(String eventType, String message){
-        this(eventType,null,message,null);
+
+    public static EventBean createTestEventBean(){
+        return new EventBean("Test",null,null,null,null);
     }
-    public EventBean(String instantMessagingSoftware,Object eventObject){
-        this("Transfer",instantMessagingSoftware,"Transfer instant messaging software event",eventObject);
+    public static EventBean createTextMessageEventBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String message){
+        return new EventBean("TextMessage",instantMessagingSoftware,instantMessagingSoftwareUserId,message,null);
+    }
+//Transfer instant messaging software event
+    public static EventBean createTransferEventBean(String instantMessagingSoftware,Object eventObject){
+        return new EventBean("Transfer",instantMessagingSoftware,null,null,eventObject);
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-public class WebhookServiceImpl  implements WebhookService{
+public class WebhookServiceImpl implements WebhookService{
     private static RestTemplate restTemplate = new RestTemplate();
     @Autowired
     private GroupService groupService;
@@ -25,12 +25,12 @@ public class WebhookServiceImpl  implements WebhookService{
     @Override
     public void testWebhook(String groupId) {
         System.out.println(groupService.getWebhook(groupId));
-        webhookSendEvent(groupService.getWebhook(groupId),new EventBean("Webhook test",""));
+        webhookSendEvent(groupService.getWebhook(groupId),EventBean.createTestEventBean());
     }
 
     @Override
     public void webhookSendEvent(String groupId,EventBean eventBean) {
-        restTemplate.postForObject(groupService.getWebhook(groupId), EventBean.class,String.class);
+        restTemplate.postForObject(groupService.getWebhook(groupId), eventBean,String.class);
     }
 
 //    public static void main(String[] args) {
@@ -39,7 +39,8 @@ public class WebhookServiceImpl  implements WebhookService{
 //        System.out.println(s);
 //    }
     @Override
-    public void webhookTransferEvent(String instantMessagingSoftware,String instantMessagingSoftwareUserId, EventBean eventBean) {
+    public void webhookSendEvent(String instantMessagingSoftware, String instantMessagingSoftwareUserId, EventBean eventBean) {
+        if(eventBean.getEventType().equals("Transfer")) return;
         List<Group> groups= memberService.getGroups(instantMessagingSoftware,instantMessagingSoftwareUserId);
         for(Group group:groups){
             webhookSendEvent(group.getGroupId(),eventBean);
