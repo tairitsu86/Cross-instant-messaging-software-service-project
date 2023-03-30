@@ -1,4 +1,4 @@
-package com.my.im.study.APIBody;
+package com.my.im.study.apibody;
 
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.Manager;

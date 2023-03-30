@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.student.fju.cloud</groupId>
     <artifactId>microservice-instant-message</artifactId>
-    <version>0.0.1-DEMO</version>
+    <version>0.0.2-DEMO</version>
     <name>Spring</name>
     
     <parent>

@@ -1,6 +1,6 @@
 package com.my.im.study.controller;
 
-import com.my.im.study.APIBody.ManageBody;
+import com.my.im.study.apibody.ManageBody;
 import com.my.im.study.database.*;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.Manager;

@@ -1,6 +1,6 @@
 package com.my.im.study.controller;
 
-import com.my.im.study.APIBody.*;
+import com.my.im.study.apibody.*;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.service.CrossPlatformService;
 import io.swagger.v3.oas.annotations.Operation;

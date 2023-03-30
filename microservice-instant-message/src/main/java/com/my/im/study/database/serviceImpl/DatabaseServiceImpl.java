@@ -18,7 +18,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
     @Override
     public void deleteAllData() {
-        userService.getAllUsers();
+        userService.deleteAllUsers();
         groupService.deleteAllGroups();
         managerService.deleteAllManagers();
         memberService.deleteAllMembers();
