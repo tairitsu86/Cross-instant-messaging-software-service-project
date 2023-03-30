@@ -29,9 +29,14 @@ public class WebhookServiceImpl  implements WebhookService{
 
     @Override
     public void webhookSendEvent(String groupId,EventBean eventBean) {
-        restTemplate.postForObject(groupService.getWebhook(groupId), EventBean.class,EventBean.class);
+        restTemplate.postForObject(groupService.getWebhook(groupId), EventBean.class,String.class);
     }
 
+//    public static void main(String[] args) {
+//        String s;
+//        s = restTemplate.getForObject("http://140.136.149.165:8080",String.class);
+//        System.out.println(s);
+//    }
     @Override
     public void webhookTransferEvent(String instantMessagingSoftware,String instantMessagingSoftwareUserId, EventBean eventBean) {
         List<Group> groups= memberService.getGroups(instantMessagingSoftware,instantMessagingSoftwareUserId);
