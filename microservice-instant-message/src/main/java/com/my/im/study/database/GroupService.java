@@ -16,4 +16,8 @@ public interface GroupService {
     void deleteGroup(String groupId);
 
     void deleteAllGroups();
+
+    String setWebhook(String groupId,String webhook);
+
+    String getWebhook(String groupId);
 }

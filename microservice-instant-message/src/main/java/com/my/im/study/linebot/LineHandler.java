@@ -1,8 +1,10 @@
 package com.my.im.study.linebot;
 
+import com.my.im.study.apibody.EventBean;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.service.CrossPlatformService;
 import com.my.im.study.service.InstantMessagingSoftwareList;
+import com.my.im.study.service.WebhookService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,18 @@ public class LineHandler {
 
     @Autowired
     private LineMessageService lineMessageService;
-    
+
+    @Autowired
+    private WebhookService webhookService;
+
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
-        crossPlatformService.userRegister(InstantMessagingSoftwareList.LINE.getName(),event.getSource().getUserId(),lineMessageService.getUserProfile(event.getSource().getUserId()).getDisplayName());
+        String userId = event.getSource().getUserId();
+        webhookService.webhookTransferEvent(InstantMessagingSoftwareList.LINE.getName(),userId,new EventBean(InstantMessagingSoftwareList.LINE.getName(),event));
+        crossPlatformService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
+
     }
 
     @EventMapping

@@ -13,10 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ManageBody {
+public class ManageBean {
     private String command;
     private String groupId;
     private String groupName;
+    private String groupWebhook;
     private List<Group> groupList;
     private String userName;
     private String instantMessagingSoftware;
@@ -25,7 +26,7 @@ public class ManageBody {
     private List<Member> memberList;
     private List<Manager> managerList;
     private String message;
-    public ManageBody(String message){
+    public ManageBean(String message){
         this.message = message;
     }
 }

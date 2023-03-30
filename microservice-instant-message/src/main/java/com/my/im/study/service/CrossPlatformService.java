@@ -15,5 +15,5 @@ public interface CrossPlatformService {
 
     String join(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
 
-    Group newGroup(String groupName);
+    Group newGroup(String groupName,String groupWebhook);
 }

@@ -27,6 +27,7 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Group getGroupById(String groupId) {
 		Optional<Group> optionalGroup = groupRepository.findById(groupId);
+		if(optionalGroup.isEmpty()) return null;
 		return optionalGroup.get();
 	}
 
@@ -49,6 +50,22 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public void deleteAllGroups() {
 		groupRepository.deleteAll();
+	}
+
+	@Override
+	public String setWebhook(String groupId,String webhook) {
+		Group group = getGroupById(groupId);
+		if(group==null) return "Group not exist!";
+		group.setGroupWebhook(webhook);
+		groupRepository.save(group);
+		return "Success set webhook:"+group.getGroupWebhook();
+	}
+
+	@Override
+	public String getWebhook(String groupId) {
+		Group group = getGroupById(groupId);
+		if(group==null) return "Group not exist!";
+		return group.getGroupWebhook();
 	}
 
 }

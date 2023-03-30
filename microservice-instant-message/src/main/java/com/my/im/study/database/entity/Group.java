@@ -23,8 +23,13 @@ public class Group {
 	private String groupId;
 	@Column
 	private String groupName;
+	@Column
+	private String groupWebhook;
 
     public Group(String groupName) {
-		this.groupName = groupName;
+		this(null,groupName,null);
     }
+	public Group(String groupName,String groupWebhook) {
+		this(null,groupName,groupWebhook);
+	}
 }
