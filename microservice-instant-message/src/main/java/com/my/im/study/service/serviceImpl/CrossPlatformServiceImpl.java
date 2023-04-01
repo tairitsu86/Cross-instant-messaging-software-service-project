@@ -1,4 +1,4 @@
-package com.my.im.study.service;
+package com.my.im.study.service.serviceImpl;
 
 
 import com.my.im.study.database.GroupService;
@@ -8,6 +8,8 @@ import com.my.im.study.database.UserService;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.linebot.LineMessageService;
+import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.service.InstantMessagingSoftwareList;
 import com.my.im.study.telegrambot.TelegramMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

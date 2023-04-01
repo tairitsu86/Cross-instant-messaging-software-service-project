@@ -1,9 +1,10 @@
-package com.my.im.study.service;
+package com.my.im.study.service.serviceImpl;
 
 import com.my.im.study.apibody.EventBean;
 import com.my.im.study.database.GroupService;
 import com.my.im.study.database.MemberService;
 import com.my.im.study.database.entity.Group;
+import com.my.im.study.service.WebhookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-public class WebhookServiceImpl implements WebhookService{
+public class WebhookServiceImpl implements WebhookService {
     private static RestTemplate restTemplate = new RestTemplate();
     @Autowired
     private GroupService groupService;
@@ -30,7 +31,11 @@ public class WebhookServiceImpl implements WebhookService{
 
     @Override
     public void webhookSendEvent(String groupId,EventBean eventBean) {
-        restTemplate.postForObject(groupService.getWebhook(groupId), eventBean,String.class);
+        try {
+            restTemplate.postForObject(groupService.getWebhook(groupId), eventBean,String.class);
+        }catch (Exception e){
+            System.err.printf("Webhook error: can't send event to %s, with exception:%s,print by %s",groupService.getWebhook(groupId),e.getMessage(),this.getClass());
+        }
     }
 
 //    public static void main(String[] args) {
