@@ -25,11 +25,10 @@ public class Group {
 	private String groupName;
 	@Column
 	private String groupWebhook;
-
-    public Group(String groupName) {
-		this(null,groupName,null);
-    }
-	public Group(String groupName,String groupWebhook) {
-		this(null,groupName,groupWebhook);
+	public static Group CreateDataBean(Group group){
+		return new Group(group.groupId,group.groupName,null);
+	}
+	public static Group CreateGroup(String groupName,String groupWebhook){
+		return new Group(null,groupName,groupWebhook);
 	}
 }

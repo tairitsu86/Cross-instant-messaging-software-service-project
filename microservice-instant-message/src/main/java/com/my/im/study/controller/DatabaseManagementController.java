@@ -52,7 +52,7 @@ public class DatabaseManagementController {
     @PostMapping("/addgroup")
     public Group addGroup(@RequestHeader(name = "Authorization") String accessToken,
                           @RequestBody ManageBean manageBean){
-        return groupService.createGroup(new Group(null, manageBean.getGroupName()));
+        return groupService.createGroup(Group.CreateGroup(manageBean.getGroupName(),null));
     }
 
     @PostMapping("/removegroup")

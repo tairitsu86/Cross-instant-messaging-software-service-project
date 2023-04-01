@@ -3,6 +3,8 @@ package com.my.im.study.service;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.User;
 
+import java.util.List;
+
 public interface CrossPlatformService {
 
     String broadcast(String groupId,String text);
@@ -16,4 +18,6 @@ public interface CrossPlatformService {
     String join(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
 
     Group newGroup(String groupName,String groupWebhook);
+
+    List<Group> searchGroup(String groupName);
 }

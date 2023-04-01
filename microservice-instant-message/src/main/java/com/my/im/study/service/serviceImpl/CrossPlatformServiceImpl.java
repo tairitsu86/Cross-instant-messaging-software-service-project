@@ -95,7 +95,12 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
 
     @Override
     public Group newGroup(String groupName,String groupWebhook) {
-        return groupService.createGroup(new Group(groupName,groupWebhook));
+        return groupService.createGroup(Group.CreateGroup(groupName,groupWebhook));
+    }
+
+    @Override
+    public List<Group> searchGroup(String groupName) {
+        return groupService.getGroupByName(groupName);
     }
 
 

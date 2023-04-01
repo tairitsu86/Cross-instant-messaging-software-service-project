@@ -9,9 +9,9 @@ public interface GroupService {
 
 	Group getGroupById(String groupId);
 
-    List<Group> getAllGroups();
+    List<Group> getGroupByName(String groupName);
 
-    Group updateGroup(Group group);
+    List<Group> getAllGroups();
 
     void deleteGroup(String groupId);
 

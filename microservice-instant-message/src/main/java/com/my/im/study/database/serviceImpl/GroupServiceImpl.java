@@ -1,5 +1,6 @@
 package com.my.im.study.database.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,14 +33,20 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public List<Group> getAllGroups() {
-		return groupRepository.findAll();
+	public List<Group> getGroupByName(String groupName) {
+		List<Group> groups = getAllGroups();
+		List<Group> result = new ArrayList<>();
+		for(Group group:groups){
+			if(groupName!=null&&group.getGroupName()!=null&&group.getGroupName().matches("(?i).*"+groupName+".*")){
+				result.add(Group.CreateDataBean(group));
+			}
+		}
+		return result;
 	}
 
 	@Override
-	public Group updateGroup(Group group) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Group> getAllGroups() {
+		return groupRepository.findAll();
 	}
 
 	@Override
