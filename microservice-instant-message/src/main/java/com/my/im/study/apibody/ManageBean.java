@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class ManageBean {
-    private String command;
     private String groupId;
     private String groupName;
     private String groupWebhook;
@@ -29,4 +28,5 @@ public class ManageBean {
     public ManageBean(String message){
         this.message = message;
     }
+
 }

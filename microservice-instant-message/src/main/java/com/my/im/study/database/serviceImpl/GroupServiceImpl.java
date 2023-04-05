@@ -75,4 +75,21 @@ public class GroupServiceImpl implements GroupService {
 		return group.getGroupWebhook();
 	}
 
+	@Override
+	public String getAuthorizationKey(String groupId) {
+		Group group = getGroupById(groupId);
+		if(group==null) return null;
+		return group.getAuthorizationKey();
+	}
+
+	@Override
+	public String getGroupByAuthorizationKey(String authorizationKey) {
+		List<Group> groups = getAllGroups();
+		for (Group group:groups){
+			if(group.getAuthorizationKey().equals(authorizationKey))
+				return group.getGroupId();
+		}
+		return null;
+	}
+
 }

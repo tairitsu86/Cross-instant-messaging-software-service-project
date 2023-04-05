@@ -19,4 +19,6 @@ public interface MemberService {
 	List<Member> getAllMembers();
 
 	void deleteAllMembers();
+
+	boolean isMember(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 }

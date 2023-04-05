@@ -8,7 +8,7 @@ import com.my.im.study.database.UserService;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.linebot.LineMessageService;
-import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.service.CrossIMSService;
 import com.my.im.study.service.InstantMessagingSoftwareList;
 import com.my.im.study.telegrambot.TelegramMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CrossPlatformServiceImpl implements CrossPlatformService {
+public class CrossIMSServiceImpl implements CrossIMSService {
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -35,14 +35,7 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     public String broadcast(String groupId,String text) {
         List<User> users = memberService.getUsers(groupId);
         for(User user:users) {
-            switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {
-                case LINE:
-                    lineMessageService.pushTextMessage(user.getInstantMessagingSoftwareUserId(),text);
-                    break;
-                case TELEGRAM:
-                    telegramMessageService.sendTextMessage(Long.parseLong(user.getInstantMessagingSoftwareUserId()), text);
-                    break;
-            }
+            sendTextMessage(user.getInstantMessagingSoftware(),user.getInstantMessagingSoftwareUserId(),text);
         }
         return "Broadcast done!";
     }
@@ -51,28 +44,25 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     public String broadcastAll(String text) {
         List<User> users = userService.getAllUsers();
         for(User user:users) {
-            switch(InstantMessagingSoftwareList.valueOf(user.getInstantMessagingSoftware())) {
-                case LINE:
-                    lineMessageService.pushTextMessage(user.getInstantMessagingSoftwareUserId(),text);
-                    break;
-                case TELEGRAM:
-                    telegramMessageService.sendTextMessage(Long.parseLong(user.getInstantMessagingSoftwareUserId()), text);
-                    break;
-            }
+            sendTextMessage(user.getInstantMessagingSoftware(),user.getInstantMessagingSoftwareUserId(),text);
         }
         return "Broadcast to every user done!";
     }
 
     @Override
-    public String sendTextMessage(String platform, String userid, String textMessage) {
-        InstantMessagingSoftwareList instantMessagingSoftware = InstantMessagingSoftwareList.valueOf(platform);
-        if(instantMessagingSoftware==null) return "Wrong platform!";
-        switch(instantMessagingSoftware) {
+    public String sendTextMessage(String instantMessagingSoftware, String userId, String textMessage) {
+        InstantMessagingSoftwareList i;
+        try{
+            i = InstantMessagingSoftwareList.valueOf(instantMessagingSoftware);
+        }catch (IllegalArgumentException e){
+            return "Instant messaging software not exist!";
+        }
+        switch(i) {
             case LINE:
-                lineMessageService.pushTextMessage(userid,textMessage);
+                lineMessageService.pushTextMessage(userId,textMessage);
                 break;
             case TELEGRAM:
-                telegramMessageService.sendTextMessage(Long.valueOf(userid),textMessage);
+                telegramMessageService.sendTextMessage(Long.valueOf(userId),textMessage);
                 break;
         }
         return "Success";
@@ -87,6 +77,16 @@ public class CrossPlatformServiceImpl implements CrossPlatformService {
     public String join(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
         try{
             memberService.join(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "Success!";
+    }
+
+    @Override
+    public String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+        try{
+            managerService.grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }

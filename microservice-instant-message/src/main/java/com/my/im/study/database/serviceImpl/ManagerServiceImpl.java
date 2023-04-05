@@ -4,6 +4,7 @@ import com.my.im.study.database.GroupService;
 import com.my.im.study.database.ManagerService;
 import com.my.im.study.database.UserService;
 import com.my.im.study.database.entity.Manager;
+import com.my.im.study.database.entity.ManagerId;
 import com.my.im.study.database.entity.UserId;
 import com.my.im.study.database.repository.ManagerRespository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,8 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
-    public boolean checkPermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
-        if(instantMessagingSoftwareUserId.equals(System.getenv("MIM_ADMIN_TOKEN"))) return true;
-        List<Manager> managers = managerRespository.findAll();
-        UserId userId = new UserId(instantMessagingSoftware,instantMessagingSoftwareUserId);
-        for (Manager manager : managers)
-            if(userService.checkManage(manager,userId)&& manager.getGroupIdForeignKey().equals(groupId))
-                return true;
-        return false;
+    public boolean isManager(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+        return managerRespository.existsById(new ManagerId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
     }
 
     @Override

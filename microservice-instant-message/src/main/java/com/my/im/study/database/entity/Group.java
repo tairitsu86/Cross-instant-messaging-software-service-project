@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,10 +27,13 @@ public class Group {
 	private String groupName;
 	@Column
 	private String groupWebhook;
+	@Column
+	private String authorizationKey;
+
 	public static Group CreateDataBean(Group group){
-		return new Group(group.groupId,group.groupName,null);
+		return new Group(group.groupId,group.groupName,null,null);
 	}
 	public static Group CreateGroup(String groupName,String groupWebhook){
-		return new Group(null,groupName,groupWebhook);
+		return new Group(null,groupName,groupWebhook, UUID.randomUUID().toString());
 	}
 }

@@ -20,4 +20,7 @@ public interface GroupService {
     String setWebhook(String groupId,String webhook);
 
     String getWebhook(String groupId);
+    String getAuthorizationKey(String groupId);
+
+    String getGroupByAuthorizationKey(String authorizationKey);
 }

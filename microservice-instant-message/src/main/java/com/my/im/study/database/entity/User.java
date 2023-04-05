@@ -22,4 +22,7 @@ public class User {
 	private String instantMessagingSoftwareUserId;
 	@Column
 	private String userName;
+	public static User CreateNoNameUserBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId){
+		return new User(instantMessagingSoftware,instantMessagingSoftwareUserId,null);
+	}
 }

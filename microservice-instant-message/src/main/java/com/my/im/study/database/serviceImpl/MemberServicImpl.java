@@ -3,16 +3,15 @@ package com.my.im.study.database.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.my.im.study.database.entity.UserId;
+import com.my.im.study.database.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.my.im.study.database.GroupService;
 import com.my.im.study.database.MemberService;
 import com.my.im.study.database.UserService;
-import com.my.im.study.database.entity.Group;
-import com.my.im.study.database.entity.Member;
-import com.my.im.study.database.entity.User;
 import com.my.im.study.database.repository.MemberRepository;
 
 @Service
@@ -64,6 +63,11 @@ public class MemberServicImpl implements MemberService {
 	@Override
 	public void deleteAllMembers() {
 		memberRepository.deleteAll();
+	}
+
+	@Override
+	public boolean isMember(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		return memberRepository.existsById(new ManagerId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
 	}
 
 }

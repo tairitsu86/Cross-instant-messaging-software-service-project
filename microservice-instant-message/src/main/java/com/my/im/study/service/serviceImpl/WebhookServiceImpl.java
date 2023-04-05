@@ -25,8 +25,7 @@ public class WebhookServiceImpl implements WebhookService {
 
     @Override
     public void testWebhook(String groupId) {
-        System.out.println(groupService.getWebhook(groupId));
-        webhookSendEvent(groupService.getWebhook(groupId),EventBean.createTestEventBean());
+        webhookSendEvent(groupId,EventBean.createTestEventBean());
     }
 
     @Override
@@ -34,7 +33,7 @@ public class WebhookServiceImpl implements WebhookService {
         try {
             restTemplate.postForObject(groupService.getWebhook(groupId), eventBean,String.class);
         }catch (Exception e){
-            System.err.printf("Webhook error: can't send event to %s, with exception:%s,print by %s",groupService.getWebhook(groupId),e.getMessage(),this.getClass());
+            System.err.printf("Webhook error: can't send event to %s, with exception:%s,print by %s\n",groupService.getWebhook(groupId),e.getMessage(),this.getClass());
         }
     }
 

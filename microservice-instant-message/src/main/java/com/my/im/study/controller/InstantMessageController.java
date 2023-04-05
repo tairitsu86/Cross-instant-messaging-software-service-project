@@ -2,7 +2,9 @@ package com.my.im.study.controller;
 
 import com.my.im.study.apibody.*;
 import com.my.im.study.database.entity.Group;
-import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.database.entity.User;
+import com.my.im.study.service.AuthorizationService;
+import com.my.im.study.service.CrossIMSService;
 import com.my.im.study.service.WebhookService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,71 +16,84 @@ import java.util.List;
 public class InstantMessageController {
 	
 	@Autowired
-    private CrossPlatformService crossPlatformService;
+    private CrossIMSService crossIMSService;
 
 	@Autowired
 	private WebhookService webhookService;
+
+	@Autowired
+	private AuthorizationService authorizationService;
 
 	//get method
 
 	@Operation(summary = "Home test")
 	@GetMapping("/")
-	public ManageBean home() {
-		return new ManageBean("OAO");
+	public MessageBean home() {
+		return MessageBean.CreateMessageBean("Hello!");
 	}
 
 	@GetMapping("/webhooktest")
-	public void webhookTest(@RequestHeader(name = "Authorization") String accessToken,
-							@RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-							@RequestParam String groupId){
+	public MessageBean webhookTest(@RequestHeader(name = "Authorization") String accessToken,
+								   @RequestParam String groupId){
+		if(!authorizationService.authorization(accessToken,"",groupId).managerPermission())
+			return MessageBean.CreateAuthorizationWrongMessageBean();
 		webhookService.testWebhook(groupId);
+		return MessageBean.CreateMessageBean("Success");
 	}
 
-	@GetMapping("/setwebhook")
-	public void setWebhook(@RequestHeader(name = "Authorization") String accessToken,
-						   @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-						   @RequestParam String groupId,
-						   @RequestParam String webhook){
-		webhookService.setWebhook(groupId,webhook);
+	@GetMapping("/searchgroup")
+	public List<Group> searchGroup(@RequestParam String keyWord) {
+		return crossIMSService.searchGroup(keyWord);
 	}
 
 	//post method
 	@Operation(summary = "Send text message")
 	@PostMapping("/send")
-	public ManageBean sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
-                                      @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-                                      @RequestBody ManageBean manageBean) {
-		System.out.println(manageBean);
-		return new ManageBean(crossPlatformService.sendTextMessage(manageBean.getInstantMessagingSoftware(), manageBean.getInstantMessagingSoftwareUserId(), manageBean.getMessage()));
+	public MessageBean sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
+									   @RequestBody ManageBean manageBean) {
+		if(!authorizationService.authorization(accessToken,"", User.CreateNoNameUserBean(manageBean.getInstantMessagingSoftware(),manageBean.getInstantMessagingSoftwareUserId())).managerPermission())
+			return MessageBean.CreateAuthorizationWrongMessageBean();
+		return MessageBean.CreateMessageBean(crossIMSService.sendTextMessage(manageBean.getInstantMessagingSoftware(), manageBean.getInstantMessagingSoftwareUserId(), manageBean.getMessage()));
 	}
 	@PostMapping("/broadcast")
-	public ManageBean broadcast(@RequestHeader(name = "Authorization") String accessToken,
-                                @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-                                @RequestBody ManageBean manageBean) {
-		System.out.println(manageBean);
-		return new ManageBean(crossPlatformService.broadcast(manageBean.getGroupId(), manageBean.getMessage()));
+	public MessageBean broadcast(@RequestHeader(name = "Authorization") String accessToken,
+								 @RequestBody ManageBean manageBean) {
+		if(!authorizationService.authorization(accessToken,"", manageBean.getGroupId()).managerPermission())
+			return MessageBean.CreateAuthorizationWrongMessageBean();
+		return MessageBean.CreateMessageBean(crossIMSService.broadcast(manageBean.getGroupId(), manageBean.getMessage()));
+	}
+	@PostMapping("/broadcastall")
+	public MessageBean broadcastAll(@RequestHeader(name = "Authorization") String accessToken,
+								 	@RequestBody ManageBean manageBean) {
+		if(!authorizationService.authorization(accessToken))
+			return MessageBean.CreateAuthorizationWrongMessageBean();
+		return MessageBean.CreateMessageBean(crossIMSService.broadcastAll(manageBean.getMessage()));
 	}
 	@PostMapping("/newgroup")
-	public Group newGroup(@RequestHeader(name = "Authorization") String accessToken,
-						  @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-						  @RequestBody ManageBean manageBean) {
-		System.out.println(manageBean);
-		return crossPlatformService.newGroup(manageBean.getGroupName(),manageBean.getGroupWebhook());
+	public Group newGroup(@RequestBody ManageBean manageBean) {
+		return crossIMSService.newGroup(manageBean.getGroupName(),manageBean.getGroupWebhook());
 	}
 
 	@PostMapping("/join")
-	public ManageBean join(@RequestHeader(name = "Authorization") String accessToken,
-                           @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-                           @RequestBody ManageBean manageBean) {
-		System.out.println(manageBean);
-		return new ManageBean(crossPlatformService.join(manageBean.getInstantMessagingSoftware(), manageBean.getInstantMessagingSoftwareUserId(), manageBean.getGroupId()));
+	public MessageBean join(@RequestHeader(name = "Authorization") String accessToken,
+							@RequestBody ManageBean manageBean) {
+		if(!authorizationService.authorization(accessToken,"", manageBean.getGroupId()).managerPermission())
+			return MessageBean.CreateAuthorizationWrongMessageBean();
+		return MessageBean.CreateMessageBean(crossIMSService.join(manageBean.getInstantMessagingSoftware(), manageBean.getInstantMessagingSoftwareUserId(), manageBean.getGroupId()));
 	}
-
-	@PostMapping("/searchgroup")
-	public List<Group> searchGroup(@RequestHeader(name = "Authorization") String accessToken,
-								   @RequestHeader(name = "InstantMessagingSoftware",required = false) String instantMessagingSoftware,
-								   @RequestBody ManageBean manageBean) {
-		return crossPlatformService.searchGroup(manageBean.getGroupName());
+	@PostMapping("/setwebhook")
+	public MessageBean setWebhook(@RequestHeader(name = "Authorization") String accessToken,
+								  @RequestBody ManageBean manageBean){
+		if(!authorizationService.authorization(accessToken,"",manageBean.getGroupId()).managerPermission())
+			return MessageBean.CreateAuthorizationWrongMessageBean();
+		webhookService.setWebhook(manageBean.getGroupId(),manageBean.getGroupWebhook());
+		return MessageBean.CreateMessageBean("Success");
 	}
-
+	@PostMapping("/grantpermission")
+	public MessageBean grantPermission(@RequestHeader(name = "Authorization") String accessToken,
+									   @RequestBody ManageBean manageBean) {
+		if(!authorizationService.authorization(accessToken,"", manageBean.getGroupId()).managerPermission())
+			return MessageBean.CreateAuthorizationWrongMessageBean();
+		return MessageBean.CreateMessageBean(crossIMSService.grantPermission(manageBean.getInstantMessagingSoftware(), manageBean.getInstantMessagingSoftwareUserId(), manageBean.getGroupId()));
+	}
 }

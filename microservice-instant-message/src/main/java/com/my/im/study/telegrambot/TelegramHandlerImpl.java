@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.my.im.study.apibody.EventBean;
-import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.service.CrossIMSService;
 import com.my.im.study.service.InstantMessagingSoftwareList;
 import com.my.im.study.service.WebhookService;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 	private Logger LOG = LoggerFactory.getLogger(TelegramHandlerImpl.class);
 	
 	@Autowired
-	private CrossPlatformService crossPlatformService;
+	private CrossIMSService crossIMSService;
 	@Autowired
 	private WebhookService webhookService;
 	private ObjectMapper objectMapper = new ObjectMapper();
@@ -46,7 +46,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		}
-		crossPlatformService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
+		crossIMSService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
 	}
 
 }

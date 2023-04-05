@@ -1,7 +1,7 @@
 package com.my.im.study.linebot;
 
 import com.my.im.study.apibody.EventBean;
-import com.my.im.study.service.CrossPlatformService;
+import com.my.im.study.service.CrossIMSService;
 import com.my.im.study.service.InstantMessagingSoftwareList;
 import com.my.im.study.service.WebhookService;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class LineHandler {
     private final Logger log = LoggerFactory.getLogger(InstantMessageApplication.class);
     
     @Autowired
-    private CrossPlatformService crossPlatformService;
+    private CrossIMSService crossIMSService;
 
     @Autowired
     private LineMessageService lineMessageService;
@@ -37,7 +37,7 @@ public class LineHandler {
         String userId = event.getSource().getUserId();
         webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTextMessageEventBean(InstantMessagingSoftwareList.LINE.getName(),userId,text));
         webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
-        crossPlatformService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
+        crossIMSService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
     }
 
     @EventMapping
