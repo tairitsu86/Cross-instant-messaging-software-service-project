@@ -7,11 +7,11 @@ import com.my.im.study.database.entity.Group;
 public interface GroupService {
 	Group createGroup(Group group);
 
-    Group renameGroup(Group group);
+    String renameGroup(Group group);
 
 	Group getGroupById(String groupId);
 
-    List<Group> getGroupByName(String groupName);
+    List<Group.GroupData> getGroupByName(String groupName);
 
     List<Group> getAllGroups();
 

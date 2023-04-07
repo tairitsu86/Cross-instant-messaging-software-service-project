@@ -63,12 +63,8 @@ public class CrossIMSServiceImpl implements CrossIMSService {
             return "Instant messaging software not exist!";
         }
         switch(i) {
-            case LINE:
-                lineMessageService.pushTextMessage(userId,textMessage);
-                break;
-            case TELEGRAM:
-                telegramMessageService.sendTextMessage(Long.valueOf(userId),textMessage);
-                break;
+            case LINE-> lineMessageService.pushTextMessage(userId,textMessage);
+            case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId),textMessage);
         }
         return "Success";
     }
@@ -114,7 +110,7 @@ public class CrossIMSServiceImpl implements CrossIMSService {
     }
 
     @Override
-    public Group renameGroup(String groupId,String groupName) {
+    public String renameGroup(String groupId,String groupName) {
         Group group = groupService.getGroupById(groupId);
         if(group==null) return null;
         group.setGroupName(groupName);
@@ -122,7 +118,7 @@ public class CrossIMSServiceImpl implements CrossIMSService {
     }
 
     @Override
-    public List<Group> searchGroup(String groupName) {
+    public List<Group.GroupData> searchGroup(String groupName) {
         return groupService.getGroupByName(groupName);
     }
 
@@ -138,28 +134,25 @@ public class CrossIMSServiceImpl implements CrossIMSService {
     }
     public String CIMSSdecoder(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
         String commandType = command.split(" ")[1];
-        String result = "";
-        switch (commandType){
-            case "search":
-                result = String.format("Search for key word \"%s\":",command.split(" ",3)[2]);
-                for(Group group : searchGroup(command.split(" ",3)[2])){
-                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s",result,group.getGroupName(),group.getGroupId());
+        String result;
+        switch (commandType) {
+            case "search" -> {
+                result = String.format("Search for key word \"%s\":", command.split(" ", 3)[2]);
+                for (Group.GroupData group : searchGroup(command.split(" ", 3)[2])) {
+                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s", result, group.getGroupName(), group.getGroupId());
                 }
-                break;
-            case "groups":
-                result = String.format("The groups you joined:");
-                for(Group group : memberService.getGroups(instantMessagingSoftware,instantMessagingSoftwareUserId)){
-                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s",result,group.getGroupName(),group.getGroupId());
+            }
+            case "groups" -> {
+                result = "The groups you joined:";
+                for (Group group : memberService.getGroups(instantMessagingSoftware, instantMessagingSoftwareUserId)) {
+                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s", result, group.getGroupName(), group.getGroupId());
                 }
-                break;
-            case "join":
-                result = join(instantMessagingSoftware,instantMessagingSoftwareUserId,command.split(" ",3)[2]);
-                break;
-            case "leave":
-                result = leave(instantMessagingSoftware,instantMessagingSoftwareUserId,command.split(" ",3)[2]);
-                break;
-            default:
-                result = "Command no found";
+            }
+            case "join" ->
+                    result = join(instantMessagingSoftware, instantMessagingSoftwareUserId, command.split(" ", 3)[2]);
+            case "leave" ->
+                    result = leave(instantMessagingSoftware, instantMessagingSoftwareUserId, command.split(" ", 3)[2]);
+            default -> result = "Command no found";
         }
         return result;
     }

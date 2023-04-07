@@ -1,6 +1,5 @@
 package com.my.im.study.linebot;
 
-import com.my.im.study.apibody.EventBean;
 import com.my.im.study.service.CrossIMSService;
 import com.my.im.study.service.InstantMessagingSoftwareList;
 import com.my.im.study.service.WebhookService;

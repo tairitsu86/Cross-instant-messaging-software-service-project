@@ -1,6 +1,5 @@
 package com.my.im.study.service;
 
-import com.my.im.study.apibody.EventBean;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.User;
 
@@ -24,9 +23,9 @@ public interface CrossIMSService {
 
     Group newGroup(String groupName,String groupWebhook);
 
-    Group renameGroup(String groupId,String groupName);
+    String renameGroup(String groupId,String groupName);
 
-    List<Group> searchGroup(String groupName);
+    List<Group.GroupData> searchGroup(String groupName);
 
     void IMSWebhookTextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
 

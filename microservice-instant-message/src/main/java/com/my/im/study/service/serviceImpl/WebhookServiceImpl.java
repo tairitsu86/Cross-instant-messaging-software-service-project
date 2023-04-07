@@ -13,28 +13,30 @@ import java.util.List;
 
 @Service
 public class WebhookServiceImpl implements WebhookService {
-    private static RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
     @Autowired
     private GroupService groupService;
     @Autowired
     private MemberService memberService;
     @Override
-    public void setWebhook(String groupId,String webhook) {
-        groupService.setWebhook(groupId,webhook);
+    public String setWebhook(String groupId,String webhook) {
+        return groupService.setWebhook(groupId,webhook);
     }
 
     @Override
-    public void testWebhook(String groupId) {
-        webhookSendEvent(groupId,EventBean.createTestEventBean());
+    public String testWebhook(String groupId) {
+        return webhookSendEvent(groupId,EventBean.createTestEventBean());
     }
 
     @Override
-    public void webhookSendEvent(String groupId,EventBean eventBean) {
+    public String webhookSendEvent(String groupId,EventBean eventBean) {
         try {
             restTemplate.postForObject(groupService.getWebhook(groupId), eventBean,String.class);
         }catch (Exception e){
             System.err.printf("Webhook error: can't send event to %s, with exception:%s,print by %s\n",groupService.getWebhook(groupId),e.getMessage(),this.getClass());
+            return e.getMessage();
         }
+        return "Success!";
     }
     @Override
     public void webhookSendEvent(String instantMessagingSoftware, String instantMessagingSoftwareUserId, EventBean eventBean) {

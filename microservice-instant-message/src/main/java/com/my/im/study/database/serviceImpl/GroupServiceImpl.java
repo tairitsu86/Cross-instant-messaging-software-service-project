@@ -26,9 +26,13 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public Group renameGroup(Group group) {
-		groupRepository.save(group);
-		return Group.CreateDataBean(group);
+	public String renameGroup(Group group) {
+		try {
+			groupRepository.save(group);
+		}catch (Exception e){
+			return e.getMessage();
+		}
+		return "Success!";
 	}
 
 	@Override
@@ -39,9 +43,9 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public List<Group> getGroupByName(String groupName) {
+	public List<Group.GroupData> getGroupByName(String groupName) {
 		List<Group> groups = getAllGroups();
-		List<Group> result = new ArrayList<>();
+		List<Group.GroupData> result = new ArrayList<>();
 		for(Group group:groups){
 			if(groupName!=null&&group.getGroupName()!=null&&group.getGroupName().matches("(?i).*"+groupName+".*")){
 				result.add(Group.CreateDataBean(group));

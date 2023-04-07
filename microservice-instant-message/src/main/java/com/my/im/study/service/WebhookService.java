@@ -3,8 +3,8 @@ package com.my.im.study.service;
 import com.my.im.study.apibody.EventBean;
 
 public interface WebhookService {
-    void setWebhook(String groupId,String webhook);
-    void testWebhook(String groupId);
-    void webhookSendEvent(String groupId,EventBean eventBean);
+    String setWebhook(String groupId,String webhook);
+    String testWebhook(String groupId);
+    String webhookSendEvent(String groupId,EventBean eventBean);
     void webhookSendEvent(String instantMessagingSoftware, String instantMessagingSoftwareUserId, EventBean eventBean);
 }

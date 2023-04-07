@@ -7,12 +7,13 @@ import com.my.im.study.database.entity.Manager;
 import com.my.im.study.database.entity.Member;
 import com.my.im.study.database.entity.User;
 import com.my.im.study.service.AuthorizationService;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Hidden
 @RestController
 @RequestMapping("/manage")
 public class DatabaseManagementController {

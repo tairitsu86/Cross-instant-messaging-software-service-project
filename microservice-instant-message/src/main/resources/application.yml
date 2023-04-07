@@ -35,7 +35,9 @@ logging:
     org.hibernate: INFO
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
-
+springdoc:
+  swagger-ui:
+    defaultModelsExpandDepth: -1
 
 ##for debug
 ##logging:
