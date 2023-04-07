@@ -1,5 +1,6 @@
 package com.my.im.study.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "[MANAGER]")
 @IdClass(ManagerId.class)
 public class Manager {

@@ -1,5 +1,6 @@
 package com.my.im.study.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,6 +17,7 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "[MEMBER]")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @IdClass(MemberId.class)
 public class Member {
 	@Id

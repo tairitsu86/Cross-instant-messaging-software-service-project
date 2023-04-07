@@ -1,5 +1,6 @@
 package com.my.im.study.apibody;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Getter
@@ -7,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MessageBean {
     private String message;
     public static MessageBean CreateMessageBean(String message){

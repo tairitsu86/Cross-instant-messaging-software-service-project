@@ -1,5 +1,6 @@
 package com.my.im.study.apibody;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.Manager;
 import com.my.im.study.database.entity.Member;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ManageBean {
     private String groupId;
     private String groupName;

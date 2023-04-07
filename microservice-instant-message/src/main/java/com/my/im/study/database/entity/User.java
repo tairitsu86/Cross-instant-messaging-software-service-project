@@ -1,5 +1,6 @@
 package com.my.im.study.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "[USER]")
 @IdClass(UserId.class)
 public class User {

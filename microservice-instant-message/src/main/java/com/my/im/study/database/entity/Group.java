@@ -1,5 +1,6 @@
 package com.my.im.study.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @Table(name = "[GROUP]")
 public class Group {

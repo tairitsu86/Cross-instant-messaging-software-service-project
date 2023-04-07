@@ -42,8 +42,8 @@ public class InstantMessageController {
 	}
 
 	@GetMapping("/searchgroup")
-	public List<Group> searchGroup(@RequestParam String keyWord) {
-		return crossIMSService.searchGroup(keyWord);
+	public List<Group> searchGroup(@RequestParam String keyword) {
+		return crossIMSService.searchGroup(keyword);
 	}
 
 	//post method
