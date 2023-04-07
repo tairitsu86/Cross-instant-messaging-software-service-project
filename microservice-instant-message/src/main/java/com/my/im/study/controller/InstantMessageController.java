@@ -74,6 +74,10 @@ public class InstantMessageController {
 		return crossIMSService.newGroup(manageBean.getGroupName(),manageBean.getGroupWebhook());
 	}
 
+	@PostMapping("/renamegroup")
+	public Group renameGroup(@RequestBody ManageBean manageBean) {
+		return crossIMSService.renameGroup(manageBean.getGroupId(),manageBean.getGroupName());
+	}
 	@PostMapping("/join")
 	public MessageBean join(@RequestHeader(name = "Authorization") String accessToken,
 							@RequestBody ManageBean manageBean) {

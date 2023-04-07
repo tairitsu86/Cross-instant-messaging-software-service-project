@@ -36,12 +36,6 @@ public class WebhookServiceImpl implements WebhookService {
             System.err.printf("Webhook error: can't send event to %s, with exception:%s,print by %s\n",groupService.getWebhook(groupId),e.getMessage(),this.getClass());
         }
     }
-
-//    public static void main(String[] args) {
-//        String s;
-//        s = restTemplate.getForObject("http://140.136.149.165:8080",String.class);
-//        System.out.println(s);
-//    }
     @Override
     public void webhookSendEvent(String instantMessagingSoftware, String instantMessagingSoftwareUserId, EventBean eventBean) {
         if(eventBean.getEventType().equals("Transfer")) return;

@@ -1,6 +1,7 @@
 package com.my.im.study.service.serviceImpl;
 
 
+import com.my.im.study.apibody.EventBean;
 import com.my.im.study.database.GroupService;
 import com.my.im.study.database.ManagerService;
 import com.my.im.study.database.MemberService;
@@ -10,6 +11,7 @@ import com.my.im.study.database.entity.User;
 import com.my.im.study.linebot.LineMessageService;
 import com.my.im.study.service.CrossIMSService;
 import com.my.im.study.service.InstantMessagingSoftwareList;
+import com.my.im.study.service.WebhookService;
 import com.my.im.study.telegrambot.TelegramMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class CrossIMSServiceImpl implements CrossIMSService {
     private UserService userService;
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private WebhookService webhookService;
 
     @Override
     public String broadcast(String groupId,String text) {
@@ -84,6 +89,16 @@ public class CrossIMSServiceImpl implements CrossIMSService {
     }
 
     @Override
+    public String leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+        try{
+            memberService.leave(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "Success!";
+    }
+
+    @Override
     public String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
         try{
             managerService.grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
@@ -99,9 +114,54 @@ public class CrossIMSServiceImpl implements CrossIMSService {
     }
 
     @Override
+    public Group renameGroup(String groupId,String groupName) {
+        Group group = groupService.getGroupById(groupId);
+        if(group==null) return null;
+        group.setGroupName(groupName);
+        return groupService.renameGroup(group);
+    }
+
+    @Override
     public List<Group> searchGroup(String groupName) {
         return groupService.getGroupByName(groupName);
     }
 
+    @Override
+    public void IMSWebhookTextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text) {
+        if(text.startsWith("/cimss")){
+            String executeResult = CIMSSdecoder(instantMessagingSoftware, instantMessagingSoftwareUserId,text);
+            sendTextMessage(instantMessagingSoftware,instantMessagingSoftwareUserId,executeResult);
+//            webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextCommandEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
+            return;
+        }
+        webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextMessageEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
+    }
+    public String CIMSSdecoder(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
+        String commandType = command.split(" ")[1];
+        String result = "";
+        switch (commandType){
+            case "search":
+                result = String.format("Search for key word \"%s\":",command.split(" ",3)[2]);
+                for(Group group : searchGroup(command.split(" ",3)[2])){
+                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s",result,group.getGroupName(),group.getGroupId());
+                }
+                break;
+            case "groups":
+                result = String.format("The groups you joined:");
+                for(Group group : memberService.getGroups(instantMessagingSoftware,instantMessagingSoftwareUserId)){
+                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s",result,group.getGroupName(),group.getGroupId());
+                }
+                break;
+            case "join":
+                result = join(instantMessagingSoftware,instantMessagingSoftwareUserId,command.split(" ",3)[2]);
+                break;
+            case "leave":
+                result = leave(instantMessagingSoftware,instantMessagingSoftwareUserId,command.split(" ",3)[2]);
+                break;
+            default:
+                result = "Command no found";
+        }
+        return result;
+    }
 
 }

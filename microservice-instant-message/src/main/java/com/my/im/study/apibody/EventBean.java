@@ -20,6 +20,9 @@ public class EventBean {
     public static EventBean createTextMessageEventBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String message){
         return new EventBean("TextMessage",instantMessagingSoftware,instantMessagingSoftwareUserId,message,null);
     }
+    public static EventBean createTextCommandEventBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String message){
+        return new EventBean("TextCommand",instantMessagingSoftware,instantMessagingSoftwareUserId,message,null);
+    }
 //Transfer instant messaging software event
     public static EventBean createTransferEventBean(String instantMessagingSoftware,Object eventObject){
         return new EventBean("Transfer",instantMessagingSoftware,null,null,eventObject);

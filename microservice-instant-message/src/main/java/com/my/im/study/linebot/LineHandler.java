@@ -35,8 +35,8 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         String userId = event.getSource().getUserId();
-        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTextMessageEventBean(InstantMessagingSoftwareList.LINE.getName(),userId,text));
-        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
+        crossIMSService.IMSWebhookTextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
+//        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
         crossIMSService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
     }
 

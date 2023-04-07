@@ -23,8 +23,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 	
 	@Autowired
 	private CrossIMSService crossIMSService;
-	@Autowired
-	private WebhookService webhookService;
+
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	@Override
@@ -35,17 +34,15 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
-				,chatId.toString()
-				,EventBean.createTextMessageEventBean(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text));
-		try {
-			webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
-					,chatId.toString()
-					,EventBean.createTransferEventBean(InstantMessagingSoftwareList.TELEGRAM.getName()
-							,objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY).writeValueAsString(update)));
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
+		crossIMSService.IMSWebhookTextEventHandler(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text);
+//		try {
+//			webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
+//					,chatId.toString()
+//					,EventBean.createTransferEventBean(InstantMessagingSoftwareList.TELEGRAM.getName()
+//							,objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY).writeValueAsString(update)));
+//		} catch (JsonProcessingException e) {
+//			throw new RuntimeException(e);
+//		}
 		crossIMSService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
 	}
 

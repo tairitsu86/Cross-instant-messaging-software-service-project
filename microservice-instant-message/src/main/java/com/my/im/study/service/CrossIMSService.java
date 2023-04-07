@@ -1,5 +1,6 @@
 package com.my.im.study.service;
 
+import com.my.im.study.apibody.EventBean;
 import com.my.im.study.database.entity.Group;
 import com.my.im.study.database.entity.User;
 
@@ -17,9 +18,16 @@ public interface CrossIMSService {
 
     String join(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
 
+    String leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
+
     String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
 
     Group newGroup(String groupName,String groupWebhook);
 
+    Group renameGroup(String groupId,String groupName);
+
     List<Group> searchGroup(String groupName);
+
+    void IMSWebhookTextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
+
 }

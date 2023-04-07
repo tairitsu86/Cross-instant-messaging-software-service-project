@@ -26,6 +26,12 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	public Group renameGroup(Group group) {
+		groupRepository.save(group);
+		return Group.CreateDataBean(group);
+	}
+
+	@Override
 	public Group getGroupById(String groupId) {
 		Optional<Group> optionalGroup = groupRepository.findById(groupId);
 		if(optionalGroup.isEmpty()) return null;
