@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.student.fju.cloud</groupId>
     <artifactId>microservice-instant-message</artifactId>
-    <version>0.0.2-DEMO</version>
+    <version>1.0.0-ALPHA</version>
     <name>Spring</name>
     
     <parent>
@@ -75,15 +75,6 @@
 		    <artifactId>hibernate-validator</artifactId>
 		    <version>8.0.0.Final</version>
 		</dependency>
-        <!-- SQL Server drive -->
-        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
-        <!-- stop use
-		<dependency>
-		    <groupId>com.microsoft.sqlserver</groupId>
-		    <artifactId>mssql-jdbc</artifactId>
-		    <scope>runtime</scope>
-		</dependency>
-		-->
 		
         <!-- line bot dependency -->
         <!-- https://github.com/line/line-bot-sdk-java -->
