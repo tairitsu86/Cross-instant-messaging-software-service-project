@@ -1,9 +1,9 @@
 server:
   port: 8080
   ssl:
-    certificate: "classpath:SSL/certificate.crt"
-    certificate-private-key: "classpath:SSL/private.key"
-    trust-certificate: "classpath:SSL/ca_bundle.crt"
+    certificate: "./src/main/resources/SSL/certificate.crt"
+    certificate-private-key: "./src/main/resources/SSL/private.key"
+    trust-certificate: "./src/main/resources/SSL/ca_bundle.crt"
 info: 
   app: 
     name: @project.artifactId@
