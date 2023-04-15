@@ -1,9 +1,11 @@
 server:
   port: 8080
   ssl:
-    certificate: "./src/main/resources/SSL/certificate.crt"
+    enabled: true
+    protocol: TLS
+    certificate: "./src/main/resources/SSL/chained.crt"
     certificate-private-key: "./src/main/resources/SSL/private.key"
-    trust-certificate: "./src/main/resources/SSL/ca_bundle.crt"
+    key-alias: cimss
 info: 
   app: 
     name: @project.artifactId@
