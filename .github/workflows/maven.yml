@@ -22,7 +22,7 @@ jobs:
         cache: maven
 
     - name: Build
-      run: mvn -B -f microservice-instant-message/pom.xml clean package
+      run: mvn -B -f microservice-instant-message/pom.xml clean install
 
     - name: Test
       run: mvn -B -f microservice-instant-message/pom.xml test
