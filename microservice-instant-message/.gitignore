@@ -3,5 +3,6 @@
 /src/main/resources/SSL/ca_bundle.crt
 /src/main/resources/SSL/certificate.crt
 /src/main/resources/SSL/private.key
+/src/main/resources/SSL/chained.crt
 /.idea/
 /microservice-instant-message.iml
