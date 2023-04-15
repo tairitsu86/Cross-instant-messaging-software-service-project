@@ -1,5 +1,7 @@
 /target/
 /src/main/resources/db/h2file/
-/src/main/resources/SSL
+/src/main/resources/SSL/ca_bundle.crt
+/src/main/resources/SSL/certificate.crt
+/src/main/resources/SSL/private.key
 /.idea/
 /microservice-instant-message.iml
