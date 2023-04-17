@@ -3,8 +3,8 @@ server:
   ssl:
     enabled: true
     protocol: TLS
-    certificate: "./src/main/resources/SSL/chained.crt"
-    certificate-private-key: "./src/main/resources/SSL/private.key"
+    certificate: "./src/main/resources/SSL/fullchain.pem"
+    certificate-private-key: "./src/main/resources/SSL/privkey.pem"
     key-alias: cimss
 info: 
   app: 
