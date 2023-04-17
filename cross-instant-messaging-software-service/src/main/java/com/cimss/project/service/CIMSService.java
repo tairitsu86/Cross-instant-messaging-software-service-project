@@ -5,7 +5,7 @@ import com.cimss.project.database.entity.User;
 
 import java.util.List;
 
-public interface CrossIMSService {
+public interface CIMSService {
 
     String broadcast(String groupId,String text);
 

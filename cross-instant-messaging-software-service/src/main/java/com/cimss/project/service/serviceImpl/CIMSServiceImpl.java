@@ -4,7 +4,7 @@ package com.cimss.project.service.serviceImpl;
 import com.cimss.project.database.GroupService;
 import com.cimss.project.database.MemberService;
 import com.cimss.project.linebot.LineMessageService;
-import com.cimss.project.service.CrossIMSService;
+import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.InstantMessagingSoftwareList;
 import com.cimss.project.service.WebhookService;
 import com.cimss.project.apibody.EventBean;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CrossIMSServiceImpl implements CrossIMSService {
+public class CIMSServiceImpl implements CIMSService {
     @Autowired
     private MemberService memberService;
     @Autowired

@@ -5,7 +5,7 @@ import com.cimss.project.apibody.MessageBean;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.AuthorizationService;
-import com.cimss.project.service.CrossIMSService;
+import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.WebhookService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +21,7 @@ import java.util.List;
 public class InstantMessageController {
 	
 	@Autowired
-    private CrossIMSService crossIMSService;
+    private CIMSService CIMSService;
 
 	@Autowired
 	private WebhookService webhookService;
@@ -51,7 +51,7 @@ public class InstantMessageController {
 	@GetMapping("/searchgroup")
 	public List<Group.GroupData> searchGroup(@Parameter(description = "任意文字", example = "group")
 									   @RequestParam String keyword) {
-		return crossIMSService.searchGroup(keyword);
+		return CIMSService.searchGroup(keyword);
 	}
 	@Hidden
 	@Operation(summary = "系統廣播", description = "API KEY必須是ADMIN KEY，否則會驗證失敗")
@@ -60,7 +60,7 @@ public class InstantMessageController {
 									@RequestParam String message) {
 		if(!authorizationService.authorization(accessToken))
 			return MessageBean.CreateAuthorizationWrongMessageBean();
-		return MessageBean.CreateMessageBean(crossIMSService.broadcastAll(message));
+		return MessageBean.CreateMessageBean(CIMSService.broadcastAll(message));
 	}
 
 	//post method
@@ -70,7 +70,7 @@ public class InstantMessageController {
 									   @RequestBody ManageBean.SendBean sendBean) {
 		if(!authorizationService.authorization(accessToken,"", User.CreateNoNameUserBean(sendBean.getInstantMessagingSoftware(),sendBean.getInstantMessagingSoftwareUserId())).managerPermission())
 			return MessageBean.CreateAuthorizationWrongMessageBean();
-		return MessageBean.CreateMessageBean(crossIMSService.sendTextMessage(sendBean.getInstantMessagingSoftware(), sendBean.getInstantMessagingSoftwareUserId(), sendBean.getMessage()));
+		return MessageBean.CreateMessageBean(CIMSService.sendTextMessage(sendBean.getInstantMessagingSoftware(), sendBean.getInstantMessagingSoftwareUserId(), sendBean.getMessage()));
 	}
 	@Operation(summary = "群組廣播", description = "必須用該群組的API KEY，否則會驗證失敗")
 	@PostMapping("/broadcast")
@@ -78,17 +78,17 @@ public class InstantMessageController {
 								 @RequestBody ManageBean.BroadcastBean broadcastBean) {
 		if(!authorizationService.authorization(accessToken,"", broadcastBean.getGroupId()).managerPermission())
 			return MessageBean.CreateAuthorizationWrongMessageBean();
-		return MessageBean.CreateMessageBean(crossIMSService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage()));
+		return MessageBean.CreateMessageBean(CIMSService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage()));
 	}
 	@Operation(summary = "新增群組", description = "不用驗證，所有人都可以申請新群組")
 	@PostMapping("/newgroup")
 	public Group newGroup(@RequestBody ManageBean.NewGroupBean newGroupBean) {
-		return crossIMSService.newGroup(newGroupBean.getGroupName(),newGroupBean.getGroupWebhook());
+		return CIMSService.newGroup(newGroupBean.getGroupName(),newGroupBean.getGroupWebhook());
 	}
 	@Operation(summary = "群組重新命名", description = "必須用該群組的API KEY，否則會驗證失敗")
 	@PostMapping("/renamegroup")
 	public MessageBean renameGroup(@RequestBody ManageBean.RenameGroupBean renameGroupBean) {
-		return MessageBean.CreateMessageBean(crossIMSService.renameGroup(renameGroupBean.getGroupId(),renameGroupBean.getGroupName()));
+		return MessageBean.CreateMessageBean(CIMSService.renameGroup(renameGroupBean.getGroupId(),renameGroupBean.getGroupName()));
 	}
 	@Operation(summary = "將使用者加入群組", description = "必須用該群組的API KEY，否則會驗證失敗，該使用者必須傳送訊息給本系統任意chat bot過，否則不能加入")
 	@PostMapping("/join")
@@ -96,7 +96,7 @@ public class InstantMessageController {
 							@RequestBody ManageBean.JoinBean joinBean) {
 		if(!authorizationService.authorization(accessToken,"", joinBean.getGroupId()).managerPermission())
 			return MessageBean.CreateAuthorizationWrongMessageBean();
-		return MessageBean.CreateMessageBean(crossIMSService.join(joinBean.getInstantMessagingSoftware(), joinBean.getInstantMessagingSoftwareUserId(), joinBean.getGroupId()));
+		return MessageBean.CreateMessageBean(CIMSService.join(joinBean.getInstantMessagingSoftware(), joinBean.getInstantMessagingSoftwareUserId(), joinBean.getGroupId()));
 	}
 	@Operation(summary = "設定群組webhook", description = "必須用該群組的API KEY，否則會驗證失敗")
 	@PostMapping("/setwebhook")
@@ -112,6 +112,6 @@ public class InstantMessageController {
 									   @RequestBody ManageBean.GrantPermissionBean grantPermissionBean) {
 		if(!authorizationService.authorization(accessToken,"", grantPermissionBean.getGroupId()).managerPermission())
 			return MessageBean.CreateAuthorizationWrongMessageBean();
-		return MessageBean.CreateMessageBean(crossIMSService.grantPermission(grantPermissionBean.getInstantMessagingSoftware(), grantPermissionBean.getInstantMessagingSoftwareUserId(), grantPermissionBean.getGroupId()));
+		return MessageBean.CreateMessageBean(CIMSService.grantPermission(grantPermissionBean.getInstantMessagingSoftware(), grantPermissionBean.getInstantMessagingSoftwareUserId(), grantPermissionBean.getGroupId()));
 	}
 }

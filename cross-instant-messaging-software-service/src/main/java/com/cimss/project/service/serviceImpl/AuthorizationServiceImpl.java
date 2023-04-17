@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-    private static final String ADMIN_TOKEN = System.getenv("MIM_ADMIN_TOKEN");
+    private static final String ADMIN_TOKEN = System.getenv("CIMSS_ADMIN_TOKEN");
     @Autowired
     private GroupService groupService;
     @Autowired

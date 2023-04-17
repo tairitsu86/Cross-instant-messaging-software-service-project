@@ -2,7 +2,7 @@ package com.cimss.project.linebot;
 
 import com.cimss.project.InstantMessageApplication;
 import com.cimss.project.service.WebhookService;
-import com.cimss.project.service.CrossIMSService;
+import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.InstantMessagingSoftwareList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class LineHandler {
     private final Logger log = LoggerFactory.getLogger(InstantMessageApplication.class);
     
     @Autowired
-    private CrossIMSService crossIMSService;
+    private CIMSService CIMSService;
 
     @Autowired
     private LineMessageService lineMessageService;
@@ -34,9 +34,9 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         String userId = event.getSource().getUserId();
-        crossIMSService.IMSWebhookTextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
+        CIMSService.IMSWebhookTextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
 //        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
-        crossIMSService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
+        CIMSService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
     }
 
     @EventMapping
