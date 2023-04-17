@@ -2,4 +2,4 @@
 /src/main/resources/db/h2file/
 /src/main/resources/SSL
 /.idea/
-/microservice-instant-message.iml
+/cross-instant-messaging-software-service.iml
