@@ -1,7 +1,7 @@
 FROM openjdk:17
 
-WORKDIR /usr/src/microservice/
+WORKDIR /usr/src/cimss/
 
-COPY microservice-instant-message/target/microservice-instant-message.jar /usr/src/microservice/
+COPY cross-instant-messaging-software-service/target/cross-instant-messaging-software-service.jar /usr/src/cimss/
 
-CMD ["java","-jar","microservice-instant-message.jar"]
+CMD ["java","-jar","cross-instant-messaging-software-service.jar"]
