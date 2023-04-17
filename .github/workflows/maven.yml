@@ -22,17 +22,17 @@ jobs:
         cache: maven
 
     - name: Build
-      run: mvn -B -f microservice-instant-message/pom.xml clean install
+      run: mvn -B -f cross-instant-messaging-software-service/pom.xml clean install
 
     - name: Test
-      run: mvn -B -f microservice-instant-message/pom.xml test
+      run: mvn -B -f cross-instant-messaging-software-service/pom.xml test
       
     - name: Debug
       run: |
         pwd
         ls -la
-        ls -la microservice-instant-message
-        ls -la microservice-instant-message/target
+        ls -la cross-instant-messaging-software-service
+        ls -la cross-instant-messaging-software-service/target
       
     - name: Build and push Docker image
       env:
@@ -40,10 +40,10 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       shell: bash
       run: |
-        docker build -t microservice-instant-message:latest -f Dockerfile-microservice-instant-message .
+        docker build -t cross-instant-messaging-software-service:latest .
         docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-        docker tag microservice-instant-message tairitsu86/microservice-instant-message
-        docker push tairitsu86/microservice-instant-message:latest
+        docker tag cross-instant-messaging-software-service tairitsu86/cross-instant-messaging-software-service
+        docker push tairitsu86/cross-instant-messaging-software-service:latest
         
         
         
