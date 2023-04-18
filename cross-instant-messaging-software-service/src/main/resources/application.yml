@@ -1,7 +1,7 @@
 server:
   port: 8080
   ssl:
-    enabled: false
+    enabled: true
     protocol: TLS
     certificate: "./src/main/resources/SSL/fullchain.pem"
     certificate-private-key: "./src/main/resources/SSL/privkey.pem"
