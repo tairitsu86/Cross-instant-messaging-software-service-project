@@ -1,7 +1,7 @@
 package com.cimss.project.telegrambot;
 
 import com.cimss.project.service.CIMSService;
-import com.cimss.project.service.InstantMessagingSoftwareList;
+import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		CIMSService.IMSWebhookTextEventHandler(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text);
+		CIMSService.TextEventHandler(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text);
 //		try {
 //			webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
 //					,chatId.toString()

@@ -25,8 +25,10 @@ public interface CIMSService {
 
     String renameGroup(String groupId,String groupName);
 
+    String alterGroup(String groupId,String property,String value);
+
     List<Group.GroupData> searchGroup(String groupName);
 
-    void IMSWebhookTextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
+    void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
 
 }

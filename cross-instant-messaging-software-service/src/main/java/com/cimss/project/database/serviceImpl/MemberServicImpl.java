@@ -27,6 +27,18 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
+	public String joinWithProperty(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		Group group = groupService.getGroupById(groupId);
+		if(group==null||!group.isJoinById()) return "Group id not exist!";
+		try {
+			memberRepository.save(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+		}catch (Exception e){
+			return String.format("Error with %s",e.getMessage());
+		}
+		return "Success";
+	}
+
+	@Override
 	public void leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
 		memberRepository.delete(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
 	}
@@ -64,7 +76,7 @@ public class MemberServicImpl implements MemberService {
 
 	@Override
 	public boolean isMember(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-		return memberRepository.existsById(new ManagerId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+		return memberRepository.existsById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
 	}
 
 }

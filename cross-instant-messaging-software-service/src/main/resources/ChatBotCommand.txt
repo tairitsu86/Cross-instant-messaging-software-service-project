@@ -1,35 +1,39 @@
-指令列表:
+Command list:
 
-新增群組(不會自動加入該群組)
-/newgroup <groupname>
+No require permission command:
 
-加入群組
-/join <groupId>
+Search group by keyword
+/cimss search <keyword>
 
-目前已加入的群組
-/mygroups
+Create new group, you will auto joined this group, and have manager permission
+/cimss newgroup <groupname>
 
-列出所有群組成員
-/groupmembers <groupId>
+Join any group(witch didn't close the join by id function) by group id
+/cimss join <groupId>
 
-進行群組內廣播
-/broadcast <groupId> <message>
+Leave the group you joined
+/cimss leave <groupId>
 
-退出群組(尚未實作)
-/leave <groupId>
+Show all group you joined now
+/cimss groups
 
-查詢指令格式
-/?
+Require manager permission command:
 
-備註:
-1.任何以/開頭之文字訊息皆被視為指令
-2.指令中英文字母皆為小寫
-3.以角括號<>框起之文字皆為參數
-4.參數不能包括空格
-5.參數需用空格與指令隔開
-6.複數參數也應用空格隔開
-7.參數輸入時不應該帶有角括號<>
+Get all member data in group
+/cimss members <groupId>
 
-範例:
-新增名為MyGroup的群組
-/newgroup MyGroup
+Broadcast message to all member in group
+/cimss broadcast <groupId> <message>
+
+Remove any member in the group
+/cimss remove <groupId> <software> <userId>
+
+Get the detail data about the group
+/cimss detail <groupId>
+
+Alter the property of group
+/cimss alter <groupId> <property> <value>
+Property can be groupName,isPublic,joinById, or allMessageBroadcast(no use)
+When property is groupName, value can be any string
+Else, value only can be true or false
+

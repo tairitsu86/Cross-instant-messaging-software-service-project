@@ -1,4 +1,4 @@
-package com.cimss.project.service;
+package com.cimss.project.service.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

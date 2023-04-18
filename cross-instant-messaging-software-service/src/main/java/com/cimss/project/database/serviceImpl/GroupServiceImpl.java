@@ -25,7 +25,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public String renameGroup(Group group) {
+	public String alterGroup(Group group) {
 		try {
 			groupRepository.save(group);
 		}catch (Exception e){
@@ -46,7 +46,7 @@ public class GroupServiceImpl implements GroupService {
 		List<Group> groups = getAllGroups();
 		List<Group.GroupData> result = new ArrayList<>();
 		for(Group group:groups){
-			if(groupName!=null&&group.getGroupName()!=null&&group.getGroupName().matches("(?i).*"+groupName+".*")){
+			if(groupName!=null&&group.getGroupName()!=null&&group.isPublic()&&group.getGroupName().matches("(?i).*"+groupName+".*")){
 				result.add(Group.CreateDataBean(group));
 			}
 		}

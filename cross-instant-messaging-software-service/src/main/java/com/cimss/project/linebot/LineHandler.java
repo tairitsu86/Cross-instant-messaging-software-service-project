@@ -3,7 +3,7 @@ package com.cimss.project.linebot;
 import com.cimss.project.InstantMessageApplication;
 import com.cimss.project.service.WebhookService;
 import com.cimss.project.service.CIMSService;
-import com.cimss.project.service.InstantMessagingSoftwareList;
+import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         String userId = event.getSource().getUserId();
-        CIMSService.IMSWebhookTextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
+        CIMSService.TextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
 //        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
         CIMSService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
     }

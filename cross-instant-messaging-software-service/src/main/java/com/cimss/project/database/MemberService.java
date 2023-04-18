@@ -10,6 +10,8 @@ public interface MemberService {
 	
 	void join(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 
+	String joinWithProperty(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
+
 	void leave(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 	
 	List<User> getUsers(String groupId);

@@ -7,7 +7,7 @@ import com.cimss.project.database.entity.Group;
 public interface GroupService {
 	Group createGroup(Group group);
 
-    String renameGroup(Group group);
+    String alterGroup(Group group);
 
 	Group getGroupById(String groupId);
 

@@ -5,7 +5,7 @@ import com.cimss.project.database.MemberService;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.AuthorizationService;
 import com.cimss.project.database.ManagerService;
-import com.cimss.project.service.PermissionList;
+import com.cimss.project.service.token.PermissionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +48,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if(accessToken==null||instantMessagingSoftware==null||groupId==null) return PermissionList.NONE;
         if(authorization(accessToken)) return PermissionList.ADMIN;
         if(authorization(accessToken,groupId)) return PermissionList.MANAGER;
-        if(memberService.isMember(instantMessagingSoftware,accessToken,groupId)) return PermissionList.MANAGER;
+        if(managerService.isManager(instantMessagingSoftware,accessToken,groupId)) return PermissionList.MANAGER;
         return PermissionList.NONE;
     }
 }
