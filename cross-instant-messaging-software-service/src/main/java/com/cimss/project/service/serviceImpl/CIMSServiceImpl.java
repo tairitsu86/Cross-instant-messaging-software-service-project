@@ -106,8 +106,8 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
-    public Group newGroup(String groupName,String groupWebhook) {
-        return groupService.createGroup(Group.CreateServiceGroup(groupName,groupWebhook));
+    public Group newGroup(Group group) {
+        return groupService.createGroup(group);
     }
 
     @Override
@@ -155,6 +155,11 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
+    public List<User> getMembers(String groupId) {
+        return memberService.getUsers(groupId);
+    }
+
+    @Override
     public void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text) {
         if(text.startsWith("/cimss")){
             String executeResult = CIMSSdecoder(instantMessagingSoftware, instantMessagingSoftwareUserId,text);
@@ -185,7 +190,7 @@ public class CIMSServiceImpl implements CIMSService {
                 String groupName = command.split(" ", 3)[2];
                 Group newGroup;
                 try {
-                    newGroup = groupService.createGroup(Group.CreatePrivateGroup(groupName));
+                    newGroup = newGroup(Group.CreatePrivateGroup(groupName));
                     join(instantMessagingSoftware,instantMessagingSoftwareUserId,newGroup.getGroupId());
                     grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,newGroup.getGroupId());
                 }catch (Exception e){
@@ -218,7 +223,7 @@ public class CIMSServiceImpl implements CIMSService {
                     String groupId = command.split(" ")[2];
                     switch (commandType){
                         case "members"->{
-                            List<User> users = memberService.getUsers(groupId);
+                            List<User> users = getMembers(groupId);
                             result = String.format("Members in \"%s\":",groupService.getGroupById(groupId).getGroupName());
                             for(User user:users){
                                 result = String.format("%s\n%s %s\n%s",result,user.getInstantMessagingSoftware(),user.getUserName(),user.getInstantMessagingSoftwareUserId());

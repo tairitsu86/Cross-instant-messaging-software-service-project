@@ -1,9 +1,9 @@
 package com.cimss.project.database.entity;
 
-import com.cimss.project.database.GroupService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -24,7 +21,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "[GROUP]")
 public class Group {
-	@Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+	@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
 	@Id
 	private String groupId;
 	@Schema(description = "該群組的名字",example = "我ㄉ群組")
@@ -42,13 +39,13 @@ public class Group {
 	@Schema(description = "該群組的API KEY",example = "1b619a98-55b4-4d80-8f50-e7aa9fde8cc5")
 	@Column
 	private String authorizationKey;
-	@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?(預設true)",example = "true")
+	@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true")
 	@Column
 	private Boolean isPublic;
-	@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)(預設true)",example = "true")
+	@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")
 	@Column
 	private Boolean joinById;
-	@Schema(description = "是否讓所有訊息皆被廣播?(預設false)",example = "false")
+	@Schema(description = "是否讓所有訊息皆被廣播?",example = "false")
 	@Column
 	private Boolean allMessageBroadcast;
 	public static GroupData CreateDataBean(Group group){
@@ -60,15 +57,15 @@ public class Group {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class GroupData{
-		@Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+		@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
 		private String groupId;
-		@Schema(description = "該群組的名字",example = "我ㄉ群組")
+		@Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
 		private String groupName;
 		@Schema(description = "該群組的敘述",example = "這是我的群組")
 		private String groupDescription;
 	}
-	public static Group CreateServiceGroup(String groupName, String groupWebhook){
-		return new Group(null,groupName,null,groupWebhook,null, null,true,true,false);
+	public static Group CreateServiceGroup(String groupName){
+		return new Group(null,groupName,null,null,null, null,true,true,false);
 	}
 	public static Group CreatePrivateGroup(String groupName){
 		return new Group(null,groupName,null,null,null, null,false,true,true);
@@ -76,7 +73,18 @@ public class Group {
 	public static Group CreateEditGroup(String groupId){
 		return new Group(groupId,null,null,null,null,null,null,null,null);
 	}
-	public void CopyFromGroup(Group newGroup){
+	public void copyFromObject(Object o){
+		ObjectMapper objectMapper = new ObjectMapper();
+		Group newGroup = null;
+		try {
+			newGroup = objectMapper.readValue(objectMapper.writeValueAsString(o), Group.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		if(newGroup==null){
+			System.err.println("CopyFromObject is null!");
+			return;
+		}
 		groupName = newGroup.groupName==null?groupName:newGroup.groupName;
 		groupDescription = newGroup.groupDescription==null?groupDescription:newGroup.groupDescription;
 		groupWebhook = newGroup.groupWebhook==null?groupWebhook: newGroup.groupWebhook;

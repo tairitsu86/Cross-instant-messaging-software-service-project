@@ -21,7 +21,7 @@ public interface CIMSService {
 
     String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
 
-    Group newGroup(String groupName,String groupWebhook);
+    Group newGroup(Group group);
 
     String renameGroup(String groupId,String groupName);
 
@@ -31,7 +31,7 @@ public interface CIMSService {
 
     String alterGroup(Group group);
     List<Group.GroupData> searchGroup(String groupName);
-
+    List<User> getMembers(String groupId);
     void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
 
 }

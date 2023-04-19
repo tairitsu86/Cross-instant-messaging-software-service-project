@@ -29,28 +29,15 @@ public class ManageBean {
         private String instantMessagingSoftwareUserId;
         @Schema(description = "要寄送的文字訊息",example = "你好!")
         private String message;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setInstantMessagingSoftware(instantMessagingSoftware);
-            manageBean.setInstantMessagingSoftwareUserId(instantMessagingSoftwareUserId);
-            manageBean.setMessage(message);
-            return manageBean;
-        }
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class BroadcastBean{
-        @Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
         @Schema(description = "要寄送的文字訊息",example = "你好!")
         private String message;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setGroupId(groupId);
-            manageBean.setMessage(message);
-            return manageBean;
-        }
     }
     @Getter
     @Setter
@@ -58,62 +45,59 @@ public class ManageBean {
     public static class NewGroupBean{
         @Schema(description = "該群組的名字",example = "我ㄉ群組")
         private String groupName;
+        @Schema(description = "該群組的敘述",example = "這是我的群組",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private String groupDescription;
         @Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupWebhook;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setGroupName(groupName);
-            manageBean.setGroupWebhook(groupWebhook);
-            return manageBean;
-        }
+        @Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private String groupKeyword;
+        @Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?(預設true)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private Boolean isPublic;
+        @Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)(預設true)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private Boolean joinById;
+        @Schema(description = "是否讓所有訊息皆被廣播?(預設false)",example = "false",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private Boolean allMessageBroadcast;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class RenameGroupBean{
-        @Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+    public static class AlterGroupBean{
+        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
-        @Schema(description = "該群組的新名字",example = "我ㄉ新群組")
+        @Schema(description = "該群組的名字",example = "我ㄉ群組",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupName;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setGroupId(groupId);
-            manageBean.setGroupName(groupName);
-            return manageBean;
-        }
+        @Schema(description = "該群組的敘述",example = "這是我的群組",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private String groupDescription;
+        @Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private String groupWebhook;
+        @Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private String groupKeyword;
+        @Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private Boolean isPublic;
+        @Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private Boolean joinById;
+        @Schema(description = "是否讓所有訊息皆被廣播?",example = "false",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        private Boolean allMessageBroadcast;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class JoinBean{
+    public static class AddBean{
         @Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
         private String instantMessagingSoftware;
         @Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
         private String instantMessagingSoftwareUserId;
-        @Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setInstantMessagingSoftware(instantMessagingSoftware);
-            manageBean.setInstantMessagingSoftwareUserId(instantMessagingSoftwareUserId);
-            manageBean.setGroupId(groupId);
-            return manageBean;
-        }
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class SetWebhookBean{
-        @Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
         @Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook")
         private String groupWebhook;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setGroupId(groupId);
-            manageBean.setGroupWebhook(groupWebhook);
-            return manageBean;
-        }
     }
     @Getter
     @Setter
@@ -123,14 +107,7 @@ public class ManageBean {
         private String instantMessagingSoftware;
         @Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
         private String instantMessagingSoftwareUserId;
-        @Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
+        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
-        public ManageBean transferToManageBean(){
-            ManageBean manageBean = new ManageBean();
-            manageBean.setInstantMessagingSoftware(instantMessagingSoftware);
-            manageBean.setInstantMessagingSoftwareUserId(instantMessagingSoftwareUserId);
-            manageBean.setGroupId(groupId);
-            return manageBean;
-        }
     }
 }

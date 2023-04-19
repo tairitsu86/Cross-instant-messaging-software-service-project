@@ -46,7 +46,7 @@ public class GroupServiceImpl implements GroupService {
 	public String alterGroup(Group newGroup) {
 		Group oldGroup = getGroupById(newGroup.getGroupId());
 		if(oldGroup==null) return "Wrong group id!";
-		oldGroup.CopyFromGroup(newGroup);
+		oldGroup.copyFromObject(newGroup);
 		try {
 			groupRepository.save(oldGroup);
 		}catch (Exception e){
