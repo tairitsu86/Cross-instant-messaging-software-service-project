@@ -29,7 +29,7 @@ public class GroupServiceImpl implements GroupService {
 		try {
 			groupRepository.save(group);
 		}catch (Exception e){
-			return e.getMessage();
+			return String.format("Error with Exception:%s",e.getMessage());
 		}
 		return "Success!";
 	}
@@ -59,8 +59,13 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public void deleteGroup(String groupId) {
-		groupRepository.deleteById(groupId);
+	public String deleteGroup(String groupId) {
+		try {
+			groupRepository.deleteById(groupId);
+		}catch (Exception e){
+			return String.format("Error with Exception:%s",e.getMessage());
+		}
+		return "Success";
 	}
 
 	@Override

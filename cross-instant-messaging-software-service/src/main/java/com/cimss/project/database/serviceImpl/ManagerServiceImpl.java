@@ -21,13 +21,23 @@ public class ManagerServiceImpl implements ManagerService {
     private GroupService groupService;
 
     @Override
-    public void grantPermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
-        managerRespository.save(new Manager(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+    public String grantPermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
+        try {
+            managerRespository.save(new Manager(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+        }catch (Exception e){
+            return String.format("Error with Exception:%s",e.getMessage());
+        }
+        return "Success";
     }
 
     @Override
-    public void revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-        managerRespository.delete(new Manager(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+    public String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+        try {
+            managerRespository.delete(new Manager(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+        }catch (Exception e){
+            return String.format("Error with Exception:%s",e.getMessage());
+        }
+        return "Success";
     }
 
     @Override

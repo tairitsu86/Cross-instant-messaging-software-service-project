@@ -15,7 +15,7 @@ public interface GroupService {
 
     List<Group> getAllGroups();
 
-    void deleteGroup(String groupId);
+    String deleteGroup(String groupId);
 
     void deleteAllGroups();
 

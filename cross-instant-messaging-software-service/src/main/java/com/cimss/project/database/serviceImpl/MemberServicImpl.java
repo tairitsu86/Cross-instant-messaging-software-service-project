@@ -22,25 +22,30 @@ public class MemberServicImpl implements MemberService {
 	private GroupService groupService;
 	
 	@Override
-	public void join(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
-		memberRepository.save(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	public String join(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
+		try {
+			memberRepository.save(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+		}catch (Exception e){
+			return String.format("Error with Exception:%s",e.getMessage());
+		}
+		return "Success";
 	}
 
 	@Override
 	public String joinWithProperty(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
 		Group group = groupService.getGroupById(groupId);
 		if(group==null||!group.isJoinById()) return "Group id not exist!";
-		try {
-			memberRepository.save(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
-		}catch (Exception e){
-			return String.format("Error with %s",e.getMessage());
-		}
-		return "Success";
+		return join(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
 	}
 
 	@Override
-	public void leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-		memberRepository.delete(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	public String leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		try {
+			memberRepository.delete(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+		}catch (Exception e){
+			return String.format("Error with Exception:%s",e.getMessage());
+		}
+		return "Success";
 	}
 
 	@Override
