@@ -29,6 +29,7 @@ public interface CIMSService {
 
     String alterGroup(String groupId,String property,String value);
 
+    String alterGroup(Group group);
     List<Group.GroupData> searchGroup(String groupName);
 
     void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);

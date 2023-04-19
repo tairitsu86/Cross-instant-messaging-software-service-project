@@ -128,28 +128,24 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public String alterGroup(String groupId, String property, String value) {
-        Group group = groupService.getGroupById(groupId);
-        if(group==null) return "Wrong group id!";
-        boolean val = true;
+        Group group = Group.CreateEditGroup(groupId);
+        boolean val;
         switch(value){
             case "true" -> val = true;
             case "false" -> val = false;
             default -> {return "Wrong value type!";}
         }
         switch (property){
-            case "isPublic" -> {
-                group.setPublic(val);
-            }
-            case "joinById" -> {
-                group.setJoinById(val);
-            }
-            case "allMessageBroadcast" -> {
-                group.setAllMessageBroadcast(val);
-            }
-            default -> {
-                return "Property not exist!";
-            }
+            case "isPublic" -> group.setIsPublic(val);
+            case "joinById" -> group.setJoinById(val);
+            case "allMessageBroadcast" -> group.setAllMessageBroadcast(val);
+            default -> {return "Property not exist!";}
         }
+        return groupService.alterGroup(group);
+    }
+
+    @Override
+    public String alterGroup(Group group) {
         return groupService.alterGroup(group);
     }
 
@@ -182,7 +178,7 @@ public class CIMSServiceImpl implements CIMSService {
                 }
                 result = String.format("Search for key word \"%s\":", keyword);
                 for (Group.GroupData group : searchResult) {
-                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s", result, group.getGroupName(), group.getGroupId());
+                    result = String.format("%s\n\nGroup name:%s,id:%s\nIntroduce:\n%s", result, group.getGroupName(), group.getGroupId(), group.getGroupDescription());
                 }
             }
             case "newgroup" ->{
@@ -208,8 +204,12 @@ public class CIMSServiceImpl implements CIMSService {
                 }
                 result = "The groups you joined:";
                 for (Group group : joinedGroup) {
-                    result = String.format("%s\n\ngroup name:\n%s\ngroup id:\n%s", result, group.getGroupName(), group.getGroupId());
+                    result = String.format("%s\n\ngroup name:\n%s,id:\n%s", result, group.getGroupName(), group.getGroupId());
                 }
+            }
+            case "detail"->{
+                Group group = groupService.getGroupById(command.split(" ",3)[2]);
+                result = String.format("%s\nDescription:\n%s\nisPublic: %s, joinById: %s\nallMessageBroadcast: %s",group.getGroupName(),group.getGroupDescription(),group.getIsPublic(),group.getJoinById(),group.getAllMessageBroadcast());
             }
             default ->{
                 result = "Command no found or you don't have the permission!";
@@ -226,10 +226,6 @@ public class CIMSServiceImpl implements CIMSService {
                         }
                         case "broadcast"-> result = broadcast(groupId,command.split(" ",4)[3]);
                         case "remove"-> result = leave(command.split(" ",5)[3],command.split(" ",5)[4],groupId);
-                        case "detail"->{
-                            Group group = groupService.getGroupById(groupId);
-                            result = String.format("%s\nDescription:%s\nIs public? %s\nCan joined this group by id? %s\nWill all message broadcast? %s",group.getGroupName(),group.getGroupDescription(),group.isPublic(),group.isJoinById(),group.isAllMessageBroadcast());
-                        }
                         case "alter"->{
                             String property = command.split(" ",5)[3],value = command.split(" ",5)[4];
                             switch (property){

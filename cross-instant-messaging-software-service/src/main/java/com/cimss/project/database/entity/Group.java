@@ -1,5 +1,6 @@
 package com.cimss.project.database.entity;
 
+import com.cimss.project.database.GroupService;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
@@ -20,12 +22,10 @@ import java.util.UUID;
 @ToString
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @Table(name = "[GROUP]")
 public class Group {
 	@Schema(description = "該群組的ID，由32位英數字組合的字串",example = "0123a012345678b0123456c012345678")
 	@Id
-	@GeneratedValue(generator = "jpa-uuid")
 	private String groupId;
 	@Schema(description = "該群組的名字",example = "我ㄉ群組")
 	@Column
@@ -44,19 +44,15 @@ public class Group {
 	private String authorizationKey;
 	@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?(預設true)",example = "true")
 	@Column
-	private boolean isPublic;
+	private Boolean isPublic;
 	@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)(預設true)",example = "true")
 	@Column
-	private boolean joinById;
+	private Boolean joinById;
 	@Schema(description = "是否讓所有訊息皆被廣播?(預設false)",example = "false")
 	@Column
-	private boolean allMessageBroadcast;
-
-
-
-
+	private Boolean allMessageBroadcast;
 	public static GroupData CreateDataBean(Group group){
-		return new GroupData(group.groupId,group.groupName);
+		return new GroupData(group.groupId,group.groupName,group.groupDescription);
 	}
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Getter
@@ -68,11 +64,25 @@ public class Group {
 		private String groupId;
 		@Schema(description = "該群組的名字",example = "我ㄉ群組")
 		private String groupName;
+		@Schema(description = "該群組的敘述",example = "這是我的群組")
+		private String groupDescription;
 	}
 	public static Group CreateServiceGroup(String groupName, String groupWebhook){
-		return new Group(null,groupName,null,groupWebhook,null, UUID.randomUUID().toString(),true,true,false);
+		return new Group(null,groupName,null,groupWebhook,null, null,true,true,false);
 	}
 	public static Group CreatePrivateGroup(String groupName){
-		return new Group(null,groupName,null,null,null, UUID.randomUUID().toString(),false,true,true);
+		return new Group(null,groupName,null,null,null, null,false,true,true);
+	}
+	public static Group CreateEditGroup(String groupId){
+		return new Group(groupId,null,null,null,null,null,null,null,null);
+	}
+	public void CopyFromGroup(Group newGroup){
+		groupName = newGroup.groupName==null?groupName:newGroup.groupName;
+		groupDescription = newGroup.groupDescription==null?groupDescription:newGroup.groupDescription;
+		groupWebhook = newGroup.groupWebhook==null?groupWebhook: newGroup.groupWebhook;
+		groupKeyword = newGroup.groupKeyword==null?groupDescription:newGroup.groupDescription;
+		isPublic = newGroup.isPublic==null?isPublic:newGroup.isPublic;
+		joinById = newGroup.joinById==null?joinById:newGroup.joinById;
+		allMessageBroadcast = newGroup.allMessageBroadcast==null?allMessageBroadcast:newGroup.allMessageBroadcast;
 	}
 }

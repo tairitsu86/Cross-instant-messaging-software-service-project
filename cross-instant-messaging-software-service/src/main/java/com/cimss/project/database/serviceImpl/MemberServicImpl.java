@@ -34,7 +34,7 @@ public class MemberServicImpl implements MemberService {
 	@Override
 	public String joinWithProperty(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
 		Group group = groupService.getGroupById(groupId);
-		if(group==null||!group.isJoinById()) return "Group id not exist!";
+		if(group==null||!group.getJoinById()) return "Group id not exist!";
 		return join(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
 	}
 
