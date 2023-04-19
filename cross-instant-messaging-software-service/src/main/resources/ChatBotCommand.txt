@@ -33,7 +33,7 @@ Get the detail data about the group
 
 Alter the property of group
 /cimss alter <groupId> <property> <value>
-Property can be groupName,isPublic,joinById, or allMessageBroadcast(no use)
-When property is groupName, value can be any string
+Property can be groupName,groupDescription,isPublic,joinById, or allMessageBroadcast(no use)
+When property is groupName or groupDescription, value can be any string
 Else, value only can be true or false
 

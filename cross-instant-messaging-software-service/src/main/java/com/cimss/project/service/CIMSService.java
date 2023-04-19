@@ -25,6 +25,8 @@ public interface CIMSService {
 
     String renameGroup(String groupId,String groupName);
 
+    String restateGroup(String groupId,String groupDescription);
+
     String alterGroup(String groupId,String property,String value);
 
     List<Group.GroupData> searchGroup(String groupName);

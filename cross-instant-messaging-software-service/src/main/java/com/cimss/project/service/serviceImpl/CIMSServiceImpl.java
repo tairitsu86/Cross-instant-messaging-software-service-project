@@ -64,7 +64,7 @@ public class CIMSServiceImpl implements CIMSService {
             return "Instant messaging software not exist!";
         }
         switch(i) {
-            case LINE-> lineMessageService.pushTextMessage(userId,textMessage);
+            case LINE-> lineMessageService.sendTextMessage(userId,textMessage);
             case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId),textMessage);
         }
         return "Success";
@@ -115,6 +115,14 @@ public class CIMSServiceImpl implements CIMSService {
         Group group = groupService.getGroupById(groupId);
         if(group==null) return "Wrong group id!";
         group.setGroupName(groupName);
+        return groupService.alterGroup(group);
+    }
+
+    @Override
+    public String restateGroup(String groupId, String groupDescription) {
+        Group group = groupService.getGroupById(groupId);
+        if(group==null) return "Wrong group id!";
+        group.setGroupDescription(groupDescription);
         return groupService.alterGroup(group);
     }
 
@@ -224,10 +232,11 @@ public class CIMSServiceImpl implements CIMSService {
                         }
                         case "alter"->{
                             String property = command.split(" ",5)[3],value = command.split(" ",5)[4];
-                            if(property.equals("groupName")){
-                                result = renameGroup(groupId,value);
+                            switch (property){
+                                case "groupName"-> result = renameGroup(groupId,value);
+                                case "groupDescription"-> result = restateGroup(groupId,value);
+                                default -> result = alterGroup(groupId,property,value);
                             }
-                            result = alterGroup(groupId,property,value);
                         }
                     }
                 }

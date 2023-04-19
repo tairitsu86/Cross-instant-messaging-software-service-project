@@ -17,7 +17,7 @@ public class LineMessageService {
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
     
-	public BotApiResponse pushTextMessage(String userId, String messageText){
+	public BotApiResponse sendTextMessage(String userId, String messageText){
 		TextMessage message = new TextMessage(messageText);
 		PushMessage pushMessage = new PushMessage(userId, message);
 		System.out.println(pushMessage.getTo()+"\n"+pushMessage.getMessages());
