@@ -41,7 +41,7 @@ public class WebhookServiceImpl implements WebhookService {
         if(eventBean.getEventType().equals("TextMessage")){
             for(Group group:groups){
                 if(group.getGroupKeyword()==null) continue;
-                if(!eventBean.getMessage().startsWith(group.getGroupKeyword())) continue;
+                if(!eventBean.getMessage().matches("(?i)"+group.getGroupKeyword()+".*")) continue;
                 webhookSendEvent(group.getGroupId(),eventBean);
             }
             return;
