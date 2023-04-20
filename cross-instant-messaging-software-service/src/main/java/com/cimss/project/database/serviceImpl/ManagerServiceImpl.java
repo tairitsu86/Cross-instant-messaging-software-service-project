@@ -1,6 +1,7 @@
 package com.cimss.project.database.serviceImpl;
 
 import com.cimss.project.database.GroupService;
+import com.cimss.project.database.MemberService;
 import com.cimss.project.database.UserService;
 import com.cimss.project.database.ManagerService;
 import com.cimss.project.database.entity.Manager;
@@ -19,9 +20,12 @@ public class ManagerServiceImpl implements ManagerService {
     private UserService userService;
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private MemberService memberService;
 
     @Override
     public String grantPermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
+        if(!memberService.isMember(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)) return "Manager must be member!";
         try {
             managerRespository.save(new Manager(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
         }catch (Exception e){

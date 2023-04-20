@@ -32,7 +32,6 @@ public class EventHandleServiceImpl implements EventHandleService {
         if(text.startsWith("/cimss")){
             String executeResult = CIMSSdecoder(instantMessagingSoftware, instantMessagingSoftwareUserId,text);
             cimsService.sendTextMessage(instantMessagingSoftware,instantMessagingSoftwareUserId,executeResult);
-//            webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextCommandEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
             return;
         }
         webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextMessageEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
@@ -82,7 +81,7 @@ public class EventHandleServiceImpl implements EventHandleService {
             }
             case "detail"->{
                 Group.GroupDetail detail = cimsService.groupDetail(command.split(" ",3)[2]);
-                result = String.format("Group:%s\nDescription:\n%s\nisPublic: %s, joinById: %s\nallMessageBroadcast: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getIsPublic(),detail.getJoinById(),detail.getAllMessageBroadcast());
+                result = String.format("Group:%s\nDescription:\n%s\n\nCommand start with: %s\nisPublic: %s, joinById: %s\nallMessageBroadcast: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getGroupKeyword(),detail.getIsPublic(),detail.getJoinById(),detail.getAllMessageBroadcast());
             }
             default ->{
                 result = "Command error! Or you don't have the permission!";

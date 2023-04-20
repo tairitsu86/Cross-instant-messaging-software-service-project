@@ -65,7 +65,7 @@ public class Group {
 		private String groupDescription;
 	}
 	public static GroupDetail CreateDetailBean(Group group){
-		return new GroupDetail(group.groupId,group.groupName,group.groupDescription,group.isPublic,group.joinById,group.allMessageBroadcast);
+		return new GroupDetail(group.groupId,group.groupName,group.groupDescription, group.groupKeyword, group.isPublic,group.joinById,group.allMessageBroadcast);
 	}
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Getter
@@ -79,6 +79,8 @@ public class Group {
 		private String groupName;
 		@Schema(description = "該群組的敘述",example = "這是我的群組")
 		private String groupDescription;
+		@Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService")
+		private String groupKeyword;
 		@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true")
 		private Boolean isPublic;
 		@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")

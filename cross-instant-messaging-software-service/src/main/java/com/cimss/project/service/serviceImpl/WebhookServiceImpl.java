@@ -18,10 +18,6 @@ public class WebhookServiceImpl implements WebhookService {
     private GroupService groupService;
     @Autowired
     private MemberService memberService;
-    @Override
-    public String setWebhook(String groupId,String webhook) {
-        return groupService.setWebhook(groupId,webhook);
-    }
 
     @Override
     public String testWebhook(String groupId) {
@@ -42,6 +38,14 @@ public class WebhookServiceImpl implements WebhookService {
     public void webhookSendEvent(String instantMessagingSoftware, String instantMessagingSoftwareUserId, EventBean eventBean) {
         if(eventBean.getEventType().equals("Transfer")) return;
         List<Group> groups= memberService.getGroups(instantMessagingSoftware,instantMessagingSoftwareUserId);
+        if(eventBean.getEventType().equals("TextMessage")){
+            for(Group group:groups){
+                if(group.getGroupKeyword()==null) continue;
+                if(!eventBean.getMessage().startsWith(group.getGroupKeyword())) continue;
+                webhookSendEvent(group.getGroupId(),eventBean);
+            }
+            return;
+        }
         for(Group group:groups){
             webhookSendEvent(group.getGroupId(),eventBean);
         }
