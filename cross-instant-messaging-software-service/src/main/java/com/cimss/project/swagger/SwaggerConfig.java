@@ -3,6 +3,7 @@ package com.cimss.project.swagger;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info().title("Cross-instant messaging software microservices API")
                         .description("Cross-instant messaging software microservices Restful API")
-                        .version("v0.0.2")
+                        .version("v1.0.0")
 //                        .termsOfService("https://www.jianshu.com/u/c8c1e5ac61e0")
 //                        .license(new License().name("****").url("https://www.jiahetng.com"))
                 )
