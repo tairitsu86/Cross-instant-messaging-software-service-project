@@ -21,17 +21,19 @@ public interface CIMSService {
 
     String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
 
+    String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String groupId);
+
     Group newGroup(Group group);
-
-    String renameGroup(String groupId,String groupName);
-
-    String restateGroup(String groupId,String groupDescription);
 
     String alterGroup(String groupId,String property,String value);
 
     String alterGroup(Group group);
+
+    Group.GroupDetail groupDetail(String groupId);
+
+    String deleteGroup(String groupId);
+
     List<Group.GroupData> searchGroup(String groupName);
     List<User> getMembers(String groupId);
-    void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
 
 }

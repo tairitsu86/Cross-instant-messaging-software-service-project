@@ -1,6 +1,7 @@
 package com.cimss.project.linebot;
 
 import com.cimss.project.InstantMessageApplication;
+import com.cimss.project.service.EventHandleService;
 import com.cimss.project.service.WebhookService;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
@@ -20,7 +21,10 @@ public class LineHandler {
     private final Logger log = LoggerFactory.getLogger(InstantMessageApplication.class);
     
     @Autowired
-    private CIMSService CIMSService;
+    private CIMSService cimsService;
+
+    @Autowired
+    private EventHandleService eventHandleService;
 
     @Autowired
     private LineMessageService lineMessageService;
@@ -34,9 +38,9 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         String userId = event.getSource().getUserId();
-        CIMSService.TextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
+        eventHandleService.TextEventHandler(InstantMessagingSoftwareList.LINE.getName(),userId,text);
 //        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
-        CIMSService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
+        cimsService.userRegister(InstantMessagingSoftwareList.LINE.getName(),userId,lineMessageService.getUserProfile(userId).getDisplayName());
     }
 
     @EventMapping

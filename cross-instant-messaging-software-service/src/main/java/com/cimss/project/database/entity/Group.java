@@ -64,6 +64,28 @@ public class Group {
 		@Schema(description = "該群組的敘述",example = "這是我的群組")
 		private String groupDescription;
 	}
+	public static GroupDetail CreateDetailBean(Group group){
+		return new GroupDetail(group.groupId,group.groupName,group.groupDescription,group.isPublic,group.joinById,group.allMessageBroadcast);
+	}
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@Getter
+	@Setter
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class GroupDetail{
+		@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+		private String groupId;
+		@Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
+		private String groupName;
+		@Schema(description = "該群組的敘述",example = "這是我的群組")
+		private String groupDescription;
+		@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true")
+		private Boolean isPublic;
+		@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")
+		private Boolean joinById;
+		@Schema(description = "是否讓所有訊息皆被廣播?",example = "false")
+		private Boolean allMessageBroadcast;
+	}
 	public static Group CreateServiceGroup(String groupName){
 		return new Group(null,groupName,null,null,null, null,true,true,false);
 	}
@@ -88,7 +110,7 @@ public class Group {
 		groupName = newGroup.groupName==null?groupName:newGroup.groupName;
 		groupDescription = newGroup.groupDescription==null?groupDescription:newGroup.groupDescription;
 		groupWebhook = newGroup.groupWebhook==null?groupWebhook: newGroup.groupWebhook;
-		groupKeyword = newGroup.groupKeyword==null?groupDescription:newGroup.groupDescription;
+		groupKeyword = newGroup.groupKeyword==null?groupKeyword:newGroup.groupKeyword;
 		isPublic = newGroup.isPublic==null?isPublic:newGroup.isPublic;
 		joinById = newGroup.joinById==null?joinById:newGroup.joinById;
 		allMessageBroadcast = newGroup.allMessageBroadcast==null?allMessageBroadcast:newGroup.allMessageBroadcast;

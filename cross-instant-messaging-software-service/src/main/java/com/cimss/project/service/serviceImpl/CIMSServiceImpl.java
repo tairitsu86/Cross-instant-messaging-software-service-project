@@ -32,10 +32,7 @@ public class CIMSServiceImpl implements CIMSService {
     private UserService userService;
     @Autowired
     private GroupService groupService;
-    @Autowired
-    private WebhookService webhookService;
-    @Autowired
-    private AuthorizationService authorizationService;
+
 
     @Override
     public String broadcast(String groupId,String text) {
@@ -106,47 +103,56 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
+    public String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+        try{
+            managerService.revokePermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "Success!";
+    }
+
+    @Override
     public Group newGroup(Group group) {
         return groupService.createGroup(group);
     }
 
     @Override
-    public String renameGroup(String groupId,String groupName) {
-        Group group = groupService.getGroupById(groupId);
-        if(group==null) return "Wrong group id!";
-        group.setGroupName(groupName);
-        return groupService.alterGroup(group);
-    }
-
-    @Override
-    public String restateGroup(String groupId, String groupDescription) {
-        Group group = groupService.getGroupById(groupId);
-        if(group==null) return "Wrong group id!";
-        group.setGroupDescription(groupDescription);
-        return groupService.alterGroup(group);
-    }
-
-    @Override
     public String alterGroup(String groupId, String property, String value) {
         Group group = Group.CreateEditGroup(groupId);
-        boolean val;
+        Boolean val = null;
         switch(value){
             case "true" -> val = true;
             case "false" -> val = false;
-            default -> {return "Wrong value type!";}
+            default ->{
+                if(!(property.equals("groupName")||property.equals("groupDescription")))
+                    return "Alter command error!";
+            }
         }
         switch (property){
+            case "groupName"-> group.setGroupName(value);
+            case "groupDescription"-> group.setGroupDescription(value);
             case "isPublic" -> group.setIsPublic(val);
             case "joinById" -> group.setJoinById(val);
             case "allMessageBroadcast" -> group.setAllMessageBroadcast(val);
             default -> {return "Property not exist!";}
         }
-        return groupService.alterGroup(group);
+        return alterGroup(group);
     }
 
     @Override
     public String alterGroup(Group group) {
         return groupService.alterGroup(group);
+    }
+
+    @Override
+    public Group.GroupDetail groupDetail(String groupId) {
+        return Group.CreateDetailBean(groupService.getGroupById(groupId));
+    }
+
+    @Override
+    public String deleteGroup(String groupId) {
+        return groupService.deleteGroup(groupId);
     }
 
     @Override
@@ -157,100 +163,6 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public List<User> getMembers(String groupId) {
         return memberService.getUsers(groupId);
-    }
-
-    @Override
-    public void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text) {
-        if(text.startsWith("/cimss")){
-            String executeResult = CIMSSdecoder(instantMessagingSoftware, instantMessagingSoftwareUserId,text);
-            sendTextMessage(instantMessagingSoftware,instantMessagingSoftwareUserId,executeResult);
-//            webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextCommandEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
-            return;
-        }
-        webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextMessageEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
-    }
-    public String CIMSSdecoder(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
-        String commandType = command.split(" ")[1];
-        String result;
-        //switch case for no require permission command
-        switch (commandType) {
-            case "search" -> {
-                String keyword = command.split(" ", 3)[2];
-                List<Group.GroupData> searchResult = searchGroup(keyword);
-                if(searchResult.size()==0) {
-                    result = String.format("No found with key word \"%s\"!", keyword);
-                    break;
-                }
-                result = String.format("Search for key word \"%s\":", keyword);
-                for (Group.GroupData group : searchResult) {
-                    result = String.format("%s\n\nGroup name:%s,id:%s\nIntroduce:\n%s", result, group.getGroupName(), group.getGroupId(), group.getGroupDescription());
-                }
-            }
-            case "newgroup" ->{
-                String groupName = command.split(" ", 3)[2];
-                Group newGroup;
-                try {
-                    newGroup = newGroup(Group.CreatePrivateGroup(groupName));
-                    join(instantMessagingSoftware,instantMessagingSoftwareUserId,newGroup.getGroupId());
-                    grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,newGroup.getGroupId());
-                }catch (Exception e){
-                    result = String.format("Create Error with %s",e.getMessage());
-                    break;
-                }
-                result = String.format("Create success,this is your group id:\n%s",newGroup.getGroupId());
-            }
-            case "join" -> result = memberService.joinWithProperty(instantMessagingSoftware, instantMessagingSoftwareUserId, command.split(" ", 3)[2]);
-            case "leave" -> result = leave(instantMessagingSoftware, instantMessagingSoftwareUserId, command.split(" ", 3)[2]);
-            case "groups" -> {
-                List<Group> joinedGroup = memberService.getGroups(instantMessagingSoftware, instantMessagingSoftwareUserId);
-                if(joinedGroup.size()==0){
-                    result = "Didn't join any group now!";
-                    break;
-                }
-                result = "The groups you joined:";
-                for (Group group : joinedGroup) {
-                    result = String.format("%s\n\ngroup name:\n%s,id:\n%s", result, group.getGroupName(), group.getGroupId());
-                }
-            }
-            case "detail"->{
-                Group group = groupService.getGroupById(command.split(" ",3)[2]);
-                result = String.format("%s\nDescription:\n%s\nisPublic: %s, joinById: %s\nallMessageBroadcast: %s",group.getGroupName(),group.getGroupDescription(),group.getIsPublic(),group.getJoinById(),group.getAllMessageBroadcast());
-            }
-            default ->{
-                result = "Command no found or you don't have the permission!";
-                if(CommandAuthorization(instantMessagingSoftware,instantMessagingSoftwareUserId,command)){
-                    //switch case for require manager permission command
-                    String groupId = command.split(" ")[2];
-                    switch (commandType){
-                        case "members"->{
-                            List<User> users = getMembers(groupId);
-                            result = String.format("Members in \"%s\":",groupService.getGroupById(groupId).getGroupName());
-                            for(User user:users){
-                                result = String.format("%s\n%s %s\n%s",result,user.getInstantMessagingSoftware(),user.getUserName(),user.getInstantMessagingSoftwareUserId());
-                            }
-                        }
-                        case "broadcast"-> result = broadcast(groupId,command.split(" ",4)[3]);
-                        case "remove"-> result = leave(command.split(" ",5)[3],command.split(" ",5)[4],groupId);
-                        case "alter"->{
-                            String property = command.split(" ",5)[3],value = command.split(" ",5)[4];
-                            switch (property){
-                                case "groupName"-> result = renameGroup(groupId,value);
-                                case "groupDescription"-> result = restateGroup(groupId,value);
-                                default -> result = alterGroup(groupId,property,value);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return result;
-    }
-    public boolean CommandAuthorization(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
-        String cmd[] = command.split(" ");
-        if(cmd.length<3) return false;
-        PermissionList returnToken = authorizationService.authorization(instantMessagingSoftwareUserId,instantMessagingSoftware,command.split(" ")[2]);
-        System.err.println(returnToken);
-        return returnToken.managerPermission();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.cimss.project.telegrambot;
 
 import com.cimss.project.service.CIMSService;
+import com.cimss.project.service.EventHandleService;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -17,7 +18,10 @@ public class TelegramHandlerImpl implements TelegramHandler {
 	private Logger LOG = LoggerFactory.getLogger(TelegramHandlerImpl.class);
 	
 	@Autowired
-	private CIMSService CIMSService;
+	private CIMSService cimsService;
+
+	@Autowired
+	private EventHandleService eventHandleService;
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
@@ -29,7 +33,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		CIMSService.TextEventHandler(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text);
+		eventHandleService.TextEventHandler(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text);
 //		try {
 //			webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
 //					,chatId.toString()
@@ -38,7 +42,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 //		} catch (JsonProcessingException e) {
 //			throw new RuntimeException(e);
 //		}
-		CIMSService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
+		cimsService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
 	}
 
 }
