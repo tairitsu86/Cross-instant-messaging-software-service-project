@@ -1,5 +1,6 @@
 package com.cimss.project.telegrambot;
 
+import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.EventHandleService;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
@@ -33,7 +34,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		eventHandleService.TextEventHandler(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),text);
+		eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString()),text);
 //		try {
 //			webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
 //					,chatId.toString()
@@ -42,7 +43,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 //		} catch (JsonProcessingException e) {
 //			throw new RuntimeException(e);
 //		}
-		cimsService.userRegister(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString(),message.chat().lastName()+message.chat().firstName());
+		cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString()),message.chat().lastName()+message.chat().firstName());
 	}
 
 }

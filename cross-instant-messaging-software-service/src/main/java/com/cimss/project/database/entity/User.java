@@ -28,7 +28,10 @@ public class User {
 	@Column
 	@Schema(description = "該用戶的名字",example = "王小明")
 	private String userName;
-	public static User CreateNoNameUserBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId){
-		return new User(instantMessagingSoftware,instantMessagingSoftwareUserId,null);
+	public static User CreateByUserId(UserId userId,String userName){
+		return new User(userId.getInstantMessagingSoftware(), userId.getInstantMessagingSoftwareUserId(), userName);
+	}
+	public UserId toUserId(){
+		return UserId.CreateUserId(instantMessagingSoftware,instantMessagingSoftwareUserId);
 	}
 }

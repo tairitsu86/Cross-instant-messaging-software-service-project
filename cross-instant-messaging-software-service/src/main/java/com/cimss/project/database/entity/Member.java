@@ -27,7 +27,10 @@ public class Member {
 	private String groupIdForeignKey;
 	@Column
 	private Boolean isManager;
-	public static Member CreateNewMember(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId){
-		return new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId,false);
+	public static Member CreateNewMember(UserId userId, String groupId){
+		return new Member(userId.getInstantMessagingSoftware(), userId.getInstantMessagingSoftwareUserId(), groupId,false);
+	}
+	public UserId toUserId(){
+		return UserId.CreateUserId(instantMessagingSoftwareForeignKey,instantMessagingSoftwareUserIdForeignKey);
 	}
 }	

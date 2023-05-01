@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(String instantMessagingSoftware,String instantMessagingSoftwareUserId) {
-        Optional<User> optionalUser = userRepository.findById(new UserId(instantMessagingSoftware, instantMessagingSoftwareUserId));
+    public User getUserById(UserId userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.get();
     }
 

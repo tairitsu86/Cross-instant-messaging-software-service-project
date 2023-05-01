@@ -3,6 +3,7 @@ package com.cimss.project.service.serviceImpl;
 import com.cimss.project.database.GroupService;
 import com.cimss.project.database.MemberService;
 import com.cimss.project.database.entity.Group;
+import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.WebhookService;
 import com.cimss.project.apibody.EventBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,13 @@ public class WebhookServiceImpl implements WebhookService {
         return "Success!";
     }
     @Override
-    public void webhookSendEvent(String instantMessagingSoftware, String instantMessagingSoftwareUserId, EventBean eventBean) {
-        if(eventBean.getEventType().equals("Transfer")) return;
-        List<Group> groups= memberService.getGroups(instantMessagingSoftware,instantMessagingSoftwareUserId);
-        if(eventBean.getEventType().equals("TextMessage")){
+    public void webhookSendEvent(UserId userId, EventBean eventBean) {
+        List<Group> groups= memberService.getGroups(userId);
+        if("TextMessage".equals(eventBean.getEventType())){
+            EventBean.TextMessageEvent textMessageEvent = (EventBean.TextMessageEvent)eventBean;
             for(Group group:groups){
                 if(group.getGroupKeyword()==null) continue;
-                if(!eventBean.getMessage().matches("(?i)"+group.getGroupKeyword()+".*")) continue;
+                if(!textMessageEvent.getMessage().matches("(?i)"+group.getGroupKeyword()+".*")) continue;
                 webhookSendEvent(group.getGroupId(),eventBean);
             }
             return;

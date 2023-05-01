@@ -9,7 +9,7 @@ import com.cimss.project.database.entity.UserId;
 public interface UserService {
     User createUser(User user);
 
-    User getUserById(String instantMessagingSoftware,String instantMessagingSoftwareUserId);
+    User getUserById(UserId userId);
 
     List<User> getAllUsers();
 

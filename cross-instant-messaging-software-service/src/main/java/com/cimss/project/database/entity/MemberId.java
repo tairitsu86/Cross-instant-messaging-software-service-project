@@ -13,4 +13,7 @@ public class MemberId implements Serializable {
     private String instantMessagingSoftwareForeignKey;
     private String instantMessagingSoftwareUserIdForeignKey;
     private String groupIdForeignKey;
+    public static MemberId CreateByUserId(UserId userId,String groupId){
+        return new MemberId(userId.getInstantMessagingSoftware(),userId.getInstantMessagingSoftwareUserId(),groupId);
+    }
 }

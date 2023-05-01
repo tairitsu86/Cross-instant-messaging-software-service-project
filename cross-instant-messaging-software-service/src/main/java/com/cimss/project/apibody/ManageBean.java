@@ -1,32 +1,17 @@
 package com.cimss.project.apibody;
 
+import com.cimss.project.database.entity.UserId;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ManageBean {
-    private String groupId;
-    private String groupName;
-    private String groupWebhook;
-    private String userName;
-    private String instantMessagingSoftware;
-    private String instantMessagingSoftwareUserId;
-    private String message;
-
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class SendBean{
-        @Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
-        private String instantMessagingSoftware;
-        @Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
-        private String instantMessagingSoftwareUserId;
+        @Schema(description = "該用戶的資料")
+        private UserId userId;
         @Schema(description = "要寄送的文字訊息",example = "你好!")
         private String message;
     }
@@ -79,10 +64,8 @@ public class ManageBean {
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class AddBean{
-        @Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
-        private String instantMessagingSoftware;
-        @Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
-        private String instantMessagingSoftwareUserId;
+        @Schema(description = "該用戶的資料")
+        private UserId userId;
         @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
     }
@@ -99,10 +82,8 @@ public class ManageBean {
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class GrantPermissionBean{
-        @Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
-        private String instantMessagingSoftware;
-        @Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
-        private String instantMessagingSoftwareUserId;
+        @Schema(description = "該用戶的資料")
+        private UserId userId;
         @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
         private String groupId;
     }

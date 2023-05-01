@@ -3,6 +3,7 @@ package com.cimss.project.service.serviceImpl;
 
 import com.cimss.project.database.GroupService;
 import com.cimss.project.database.MemberService;
+import com.cimss.project.database.entity.UserId;
 import com.cimss.project.linebot.LineMessageService;
 import com.cimss.project.service.*;
 import com.cimss.project.database.UserService;
@@ -33,7 +34,7 @@ public class CIMSServiceImpl implements CIMSService {
     public String broadcast(String groupId,String text) {
         List<User> users = memberService.getUsers(groupId);
         for(User user:users) {
-            sendTextMessage(user.getInstantMessagingSoftware(),user.getInstantMessagingSoftwareUserId(),text);
+            sendTextMessage(user.toUserId(),text);
         }
         return "Broadcast done!";
     }
@@ -42,35 +43,35 @@ public class CIMSServiceImpl implements CIMSService {
     public String broadcastAll(String text) {
         List<User> users = userService.getAllUsers();
         for(User user:users) {
-            sendTextMessage(user.getInstantMessagingSoftware(),user.getInstantMessagingSoftwareUserId(),text);
+            sendTextMessage(user.toUserId(),text);
         }
         return "Broadcast to every user done!";
     }
 
     @Override
-    public String sendTextMessage(String instantMessagingSoftware, String userId, String textMessage) {
+    public String sendTextMessage(UserId userId, String textMessage) {
         InstantMessagingSoftwareList i;
         try{
-            i = InstantMessagingSoftwareList.valueOf(instantMessagingSoftware);
+            i = InstantMessagingSoftwareList.valueOf(userId.getInstantMessagingSoftware());
         }catch (IllegalArgumentException e){
             return "Instant messaging software not exist!";
         }
         switch(i) {
-            case LINE-> lineMessageService.sendTextMessage(userId,textMessage);
-            case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId),textMessage);
+            case LINE-> lineMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
+            case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId.getInstantMessagingSoftwareUserId()),textMessage);
         }
         return "Success";
     }
 
     @Override
-    public User userRegister(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String userName) {
-        return userService.createUser(new User(instantMessagingSoftware,instantMessagingSoftwareUserId,userName));
+    public User userRegister(UserId userId, String userName) {
+        return userService.createUser(User.CreateByUserId(userId,userName));
     }
 
     @Override
-    public String join(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+    public String join(UserId userId, String groupId) {
         try{
-            memberService.join(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+            memberService.join(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -78,9 +79,9 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
-    public String leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+    public String leave(UserId userId, String groupId) {
         try{
-            memberService.leave(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+            memberService.leave(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -88,9 +89,9 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
-    public String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+    public String grantPermission(UserId userId, String groupId) {
         try{
-            memberService.grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+            memberService.grantPermission(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -98,9 +99,9 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
-    public String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+    public String revokePermission(UserId userId, String groupId) {
         try{
-            memberService.revokePermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+            memberService.revokePermission(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }

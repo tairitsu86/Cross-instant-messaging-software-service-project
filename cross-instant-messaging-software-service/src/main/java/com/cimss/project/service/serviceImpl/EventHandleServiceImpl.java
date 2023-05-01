@@ -6,6 +6,7 @@ import com.cimss.project.database.MemberService;
 import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
+import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.AuthorizationService;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.EventHandleService;
@@ -31,15 +32,15 @@ public class EventHandleServiceImpl implements EventHandleService {
     private CIMSService cimsService;
 
     @Override
-    public void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text) {
+    public void TextEventHandler(UserId userId, String text) {
         if(text.startsWith("/cimss")){
-            String executeResult = CIMSSdecoder(instantMessagingSoftware, instantMessagingSoftwareUserId,text);
-            cimsService.sendTextMessage(instantMessagingSoftware,instantMessagingSoftwareUserId,executeResult);
+            String executeResult = CIMSSdecoder(userId,text);
+            cimsService.sendTextMessage(userId,executeResult);
             return;
         }
-        webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextMessageEventBean(userService.getUserById(instantMessagingSoftware,instantMessagingSoftwareUserId) ,text));
+        webhookService.webhookSendEvent(userId, EventBean.createTextMessageEventBean(userService.getUserById(userId) ,text));
     }
-    public String CIMSSdecoder(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
+    public String CIMSSdecoder(UserId userId,String command){
         String commandType = command.split(" ")[1];
         String result;
         //switch case for no require permission command
@@ -61,18 +62,18 @@ public class EventHandleServiceImpl implements EventHandleService {
                 Group newGroup;
                 try {
                     newGroup = cimsService.newGroup(Group.CreatePrivateGroup(groupName));
-                    cimsService.join(instantMessagingSoftware,instantMessagingSoftwareUserId,newGroup.getGroupId());
-                    cimsService.grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,newGroup.getGroupId());
+                    cimsService.join(userId,newGroup.getGroupId());
+                    cimsService.grantPermission(userId,newGroup.getGroupId());
                 }catch (Exception e){
                     result = String.format("Create Error with %s",e.getMessage());
                     break;
                 }
                 result = String.format("Create success,this is your group id:\n%s",newGroup.getGroupId());
             }
-            case "join" -> result = memberService.joinWithProperty(instantMessagingSoftware, instantMessagingSoftwareUserId, command.split(" ", 3)[2]);
-            case "leave" -> result = cimsService.leave(instantMessagingSoftware, instantMessagingSoftwareUserId, command.split(" ", 3)[2]);
+            case "join" -> result = memberService.joinWithProperty(userId, command.split(" ", 3)[2]);
+            case "leave" -> result = cimsService.leave(userId, command.split(" ", 3)[2]);
             case "groups" -> {
-                List<Group> joinedGroup = memberService.getGroups(instantMessagingSoftware, instantMessagingSoftwareUserId);
+                List<Group> joinedGroup = memberService.getGroups(userId);
                 if(joinedGroup.size()==0){
                     result = "Didn't join any group now!";
                     break;
@@ -88,7 +89,7 @@ public class EventHandleServiceImpl implements EventHandleService {
             }
             default ->{
                 result = "Command error! Or you don't have the permission!";
-                if(CommandAuthorization(instantMessagingSoftware,instantMessagingSoftwareUserId,command)){
+                if(CommandAuthorization(userId,command)){
                     //switch case for require manager permission command
                     String groupId = command.split(" ")[2];
                     switch (commandType){
@@ -100,7 +101,7 @@ public class EventHandleServiceImpl implements EventHandleService {
                             }
                         }
                         case "broadcast"-> result = cimsService.broadcast(groupId,command.split(" ",4)[3]);
-                        case "remove"-> result = cimsService.leave(command.split(" ",5)[3],command.split(" ",5)[4],groupId);
+                        case "remove"-> result = cimsService.leave(UserId.CreateUserId(command.split(" ",5)[3],command.split(" ",5)[4]),groupId);
                         case "alter"-> result = cimsService.alterGroup(groupId,command.split(" ",5)[3],command.split(" ",5)[4]);
                     }
                 }
@@ -108,10 +109,10 @@ public class EventHandleServiceImpl implements EventHandleService {
         }
         return result;
     }
-    public boolean CommandAuthorization(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
+    public boolean CommandAuthorization(UserId userId,String command){
         String cmd[] = command.split(" ");
         if(cmd.length<3) return false;
-        PermissionList returnToken = authorizationService.authorization(instantMessagingSoftwareUserId,instantMessagingSoftware,command.split(" ")[2]);
+        PermissionList returnToken = authorizationService.authorization(userId,command.split(" ")[2]);
         System.err.println(returnToken);
         return returnToken.managerPermission();
     }

@@ -83,8 +83,8 @@ public class Group {
 		@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")
 		private Boolean joinById;
 	}
-	public static Group CreateServiceGroup(String groupName){
-		return new Group(null,groupName,null,null,null, null,true,true);
+	public static Group CreateServiceGroup(){
+		return new Group(null,null,null,null,null, null,true,true);
 	}
 	public static Group CreatePrivateGroup(String groupName){
 		return new Group(null,groupName,null,null,null, null,false,true);

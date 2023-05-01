@@ -22,9 +22,9 @@ public class MemberServicImpl implements MemberService {
 	private GroupService groupService;
 	
 	@Override
-	public String join(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
+	public String join(UserId userId, String groupId) {
 		try {
-			memberRepository.save(Member.CreateNewMember(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+			memberRepository.save(Member.CreateNewMember(userId,groupId));
 		}catch (Exception e){
 			return String.format("Error with Exception:%s",e.getMessage());
 		}
@@ -32,16 +32,16 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
-	public String joinWithProperty(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+	public String joinWithProperty(UserId userId, String groupId) {
 		Group group = groupService.getGroupById(groupId);
-		if(group==null||!group.getJoinById()) return "Group id not exist!";
-		return join(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+		if(group==null||!group.getJoinById()) return "That group not allow join by group id";
+		return join(userId,groupId);
 	}
 
 	@Override
-	public String leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+	public String leave(UserId userId, String groupId) {
 		try {
-			memberRepository.deleteById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+			memberRepository.deleteById(MemberId.CreateByUserId(userId,groupId));
 		}catch (Exception e){
 			return String.format("Error with Exception:%s",e.getMessage());
 		}
@@ -49,16 +49,16 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
-	public String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-		Member member = memberRepository.getReferenceById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	public String grantPermission(UserId userId, String groupId) {
+		Member member = memberRepository.getReferenceById(MemberId.CreateByUserId(userId,groupId));
 		if(member.getIsManager()) return "Already been manager!";
 		member.setIsManager(true);
 		return "Success";
 	}
 
 	@Override
-	public String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-		Member member = memberRepository.getReferenceById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	public String revokePermission(UserId userId, String groupId) {
+		Member member = memberRepository.getReferenceById(MemberId.CreateByUserId(userId,groupId));
 		if(!member.getIsManager()) return "Not manager!";
 		member.setIsManager(false);
 		return "Success";
@@ -70,15 +70,14 @@ public class MemberServicImpl implements MemberService {
 		List<User> users = new ArrayList<User>();
 		for(Member member: members) 
 			if(member.getGroupIdForeignKey().equals(groupId))
-				users.add(userService.getUserById(member.getInstantMessagingSoftwareForeignKey(),member.getInstantMessagingSoftwareUserIdForeignKey()));
+				users.add(userService.getUserById(member.toUserId()));
 		return users;
 	}
 
 	@Override
-	public List<Group> getGroups(String instantMessagingSoftware, String instantMessagingSoftwareUserId) {
+	public List<Group> getGroups(UserId userId) {
 		List<Member> members = memberRepository.findAll();
 		List<Group> groups = new ArrayList<Group>();
-		UserId userId = new UserId(instantMessagingSoftware, instantMessagingSoftwareUserId);
 		for(Member member: members) 
 			if(userService.checkMember(member,userId))
 				groups.add(groupService.getGroupById(member.getGroupIdForeignKey()));
@@ -96,13 +95,16 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
-	public boolean isMember(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-		return memberRepository.existsById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	public boolean isMember(UserId userId, String groupId) {
+		return memberRepository.existsById(MemberId.CreateByUserId(userId,groupId));
 	}
 
 	@Override
-	public boolean isManager(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
-		return memberRepository.getReferenceById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)).getIsManager();
+	public boolean isManager(UserId userId, String groupId) {
+		MemberId memberId = MemberId.CreateByUserId(userId,groupId);
+		if(!memberRepository.existsById(memberId))
+			return false;
+		return memberRepository.getReferenceById(memberId).getIsManager();
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.cimss.project.service;
 
+import com.cimss.project.database.entity.UserId;
+
 public interface EventHandleService {
-    void TextEventHandler(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String text);
+    void TextEventHandler(UserId userId, String text);
 }
