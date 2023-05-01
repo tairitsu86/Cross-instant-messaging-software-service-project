@@ -55,8 +55,6 @@ public class ManageBean {
         private Boolean isPublic;
         @Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)(預設true)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean joinById;
-        @Schema(description = "是否讓所有訊息皆被廣播?(預設false)",example = "false",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        private Boolean allMessageBroadcast;
     }
     @Getter
     @Setter
@@ -76,8 +74,6 @@ public class ManageBean {
         private Boolean isPublic;
         @Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean joinById;
-        @Schema(description = "是否讓所有訊息皆被廣播?",example = "false",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        private Boolean allMessageBroadcast;
     }
     @Getter
     @Setter

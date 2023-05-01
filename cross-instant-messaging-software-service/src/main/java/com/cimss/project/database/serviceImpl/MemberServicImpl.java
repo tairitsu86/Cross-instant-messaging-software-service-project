@@ -24,7 +24,7 @@ public class MemberServicImpl implements MemberService {
 	@Override
 	public String join(String instantMessagingSoftware,String instantMessagingSoftwareUserId, String groupId) {
 		try {
-			memberRepository.save(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+			memberRepository.save(Member.CreateNewMember(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
 		}catch (Exception e){
 			return String.format("Error with Exception:%s",e.getMessage());
 		}
@@ -41,10 +41,26 @@ public class MemberServicImpl implements MemberService {
 	@Override
 	public String leave(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
 		try {
-			memberRepository.delete(new Member(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+			memberRepository.deleteById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
 		}catch (Exception e){
 			return String.format("Error with Exception:%s",e.getMessage());
 		}
+		return "Success";
+	}
+
+	@Override
+	public String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		Member member = memberRepository.getReferenceById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+		if(member.getIsManager()) return "Already been manager!";
+		member.setIsManager(true);
+		return "Success";
+	}
+
+	@Override
+	public String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		Member member = memberRepository.getReferenceById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+		if(!member.getIsManager()) return "Not manager!";
+		member.setIsManager(false);
 		return "Success";
 	}
 
@@ -82,6 +98,11 @@ public class MemberServicImpl implements MemberService {
 	@Override
 	public boolean isMember(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
 		return memberRepository.existsById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId));
+	}
+
+	@Override
+	public boolean isManager(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
+		return memberRepository.getReferenceById(new MemberId(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId)).getIsManager();
 	}
 
 }

@@ -6,7 +6,6 @@ import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.AuthorizationService;
-import com.cimss.project.database.entity.Manager;
 import com.cimss.project.service.CIMSService;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class SystemManagementController {
     private UserService userService;
     @Autowired
     private GroupService groupService;
-    @Autowired
-    private ManagerService managerService;
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -52,13 +49,6 @@ public class SystemManagementController {
         if(!authorizationService.authorization(accessToken)) return null;
         return groupService.getAllGroups();
     }
-
-    @GetMapping("/managers")
-    public List<Manager> getManagers(@RequestHeader(name = "Authorization") String accessToken){
-        if(!authorizationService.authorization(accessToken)) return null;
-        return managerService.getAllManagers();
-    }
-
     @GetMapping("/members")
     public List<Member> getMembers(@RequestHeader(name = "Authorization") String accessToken){
         if(!authorizationService.authorization(accessToken)) return null;

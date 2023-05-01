@@ -13,6 +13,10 @@ public interface MemberService {
 	String joinWithProperty(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 
 	String leave(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
+
+	String grantPermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
+
+	String revokePermission(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 	
 	List<User> getUsers(String groupId);
 	
@@ -23,4 +27,5 @@ public interface MemberService {
 	void deleteAllMembers();
 
 	boolean isMember(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
+	boolean isManager(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String groupId);
 }

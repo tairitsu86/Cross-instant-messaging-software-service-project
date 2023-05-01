@@ -10,15 +10,12 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private ManagerService managerService;
-    @Autowired
     private MemberService memberService;
     @Autowired
     private UserService userService;
 
     @Override
     public void deleteAllData() {
-        managerService.deleteAllManagers();
         memberService.deleteAllMembers();
         userService.deleteAllUsers();
         groupService.deleteAllGroups();

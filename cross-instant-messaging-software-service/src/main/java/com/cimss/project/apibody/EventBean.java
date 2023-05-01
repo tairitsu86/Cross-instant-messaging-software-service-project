@@ -1,5 +1,6 @@
 package com.cimss.project.apibody;
 
+import com.cimss.project.database.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
@@ -11,25 +12,24 @@ import lombok.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EventBean {
     private String eventType;
-    private String instantMessagingSoftware;
-    private String instantMessagingSoftwareUserId;
+    private User user;
     private String message;
-    private Object eventObject;
+//    private Object eventObject;
 
     public static EventBean createTestEventBean(){
-        return new EventBean("Test",null,null,null,null);
+        return new EventBean("Test",null,null);
     }
-    public static EventBean createTextMessageEventBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String message){
-        return new EventBean("TextMessage",instantMessagingSoftware,instantMessagingSoftwareUserId,message,null);
+    public static EventBean createTextMessageEventBean(User user,String message){
+        return new EventBean("TextMessage",user,message);
     }
-    public static EventBean createJoinEventBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String message){
-        return new EventBean("Join",instantMessagingSoftware,instantMessagingSoftwareUserId,message,null);
+    public static EventBean createJoinEventBean(User user,String message){
+        return new EventBean("Join",user,message);
     }
-    public static EventBean createLeaveEventBean(String instantMessagingSoftware,String instantMessagingSoftwareUserId,String message){
-        return new EventBean("Leave",instantMessagingSoftware,instantMessagingSoftwareUserId,message,null);
+    public static EventBean createLeaveEventBean(User user,String message){
+        return new EventBean("Leave",user,message);
     }
 //Transfer instant messaging software event
-    public static EventBean createTransferEventBean(String instantMessagingSoftware,Object eventObject){
-        return new EventBean("Transfer",instantMessagingSoftware,null,null,eventObject);
-    }
+//    public static EventBean createTransferEventBean(String instantMessagingSoftware,Object eventObject){
+//        return new EventBean("Transfer",instantMessagingSoftware,null,null,eventObject);
+//    }
 }

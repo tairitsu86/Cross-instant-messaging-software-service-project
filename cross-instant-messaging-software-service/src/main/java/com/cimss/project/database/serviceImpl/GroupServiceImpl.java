@@ -45,8 +45,9 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public String alterGroup(Group newGroup) {
 		Group oldGroup = getGroupById(newGroup.getGroupId());
-		if(oldGroup==null) return "Wrong group id!";
+		if(oldGroup==null) return "Group id not exist";
 		oldGroup.copyFromObject(newGroup);
+		if(oldGroup==null) return "Copy error";
 		try {
 			groupRepository.save(oldGroup);
 		}catch (Exception e){

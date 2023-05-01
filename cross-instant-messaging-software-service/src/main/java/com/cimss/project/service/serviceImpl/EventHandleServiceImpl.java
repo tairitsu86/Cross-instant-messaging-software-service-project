@@ -3,6 +3,7 @@ package com.cimss.project.service.serviceImpl;
 import com.cimss.project.apibody.EventBean;
 import com.cimss.project.database.GroupService;
 import com.cimss.project.database.MemberService;
+import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.AuthorizationService;
@@ -25,6 +26,8 @@ public class EventHandleServiceImpl implements EventHandleService {
     @Autowired
     private MemberService memberService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private CIMSService cimsService;
 
     @Override
@@ -34,7 +37,7 @@ public class EventHandleServiceImpl implements EventHandleService {
             cimsService.sendTextMessage(instantMessagingSoftware,instantMessagingSoftwareUserId,executeResult);
             return;
         }
-        webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextMessageEventBean(instantMessagingSoftware,instantMessagingSoftwareUserId,text));
+        webhookService.webhookSendEvent(instantMessagingSoftware,instantMessagingSoftwareUserId, EventBean.createTextMessageEventBean(userService.getUserById(instantMessagingSoftware,instantMessagingSoftwareUserId) ,text));
     }
     public String CIMSSdecoder(String instantMessagingSoftware, String instantMessagingSoftwareUserId,String command){
         String commandType = command.split(" ")[1];
@@ -81,7 +84,7 @@ public class EventHandleServiceImpl implements EventHandleService {
             }
             case "detail"->{
                 Group.GroupDetail detail = cimsService.groupDetail(command.split(" ",3)[2]);
-                result = String.format("Group:%s\nDescription:\n%s\n\nCommand start with: %s\nisPublic: %s, joinById: %s\nallMessageBroadcast: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getGroupKeyword(),detail.getIsPublic(),detail.getJoinById(),detail.getAllMessageBroadcast());
+                result = String.format("Group:%s\nDescription:\n%s\n\nCommand start with: %s\nisPublic: %s\njoinById: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getGroupKeyword(),detail.getIsPublic(),detail.getJoinById());
             }
             default ->{
                 result = "Command error! Or you don't have the permission!";

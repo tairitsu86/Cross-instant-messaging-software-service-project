@@ -4,7 +4,6 @@ import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.repository.UserRepository;
-import com.cimss.project.database.entity.Manager;
 import com.cimss.project.database.entity.UserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,11 +41,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkMember(Member member, UserId userId) {
         return userId.equals(new UserId(member.getInstantMessagingSoftwareForeignKey(), member.getInstantMessagingSoftwareUserIdForeignKey()));
-    }
-
-    @Override
-    public boolean checkManage(Manager manager, UserId userId) {
-        return userId.equals(new UserId(manager.getInstantMessagingSoftwareForeignKey(), manager.getInstantMessagingSoftwareUserIdForeignKey()));
     }
 
     @Override

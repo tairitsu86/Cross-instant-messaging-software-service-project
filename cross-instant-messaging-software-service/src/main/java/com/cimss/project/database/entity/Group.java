@@ -42,12 +42,9 @@ public class Group {
 	@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true")
 	@Column
 	private Boolean isPublic;
-	@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")
+	@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?",example = "true")
 	@Column
 	private Boolean joinById;
-	@Schema(description = "是否讓所有訊息皆被廣播?",example = "false")
-	@Column
-	private Boolean allMessageBroadcast;
 	public static GroupData CreateDataBean(Group group){
 		return new GroupData(group.groupId,group.groupName,group.groupDescription);
 	}
@@ -65,7 +62,7 @@ public class Group {
 		private String groupDescription;
 	}
 	public static GroupDetail CreateDetailBean(Group group){
-		return new GroupDetail(group.groupId,group.groupName,group.groupDescription, group.groupKeyword, group.isPublic,group.joinById,group.allMessageBroadcast);
+		return new GroupDetail(group.groupId,group.groupName,group.groupDescription, group.groupKeyword, group.isPublic,group.joinById);
 	}
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Getter
@@ -85,19 +82,21 @@ public class Group {
 		private Boolean isPublic;
 		@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")
 		private Boolean joinById;
-		@Schema(description = "是否讓所有訊息皆被廣播?",example = "false")
-		private Boolean allMessageBroadcast;
 	}
 	public static Group CreateServiceGroup(String groupName){
-		return new Group(null,groupName,null,null,null, null,true,true,false);
+		return new Group(null,groupName,null,null,null, null,true,true);
 	}
 	public static Group CreatePrivateGroup(String groupName){
-		return new Group(null,groupName,null,null,null, null,false,true,true);
+		return new Group(null,groupName,null,null,null, null,false,true);
 	}
 	public static Group CreateEditGroup(String groupId){
-		return new Group(groupId,null,null,null,null,null,null,null,null);
+		return new Group(groupId,null,null,null,null,null,null,null);
 	}
-	public void copyFromObject(Object o){
+	public Group copyFromObject(Object o){
+		if(o==null){
+			System.err.println("The object is null");
+			return null;
+		}
 		ObjectMapper objectMapper = new ObjectMapper();
 		Group newGroup = null;
 		try {
@@ -106,8 +105,8 @@ public class Group {
 			e.printStackTrace();
 		}
 		if(newGroup==null){
-			System.err.println("CopyFromObject is null!");
-			return;
+			System.err.println("Mapping fail");
+			return null;
 		}
 		groupName = newGroup.groupName==null?groupName:newGroup.groupName;
 		groupDescription = newGroup.groupDescription==null?groupDescription:newGroup.groupDescription;
@@ -115,6 +114,6 @@ public class Group {
 		groupKeyword = newGroup.groupKeyword==null?groupKeyword:newGroup.groupKeyword;
 		isPublic = newGroup.isPublic==null?isPublic:newGroup.isPublic;
 		joinById = newGroup.joinById==null?joinById:newGroup.joinById;
-		allMessageBroadcast = newGroup.allMessageBroadcast==null?allMessageBroadcast:newGroup.allMessageBroadcast;
+		return this;
 	}
 }

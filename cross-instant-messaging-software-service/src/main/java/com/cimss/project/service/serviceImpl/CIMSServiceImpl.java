@@ -5,13 +5,10 @@ import com.cimss.project.database.GroupService;
 import com.cimss.project.database.MemberService;
 import com.cimss.project.linebot.LineMessageService;
 import com.cimss.project.service.*;
-import com.cimss.project.apibody.EventBean;
-import com.cimss.project.database.ManagerService;
 import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
-import com.cimss.project.service.token.PermissionList;
 import com.cimss.project.telegrambot.TelegramMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +23,6 @@ public class CIMSServiceImpl implements CIMSService {
     private LineMessageService lineMessageService;
     @Autowired
     private TelegramMessageService telegramMessageService;
-    @Autowired
-    private ManagerService managerService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -95,7 +90,7 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String grantPermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
         try{
-            managerService.grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+            memberService.grantPermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -105,7 +100,7 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String revokePermission(String instantMessagingSoftware, String instantMessagingSoftwareUserId, String groupId) {
         try{
-            managerService.revokePermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
+            memberService.revokePermission(instantMessagingSoftware,instantMessagingSoftwareUserId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -134,7 +129,6 @@ public class CIMSServiceImpl implements CIMSService {
             case "groupDescription"-> group.setGroupDescription(value);
             case "isPublic" -> group.setIsPublic(val);
             case "joinById" -> group.setJoinById(val);
-            case "allMessageBroadcast" -> group.setAllMessageBroadcast(val);
             default -> {return "Property not exist!";}
         }
         return alterGroup(group);
@@ -152,6 +146,7 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public String deleteGroup(String groupId) {
+        memberService.deleteAllMembers();
         return groupService.deleteGroup(groupId);
     }
 
