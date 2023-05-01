@@ -39,9 +39,9 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         String userId = event.getSource().getUserId();
-        eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.LINE.getName(),userId),text);
+        eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.LINE.name(),userId),text);
 //        webhookService.webhookSendEvent(InstantMessagingSoftwareList.LINE.getName(),userId,EventBean.createTransferEventBean(InstantMessagingSoftwareList.LINE.getName(),event));
-        cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.LINE.getName(),userId),lineMessageService.getUserProfile(userId).getDisplayName());
+        cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.LINE.name(),userId),lineMessageService.getUserProfile(userId).getDisplayName());
     }
 
     @EventMapping

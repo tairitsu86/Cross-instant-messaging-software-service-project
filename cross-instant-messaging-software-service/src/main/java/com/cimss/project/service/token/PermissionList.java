@@ -1,17 +1,7 @@
 package com.cimss.project.service.token;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public enum PermissionList {
     NONE,NORMAL,MANAGER,ADMIN;
-    private String permission;
     public boolean adminPermission(){
         return this==ADMIN;
     }

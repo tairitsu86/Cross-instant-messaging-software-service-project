@@ -50,15 +50,10 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public String sendTextMessage(UserId userId, String textMessage) {
-        InstantMessagingSoftwareList i;
-        try{
-            i = InstantMessagingSoftwareList.valueOf(userId.getInstantMessagingSoftware());
-        }catch (IllegalArgumentException e){
-            return "Instant messaging software not exist!";
-        }
-        switch(i) {
+        switch(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(userId.getInstantMessagingSoftware())) {
             case LINE-> lineMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
             case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId.getInstantMessagingSoftwareUserId()),textMessage);
+            default -> {return String.format("No support such instant messaging software named %s",userId.getInstantMessagingSoftware());}
         }
         return "Success";
     }
@@ -76,6 +71,11 @@ public class CIMSServiceImpl implements CIMSService {
             return e.getMessage();
         }
         return "Success!";
+    }
+
+    @Override
+    public String joinWithProperty(UserId userId, String groupId) {
+        return memberService.joinWithProperty(userId,groupId);
     }
 
     @Override
@@ -159,6 +159,16 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public List<User> getMembers(String groupId) {
         return memberService.getUsers(groupId);
+    }
+
+    @Override
+    public List<Group> getGroups(UserId userId) {
+        return memberService.getGroups(userId);
+    }
+
+    @Override
+    public User getUserById(UserId userId) {
+        return userService.getUserById(userId);
     }
 
 }

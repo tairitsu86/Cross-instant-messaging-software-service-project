@@ -6,33 +6,33 @@ Search group by keyword
 /cimss search <keyword>
 
 Create new group, you will auto joined this group, and have manager permission
-/cimss newgroup <groupname>
+/cimss new <group name>
 
 Join any group(witch didn't close the join by id function) by group id
-/cimss join <groupId>
+/cimss join <group id>
 
 Leave the group you joined
-/cimss leave <groupId>
+/cimss leave <group id>
 
 Show all group you joined now
 /cimss groups
 
-Get the detail data about the group
-/cimss detail <groupId>
-
 Require manager permission command:
 
+Get the detail data about the group
+/cimss detail <group id>
+
 Get all member data in group
-/cimss members <groupId>
+/cimss members <group id>
 
 Broadcast message to all member in group
-/cimss broadcast <groupId> <message>
+/cimss broadcast <group id> <message>
 
 Remove any member in the group
-/cimss remove <groupId> <software> <userId>
+/cimss remove <group id> <software> <userId>
 
 Alter the property of group
-/cimss alter <groupId> <property> <value>
+/cimss alter <group id> <property> <value>
 Property can be groupName,groupDescription,isPublic,joinById, or allMessageBroadcast(no use)
 When property is groupName or groupDescription, value can be any string
 Else, value only can be true or false

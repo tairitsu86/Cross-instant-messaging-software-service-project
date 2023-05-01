@@ -1,9 +1,6 @@
 package com.cimss.project.service.serviceImpl;
 
 import com.cimss.project.apibody.EventBean;
-import com.cimss.project.database.GroupService;
-import com.cimss.project.database.MemberService;
-import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.entity.UserId;
@@ -25,10 +22,6 @@ public class EventHandleServiceImpl implements EventHandleService {
     @Autowired
     private AuthorizationService authorizationService;
     @Autowired
-    private MemberService memberService;
-    @Autowired
-    private UserService userService;
-    @Autowired
     private CIMSService cimsService;
 
     @Override
@@ -38,7 +31,7 @@ public class EventHandleServiceImpl implements EventHandleService {
             cimsService.sendTextMessage(userId,executeResult);
             return;
         }
-        webhookService.webhookSendEvent(userId, EventBean.createTextMessageEventBean(userService.getUserById(userId) ,text));
+        webhookService.webhookSendEvent(userId, EventBean.createTextMessageEventBean(cimsService.getUserById(userId) ,text));
     }
     public String CIMSSdecoder(UserId userId,String command){
         String commandType = command.split(" ")[1];
@@ -57,7 +50,7 @@ public class EventHandleServiceImpl implements EventHandleService {
                     result = String.format("%s\n\nGroup:%s,id:%s\nIntroduce:\n%s", result, group.getGroupName(), group.getGroupId(), group.getGroupDescription());
                 }
             }
-            case "newgroup" ->{
+            case "new" ->{
                 String groupName = command.split(" ", 3)[2];
                 Group newGroup;
                 try {
@@ -70,10 +63,10 @@ public class EventHandleServiceImpl implements EventHandleService {
                 }
                 result = String.format("Create success,this is your group id:\n%s",newGroup.getGroupId());
             }
-            case "join" -> result = memberService.joinWithProperty(userId, command.split(" ", 3)[2]);
+            case "join" -> result = cimsService.joinWithProperty(userId, command.split(" ", 3)[2]);
             case "leave" -> result = cimsService.leave(userId, command.split(" ", 3)[2]);
             case "groups" -> {
-                List<Group> joinedGroup = memberService.getGroups(userId);
+                List<Group> joinedGroup = cimsService.getGroups(userId);
                 if(joinedGroup.size()==0){
                     result = "Didn't join any group now!";
                     break;
@@ -82,10 +75,6 @@ public class EventHandleServiceImpl implements EventHandleService {
                 for (Group group : joinedGroup) {
                     result = String.format("%s\n\nGroup:%s,id:%s", result, group.getGroupName(), group.getGroupId());
                 }
-            }
-            case "detail"->{
-                Group.GroupDetail detail = cimsService.groupDetail(command.split(" ",3)[2]);
-                result = String.format("Group:%s\nDescription:\n%s\n\nCommand start with: %s\nisPublic: %s\njoinById: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getGroupKeyword(),detail.getIsPublic(),detail.getJoinById());
             }
             default ->{
                 result = "Command error! Or you don't have the permission!";
@@ -99,6 +88,10 @@ public class EventHandleServiceImpl implements EventHandleService {
                             for(User user:users){
                                 result = String.format("%s\n%s %s\n%s",result,user.getInstantMessagingSoftware(),user.getUserName(),user.getInstantMessagingSoftwareUserId());
                             }
+                        }
+                        case "detail"->{
+                            Group.GroupDetail detail = cimsService.groupDetail(groupId);
+                            result = String.format("Group:%s\nDescription:\n%s\n\nCommand start with: %s\nisPublic: %s\njoinById: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getGroupKeyword(),detail.getIsPublic(),detail.getJoinById());
                         }
                         case "broadcast"-> result = cimsService.broadcast(groupId,command.split(" ",4)[3]);
                         case "remove"-> result = cimsService.leave(UserId.CreateUserId(command.split(" ",5)[3],command.split(" ",5)[4]),groupId);

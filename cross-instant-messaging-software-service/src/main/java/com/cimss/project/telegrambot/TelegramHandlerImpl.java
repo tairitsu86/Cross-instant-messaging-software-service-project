@@ -34,7 +34,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString()),text);
+		eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.name(),chatId.toString()),text);
 //		try {
 //			webhookService.webhookSendEvent(InstantMessagingSoftwareList.TELEGRAM.getName()
 //					,chatId.toString()
@@ -43,7 +43,7 @@ public class TelegramHandlerImpl implements TelegramHandler {
 //		} catch (JsonProcessingException e) {
 //			throw new RuntimeException(e);
 //		}
-		cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.getName(),chatId.toString()),message.chat().lastName()+message.chat().firstName());
+		cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.name(),chatId.toString()),message.chat().lastName()+message.chat().firstName());
 	}
 
 }

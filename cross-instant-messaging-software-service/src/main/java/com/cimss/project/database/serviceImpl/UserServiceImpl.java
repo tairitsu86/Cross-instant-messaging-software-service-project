@@ -5,6 +5,7 @@ import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.repository.UserRepository;
 import com.cimss.project.database.entity.UserId;
+import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        if(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(user.getInstantMessagingSoftware())==null)
+            return null;
         return userRepository.save(user);
     }
 

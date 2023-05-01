@@ -17,6 +17,7 @@ public interface CIMSService {
     User userRegister(UserId userId, String userName);
 
     String join(UserId userId,String groupId);
+    String joinWithProperty(UserId userId,String groupId);
 
     String leave(UserId userId, String groupId);
 
@@ -36,5 +37,8 @@ public interface CIMSService {
 
     List<Group.GroupData> searchGroup(String groupName);
     List<User> getMembers(String groupId);
+
+    List<Group> getGroups(UserId userId);
+    User getUserById(UserId userId);
 
 }
