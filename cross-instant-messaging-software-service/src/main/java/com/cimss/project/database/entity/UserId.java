@@ -24,7 +24,7 @@ public class UserId implements Serializable {
         return new UserId(instantMessagingSoftware,instantMessagingSoftwareUserId);
     }
     public static UserId CreateUserId(InstantMessagingSoftwareList instantMessagingSoftware, String instantMessagingSoftwareUserId){
-        return new UserId(instantMessagingSoftware.getName(),instantMessagingSoftwareUserId);
+        return new UserId(instantMessagingSoftware.name(),instantMessagingSoftwareUserId);
     }
     @Override
     public boolean equals(Object o) {

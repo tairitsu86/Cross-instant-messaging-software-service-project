@@ -16,7 +16,4 @@ public class MessageBean {
     public static MessageBean CreateMessageBean(String message){
         return new MessageBean(message);
     }
-    public static MessageBean CreateAuthorizationWrongMessageBean(){
-        return new MessageBean("Authorization error!");
-    }
 }
