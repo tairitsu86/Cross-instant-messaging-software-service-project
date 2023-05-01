@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MessageBean {
-    @Schema(description = "執行結果",example = "Success!")
+    @Schema(description = "執行結果",example = "Error description")
     private String message;
     public static MessageBean CreateMessageBean(String message){
         return new MessageBean(message);
