@@ -69,6 +69,8 @@ public class CIMSSController {
 								@NotNull @RequestBody ManageBean.SendBean sendBean) {
 		if(!authorizationService.authorization(accessToken, sendBean.getUserId()).managerPermission())
 			throw new UnauthorizedException();
+		if(sendBean.getUserId()==null) throw new RequestNotFoundException("userId");
+		if(sendBean.getMessage()==null) throw new RequestNotFoundException("message");
 		cimsService.sendTextMessage(sendBean.getUserId(), sendBean.getMessage());
 	}
 	@ResponseStatus(HttpStatus.OK)
