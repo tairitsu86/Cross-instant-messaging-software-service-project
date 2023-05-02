@@ -8,15 +8,8 @@ import com.cimss.project.database.entity.UserId;
 
 public interface UserService {
     User createUser(User user);
-
     User getUserById(UserId userId);
-
     List<User> getAllUsers();
-
-    void deleteUser(String instantMessagingSoftware,String instantMessagingSoftwareUserId);
-
-    boolean checkMember(Member member, UserId userId);
-
     void deleteAllUsers();
-
+    boolean isUserExist(UserId userId);
 }

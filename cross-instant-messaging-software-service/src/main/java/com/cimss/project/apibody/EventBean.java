@@ -1,5 +1,6 @@
 package com.cimss.project.apibody;
 
+import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -10,8 +11,8 @@ public class EventBean {
     public static TestEvent createTestEventBean(){
         return new TestEvent();
     }
-    public static TextMessageEvent createTextMessageEventBean(User user,String message){
-        return new TextMessageEvent(user,message);
+    public static TextMessageEvent createTextMessageEventBean(User user,Boolean isManager,String message){
+        return new TextMessageEvent(Member.CreateMemberData(user,isManager),message);
     }
     public static TransferEvent createTransferEventBean(InstantMessagingSoftwareList instantMessagingSoftware,Object eventObject){
         return new TransferEvent(instantMessagingSoftware,eventObject);
@@ -35,8 +36,14 @@ public class EventBean {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class TextMessageEvent extends EventBean{
         private final String eventType="TextMessage";
-        private User user;
+        private Member.MemberData member;
         private String message;
+        public void setIsManager(Boolean isManager){
+            this.member.setIsManager(isManager);
+        }
+        public User getUser(){
+            return this.member.toUser();
+        }
     }
     @Getter
     @Setter

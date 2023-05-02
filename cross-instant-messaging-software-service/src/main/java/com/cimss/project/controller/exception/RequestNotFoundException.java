@@ -13,15 +13,15 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RequestValueNotFoundException extends RuntimeException{
+public class RequestNotFoundException extends RuntimeException{
     private List<String> values;
     public String RequestValue(){
-        String result = String.format("Request value not found, this method request: %s",values.get(0));
+        String result = String.format("Request value not found, this method request %s",values.get(0));
         for(int i=1,l=values.size();i<l;i++)
             result = String.format("%s,%s",result,values.get(i));
         return result;
     }
-    public RequestValueNotFoundException(@NotNull String... values){
+    public RequestNotFoundException(@NotNull String... values){
         this.values = new ArrayList<>();
         for(String value:values)
             this.values.add(value);

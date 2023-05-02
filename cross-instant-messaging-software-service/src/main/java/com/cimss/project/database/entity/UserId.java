@@ -2,10 +2,7 @@ package com.cimss.project.database.entity;
 
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,6 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class UserId implements Serializable {
     @Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
     private String instantMessagingSoftware;

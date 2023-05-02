@@ -1,6 +1,7 @@
 package com.cimss.project.service;
 
 import com.cimss.project.database.entity.Group;
+import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.entity.UserId;
 
@@ -31,14 +32,18 @@ public interface CIMSService {
 
     String alterGroup(Group group);
 
-    Group.GroupDetail groupDetail(String groupId);
+    Group groupDetail(String groupId);
 
     String deleteGroup(String groupId);
 
     List<Group.GroupData> searchGroup(String groupName);
-    List<User> getMembers(String groupId);
-
+    List<Member.MemberData> getMembers(String groupId);
     List<Group> getGroups(UserId userId);
     User getUserById(UserId userId);
+    Group getGroupById(String groupId);
+    String getGroupIdByAuthorizationKey(String authorizationKey);
+    boolean isMember(UserId userId, String groupId);
+    boolean isManager(UserId userId,String groupId);
+    boolean isUserExist(UserId userId);
 
 }

@@ -2,10 +2,11 @@ package com.cimss.project.controller;
 
 import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.apibody.MessageBean;
-import com.cimss.project.controller.exception.RequestValueNotFoundException;
+import com.cimss.project.controller.exception.DataNotFoundException;
+import com.cimss.project.controller.exception.RequestNotFoundException;
 import com.cimss.project.controller.exception.UnauthorizedException;
 import com.cimss.project.database.entity.Group;
-import com.cimss.project.database.entity.User;
+import com.cimss.project.database.entity.Member;
 import com.cimss.project.service.AuthorizationService;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.WebhookService;
@@ -45,8 +46,8 @@ public class CIMSSController {
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "取得用戶資料", description = "必須用該群組的API KEY，否則會驗證失敗(無回傳)")
 	@GetMapping("/groups/{groupId}/members")
-	public List<User> getMembers(@RequestHeader(name = "Authorization") String accessToken,
-								 @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+	public List<Member.MemberData> getMembers(@RequestHeader(name = "Authorization") String accessToken,
+								   @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
 								 @PathVariable String groupId){
 		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
 			throw new UnauthorizedException();
@@ -58,6 +59,7 @@ public class CIMSSController {
 	@Operation(summary = "新增群組", description = "不用驗證，所有人都可以申請新群組")
 	@PostMapping("/groups/new")
 	public Group newGroup(@RequestBody ManageBean.NewGroupBean newGroupBean) {
+		if(newGroupBean.getGroupName()==null) throw new RequestNotFoundException("groupName");
 		return cimsService.newGroup(Group.CreateServiceGroup().copyFromObject(newGroupBean));
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -80,8 +82,8 @@ public class CIMSSController {
 	@Operation(summary = "測試webhook", description = "會發送一個測試事件給該群組的webhook")
 	@PostMapping("/groups/{groupId}/webhook/test")
 	public void webhookTest(@RequestHeader(name = "Authorization") String accessToken,
-								   				   @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
-												   @PathVariable String groupId){
+							@Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+							@PathVariable String groupId){
 		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
 			throw new UnauthorizedException();
 		webhookService.testWebhook(groupId);
@@ -89,9 +91,9 @@ public class CIMSSController {
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "群組詳細資料", description = "透過group id獲得該群組的詳細資料")
 	@GetMapping("/groups/{groupId}/detail")
-	public Group.GroupDetail groupDetail(@RequestHeader(name = "Authorization") String accessToken,
-										 @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
-										 @RequestParam String groupId) {
+	public Group groupDetail(@RequestHeader(name = "Authorization") String accessToken,
+							 @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+							 @PathVariable String groupId) {
 		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
 			throw new UnauthorizedException();
 		return cimsService.groupDetail(groupId);
@@ -105,10 +107,10 @@ public class CIMSSController {
 	@PutMapping("/groups/alter")
 	public void alterGroup(@RequestHeader(name = "Authorization") String accessToken,
 						   @NotNull @RequestBody ManageBean.AlterGroupBean alterGroupBean) {
+		if(alterGroupBean.getGroupId()==null)
+			throw new RequestNotFoundException("groupId");
 		if(!authorizationService.authorization(accessToken, alterGroupBean.getGroupId()).managerPermission())
 			throw new UnauthorizedException();
-		if(alterGroupBean.getGroupId()==null)
-			throw new RequestValueNotFoundException("groupId");
 		cimsService.alterGroup(Group.CreateEditGroup(alterGroupBean.getGroupId()).copyFromObject(alterGroupBean));
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)

@@ -97,30 +97,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public String setWebhook(String groupId,String webhook) {
-		Group group = getGroupById(groupId);
-		if(group==null) return "Group not exist!";
-		group.setGroupWebhook(webhook);
-		groupRepository.save(group);
-		return "Success set webhook:"+group.getGroupWebhook();
-	}
-
-	@Override
-	public String getWebhook(String groupId) {
-		Group group = getGroupById(groupId);
-		if(group==null) return "Group not exist!";
-		return group.getGroupWebhook();
-	}
-
-	@Override
-	public String getAuthorizationKey(String groupId) {
-		Group group = getGroupById(groupId);
-		if(group==null) return null;
-		return group.getAuthorizationKey();
-	}
-
-	@Override
-	public String getGroupByAuthorizationKey(String authorizationKey) {
+	public String getGroupIdByAuthorizationKey(String authorizationKey) {
 		List<Group> groups = getAllGroups();
 		for (Group group:groups){
 			if(group.getAuthorizationKey().equals(authorizationKey))

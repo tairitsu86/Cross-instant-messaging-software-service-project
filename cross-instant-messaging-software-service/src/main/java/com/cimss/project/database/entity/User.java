@@ -20,13 +20,10 @@ import lombok.ToString;
 @IdClass(UserId.class)
 public class User {
 	@Id
-	@Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
 	private String instantMessagingSoftware;
 	@Id
-	@Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
 	private String instantMessagingSoftwareUserId;
 	@Column
-	@Schema(description = "該用戶的名字",example = "王小明")
 	private String userName;
 	public static User CreateByUserId(UserId userId,String userName){
 		return new User(userId.getInstantMessagingSoftware(), userId.getInstantMessagingSoftwareUserId(), userName);

@@ -2,6 +2,7 @@ package com.cimss.project.service.serviceImpl;
 
 import com.cimss.project.apibody.EventBean;
 import com.cimss.project.database.entity.Group;
+import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.AuthorizationService;
@@ -31,7 +32,7 @@ public class EventHandleServiceImpl implements EventHandleService {
             cimsService.sendTextMessage(userId,executeResult);
             return;
         }
-        webhookService.webhookSendEvent(userId, EventBean.createTextMessageEventBean(cimsService.getUserById(userId) ,text));
+        webhookService.webhookSendEvent(userId, EventBean.createTextMessageEventBean(cimsService.getUserById(userId) ,null,text));
     }
     public String CIMSSdecoder(UserId userId,String command){
         String commandType = command.split(" ")[1];
@@ -77,21 +78,21 @@ public class EventHandleServiceImpl implements EventHandleService {
                 }
             }
             default ->{
-                result = "Command error! Or you don't have the permission!";
+                result = "Command error!\nOr you don't have the permission!";
                 if(CommandAuthorization(userId,command)){
                     //switch case for require manager permission command
                     String groupId = command.split(" ")[2];
                     switch (commandType){
                         case "members"->{
-                            List<User> users = cimsService.getMembers(groupId);
+                            List<Member.MemberData> members = cimsService.getMembers(groupId);
                             result = String.format("Members in \"%s\":",cimsService.groupDetail(groupId).getGroupName());
-                            for(User user:users){
-                                result = String.format("%s\n%s %s\n%s",result,user.getInstantMessagingSoftware(),user.getUserName(),user.getInstantMessagingSoftwareUserId());
+                            for(Member.MemberData member:members){
+                                result = String.format("%s\n%s %s\n%s\n%s\n",result,member.getUserName(),member.getIsManager()?"Group Manager":"Normal Member",member.getInstantMessagingSoftware(),member.getInstantMessagingSoftwareUserId());
                             }
                         }
                         case "detail"->{
-                            Group.GroupDetail detail = cimsService.groupDetail(groupId);
-                            result = String.format("Group:%s\nDescription:\n%s\n\nCommand start with: %s\nisPublic: %s\njoinById: %s",detail.getGroupName(),detail.getGroupDescription(),detail.getGroupKeyword(),detail.getIsPublic(),detail.getJoinById());
+                            Group group = cimsService.groupDetail(groupId);
+                            result = String.format("Group:%s\nID:%s\nDescription:\n%s\n\nAuthorizationKey: %s\nKeyword: %s\nWebhook: %s\nisPublic: %s\njoinById: %s",group.getGroupName(),group.getGroupId(),group.getGroupDescription(),group.getAuthorizationKey(),group.getGroupKeyword(),group.getGroupWebhook(),group.getIsPublic(),group.getJoinById());
                         }
                         case "broadcast"-> result = cimsService.broadcast(groupId,command.split(" ",4)[3]);
                         case "remove"-> result = cimsService.leave(UserId.CreateUserId(command.split(" ",5)[3],command.split(" ",5)[4]),groupId);

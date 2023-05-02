@@ -1,7 +1,8 @@
 package com.cimss.project.controller;
 
 import com.cimss.project.apibody.MessageBean;
-import com.cimss.project.controller.exception.RequestValueNotFoundException;
+import com.cimss.project.controller.exception.DataNotFoundException;
+import com.cimss.project.controller.exception.RequestNotFoundException;
 import com.cimss.project.controller.exception.UnauthorizedException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,14 @@ public class CIMSSExceptionHandler {
     public MessageBean unauthorizedExceptionHandler(UnauthorizedException e) {
         return MessageBean.CreateMessageBean("Authorization error!");
     }
-    @ExceptionHandler(RequestValueNotFoundException.class)
+    @ExceptionHandler(RequestNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MessageBean requestValueNotFoundExceptionHandler(@NotNull RequestValueNotFoundException e) {
+    public MessageBean requestNotFoundExceptionHandler(@NotNull RequestNotFoundException e) {
         return MessageBean.CreateMessageBean(e.RequestValue());
+    }
+    @ExceptionHandler(DataNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public MessageBean dataNotFoundExceptionHandler(@NotNull DataNotFoundException e) {
+        return MessageBean.CreateMessageBean(e.getErrorMessage());
     }
 }

@@ -53,6 +53,7 @@ public class MemberServicImpl implements MemberService {
 		Member member = memberRepository.getReferenceById(MemberId.CreateByUserId(userId,groupId));
 		if(member.getIsManager()) return "Already been manager!";
 		member.setIsManager(true);
+		memberRepository.save(member);
 		return "Success";
 	}
 
@@ -61,6 +62,7 @@ public class MemberServicImpl implements MemberService {
 		Member member = memberRepository.getReferenceById(MemberId.CreateByUserId(userId,groupId));
 		if(!member.getIsManager()) return "Not manager!";
 		member.setIsManager(false);
+		memberRepository.save(member);
 		return "Success";
 	}
 
@@ -73,13 +75,22 @@ public class MemberServicImpl implements MemberService {
 				users.add(userService.getUserById(member.toUserId()));
 		return users;
 	}
+	@Override
+	public List<Member.MemberData> getMembers(String groupId) {
+		List<Member> members = memberRepository.findAll();
+		List<Member.MemberData> memberData = new ArrayList<>();
+		for(Member member: members)
+			if(member.getGroupIdForeignKey().equals(groupId))
+				memberData.add(Member.CreateMemberData(userService.getUserById(member.toUserId()),member.getIsManager()));
+		return memberData;
+	}
 
 	@Override
 	public List<Group> getGroups(UserId userId) {
 		List<Member> members = memberRepository.findAll();
-		List<Group> groups = new ArrayList<Group>();
+		List<Group> groups = new ArrayList<>();
 		for(Member member: members) 
-			if(userService.checkMember(member,userId))
+			if(userId.equals(member.toUserId()))
 				groups.add(groupService.getGroupById(member.getGroupIdForeignKey()));
 		return groups;
 	}

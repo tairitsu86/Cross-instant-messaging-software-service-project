@@ -1,12 +1,12 @@
 package com.cimss.project.service.serviceImpl;
 
 
-import com.cimss.project.database.GroupService;
-import com.cimss.project.database.MemberService;
+import com.cimss.project.controller.exception.DataNotFoundException;
+import com.cimss.project.database.DatabaseService;
+import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.linebot.LineMessageService;
 import com.cimss.project.service.*;
-import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
@@ -19,20 +19,16 @@ import java.util.List;
 @Service
 public class CIMSServiceImpl implements CIMSService {
     @Autowired
-    private MemberService memberService;
+    private DatabaseService dataBaseService;
     @Autowired
     private LineMessageService lineMessageService;
     @Autowired
     private TelegramMessageService telegramMessageService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private GroupService groupService;
 
 
     @Override
     public String broadcast(String groupId,String text) {
-        List<User> users = memberService.getUsers(groupId);
+        List<User> users = dataBaseService.getUsers(groupId);
         for(User user:users) {
             sendTextMessage(user.toUserId(),text);
         }
@@ -41,7 +37,7 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public String broadcastAll(String text) {
-        List<User> users = userService.getAllUsers();
+        List<User> users = dataBaseService.getAllUsers();
         for(User user:users) {
             sendTextMessage(user.toUserId(),text);
         }
@@ -53,20 +49,19 @@ public class CIMSServiceImpl implements CIMSService {
         switch(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(userId.getInstantMessagingSoftware())) {
             case LINE-> lineMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
             case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId.getInstantMessagingSoftwareUserId()),textMessage);
-            default -> {return String.format("No support such instant messaging software named %s",userId.getInstantMessagingSoftware());}
         }
         return "Success";
     }
 
     @Override
     public User userRegister(UserId userId, String userName) {
-        return userService.createUser(User.CreateByUserId(userId,userName));
+        return dataBaseService.createUser(User.CreateByUserId(userId,userName));
     }
 
     @Override
     public String join(UserId userId, String groupId) {
         try{
-            memberService.join(userId,groupId);
+            dataBaseService.join(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -75,13 +70,13 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public String joinWithProperty(UserId userId, String groupId) {
-        return memberService.joinWithProperty(userId,groupId);
+        return dataBaseService.joinWithProperty(userId,groupId);
     }
 
     @Override
     public String leave(UserId userId, String groupId) {
         try{
-            memberService.leave(userId,groupId);
+            dataBaseService.leave(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -91,7 +86,7 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String grantPermission(UserId userId, String groupId) {
         try{
-            memberService.grantPermission(userId,groupId);
+            dataBaseService.grantPermission(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -101,7 +96,7 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String revokePermission(UserId userId, String groupId) {
         try{
-            memberService.revokePermission(userId,groupId);
+            dataBaseService.revokePermission(userId,groupId);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -110,7 +105,7 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public Group newGroup(Group group) {
-        return groupService.createGroup(group);
+        return dataBaseService.createGroup(group);
     }
 
     @Override
@@ -137,38 +132,63 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public String alterGroup(Group group) {
-        return groupService.alterGroup(group);
+        return dataBaseService.alterGroup(group);
     }
 
     @Override
-    public Group.GroupDetail groupDetail(String groupId) {
-        return Group.CreateDetailBean(groupService.getGroupById(groupId));
+    public Group groupDetail(String groupId) {
+        return dataBaseService.getGroupById(groupId);
     }
 
     @Override
     public String deleteGroup(String groupId) {
-        memberService.deleteAllMembers();
-        return groupService.deleteGroup(groupId);
+        dataBaseService.deleteAllMembers();
+        return dataBaseService.deleteGroup(groupId);
     }
 
     @Override
     public List<Group.GroupData> searchGroup(String groupName) {
-        return groupService.getGroupByName(groupName);
+        return dataBaseService.getGroupByName(groupName);
     }
 
     @Override
-    public List<User> getMembers(String groupId) {
-        return memberService.getUsers(groupId);
+    public List<Member.MemberData> getMembers(String groupId) {
+        return dataBaseService.getMembers(groupId);
     }
 
     @Override
     public List<Group> getGroups(UserId userId) {
-        return memberService.getGroups(userId);
+        return dataBaseService.getGroups(userId);
     }
 
     @Override
     public User getUserById(UserId userId) {
-        return userService.getUserById(userId);
+        return dataBaseService.getUserById(userId);
+    }
+
+    @Override
+    public Group getGroupById(String groupId) {
+        return dataBaseService.getGroupById(groupId);
+    }
+
+    @Override
+    public String getGroupIdByAuthorizationKey(String authorizationKey) {
+        return dataBaseService.getGroupIdByAuthorizationKey(authorizationKey);
+    }
+
+    @Override
+    public boolean isMember(UserId userId, String groupId) {
+        return dataBaseService.isMember(userId,groupId);
+    }
+
+    @Override
+    public boolean isManager(UserId userId, String groupId) {
+        return dataBaseService.isManager(userId,groupId);
+    }
+
+    @Override
+    public boolean isUserExist(UserId userId) {
+        return dataBaseService.isUserExist(userId);
     }
 
 }

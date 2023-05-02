@@ -18,7 +18,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "[GROUP]")
 public class Group {
 	@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")

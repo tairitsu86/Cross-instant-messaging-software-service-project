@@ -1,10 +1,10 @@
 package com.cimss.project.service.serviceImpl;
 
-import com.cimss.project.database.GroupService;
-import com.cimss.project.database.MemberService;
-import com.cimss.project.database.entity.User;
+import com.cimss.project.controller.exception.DataNotFoundException;
+import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.AuthorizationService;
+import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.token.PermissionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 public class AuthorizationServiceImpl implements AuthorizationService {
     private static final String ADMIN_TOKEN = System.getenv("CIMSS_ADMIN_TOKEN");
     @Autowired
-    private GroupService groupService;
-    @Autowired
-    private MemberService memberService;
+    private CIMSService cimsService;
 
     @Override
     public PermissionList authorization(String accessToken) {
@@ -25,22 +23,28 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
     @Override
     public PermissionList authorization(String accessToken, UserId userId) {
-        String groupId = groupService.getGroupByAuthorizationKey(accessToken);
+        if(authorization(accessToken)==PermissionList.ADMIN)
+            return PermissionList.ADMIN;
+        String groupId = cimsService.getGroupIdByAuthorizationKey(accessToken);
         if(groupId==null) return PermissionList.NONE;
-        if(memberService.isMember(userId,groupId))
+        if(cimsService.isMember(userId,groupId))
             return PermissionList.MANAGER;
         return PermissionList.NONE;
     }
     @Override
     public PermissionList authorization(String accessToken, String groupId) {
-        if(accessToken.equals(groupService.getAuthorizationKey(groupId)))
+        if(authorization(accessToken)==PermissionList.ADMIN)
+            return PermissionList.ADMIN;
+        Group group = cimsService.getGroupById(groupId);
+        if(group==null) throw new DataNotFoundException("groupId",groupId);
+        if(accessToken.equals(cimsService.getGroupById(groupId).getAuthorizationKey()))
             return PermissionList.MANAGER;
         return PermissionList.NONE;
     }
     @Override
     public PermissionList authorization(UserId executor,String groupId) {
         if(executor==null||groupId==null) return PermissionList.NONE;
-        if(memberService.isManager(executor,groupId)) return PermissionList.MANAGER;
+        if(cimsService.isManager(executor,groupId)) return PermissionList.MANAGER;
         return PermissionList.NONE;
     }
 }

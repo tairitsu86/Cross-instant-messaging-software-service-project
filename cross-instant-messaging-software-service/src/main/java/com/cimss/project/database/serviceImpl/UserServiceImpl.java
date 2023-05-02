@@ -37,17 +37,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String instantMessagingSoftware,String instantMessagingSoftwareUserId) {
-        userRepository.deleteById(new UserId(instantMessagingSoftware, instantMessagingSoftwareUserId));
-    }
-
-    @Override
-    public boolean checkMember(Member member, UserId userId) {
-        return userId.equals(new UserId(member.getInstantMessagingSoftwareForeignKey(), member.getInstantMessagingSoftwareUserIdForeignKey()));
-    }
-
-    @Override
     public void deleteAllUsers() {
         userRepository.deleteAll();
+    }
+
+    @Override
+    public boolean isUserExist(UserId userId) {
+        return userRepository.existsById(userId);
     }
 }
