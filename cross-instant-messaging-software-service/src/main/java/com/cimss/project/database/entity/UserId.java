@@ -13,9 +13,9 @@ import java.util.Objects;
 @Setter
 @ToString
 public class UserId implements Serializable {
-    @Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
+    @Schema(description = "Name of IM(all uppercase)",example = "LINE")
     private String instantMessagingSoftware;
-    @Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
+    @Schema(description = "IM user id",example = "U11111111111111111111111111111111")
     private String instantMessagingSoftwareUserId;
 
     public static UserId CreateUserId(String instantMessagingSoftware,String instantMessagingSoftwareUserId){

@@ -2,7 +2,6 @@ package com.cimss.project.controller;
 
 import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.apibody.MessageBean;
-import com.cimss.project.controller.exception.DataNotFoundException;
 import com.cimss.project.controller.exception.RequestNotFoundException;
 import com.cimss.project.controller.exception.UnauthorizedException;
 import com.cimss.project.database.entity.Group;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "跨即時通訊軟體微服務API")
+@Tag(name = "Cross-IM Services API")
 @RestController
 public class CIMSSController {
 	
@@ -44,26 +43,43 @@ public class CIMSSController {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@Operation(summary = "取得用戶資料", description = "必須用該群組的API KEY，否則會驗證失敗(無回傳)")
+	@Operation(summary = "Get data of all members", description = "Can get name,user id,the IM he/she used, and member kind.")
 	@GetMapping("/groups/{groupId}/members")
 	public List<Member.MemberData> getMembers(@RequestHeader(name = "Authorization") String accessToken,
-								   @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+								   @Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 								 @PathVariable String groupId){
 		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
 			throw new UnauthorizedException();
 		return cimsService.getMembers(groupId);
 	}
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "Search group", description = "Search group by the keyword you provide.")
+	@GetMapping("/groups/{keyword}/search")
+	public List<Group.GroupData> searchGroup(@Parameter(description = "Any word", example = "my group")
+											 @PathVariable String keyword) {
+		return cimsService.searchGroup(keyword);
+	}
+	@ResponseStatus(HttpStatus.OK)
+	@Operation(summary = "The detail data of the group", description = "Get the group data in detail by group id.")
+	@GetMapping("/groups/{groupId}/detail")
+	public Group groupDetail(@RequestHeader(name = "Authorization") String accessToken,
+							 @Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
+							 @PathVariable String groupId) {
+		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
+			throw new UnauthorizedException();
+		return cimsService.groupDetail(groupId);
+	}
 
-	//post method
+	//patch method
 	@ResponseStatus(HttpStatus.CREATED)
-	@Operation(summary = "新增群組", description = "不用驗證，所有人都可以申請新群組")
+	@Operation(summary = "Create new group", description = "Create your own group.")
 	@PostMapping("/groups/new")
 	public Group newGroup(@RequestBody ManageBean.NewGroupBean newGroupBean) {
 		if(newGroupBean.getGroupName()==null) throw new RequestNotFoundException("groupName");
 		return cimsService.newGroup(Group.CreateServiceGroup().copyFromObject(newGroupBean));
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "寄文字訊息給指定使用者", description = "該使用者必須是API KEY對應群組內成員，否則會驗證失敗")
+	@Operation(summary = "Send text message to order user", description = "The user must be in the group that api key mapping.")
 	@PostMapping("/send/text")
 	public void sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
 								@NotNull @RequestBody ManageBean.SendBean sendBean) {
@@ -73,40 +89,24 @@ public class CIMSSController {
 		if(sendBean.getMessage()==null) throw new RequestNotFoundException("message");
 		cimsService.sendTextMessage(sendBean.getUserId(), sendBean.getMessage());
 	}
-	@ResponseStatus(HttpStatus.OK)
-	@Operation(summary = "搜尋群組", description = "透過keyword搜尋群組")
-	@GetMapping("/groups/{keyword}/search")
-	public List<Group.GroupData> searchGroup(@Parameter(description = "任意文字", example = "my group")
-											 @PathVariable String keyword) {
-		return cimsService.searchGroup(keyword);
-	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "測試webhook", description = "會發送一個測試事件給該群組的webhook")
+	@Operation(summary = "Webhook test", description = "Send a test event to the webhook of the group.")
 	@PostMapping("/groups/{groupId}/webhook/test")
 	public void webhookTest(@RequestHeader(name = "Authorization") String accessToken,
-							@Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+							@Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 							@PathVariable String groupId){
 		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
 			throw new UnauthorizedException();
 		webhookService.testWebhook(groupId);
 	}
-	@ResponseStatus(HttpStatus.OK)
-	@Operation(summary = "群組詳細資料", description = "透過group id獲得該群組的詳細資料")
-	@GetMapping("/groups/{groupId}/detail")
-	public Group groupDetail(@RequestHeader(name = "Authorization") String accessToken,
-							 @Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
-							 @PathVariable String groupId) {
-		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
-			throw new UnauthorizedException();
-		return cimsService.groupDetail(groupId);
-	}
 
 
 
-	//put method
+
+	//Patch method
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "更改群組屬性", description = "groupId必填，其餘填修改項即可")
-	@PutMapping("/groups/alter")
+	@Operation(summary = "Alter the group attributes", description = "Request body must have groupId.")
+	@PatchMapping("/groups/alter")
 	public void alterGroup(@RequestHeader(name = "Authorization") String accessToken,
 						   @NotNull @RequestBody ManageBean.AlterGroupBean alterGroupBean) {
 		if(alterGroupBean.getGroupId()==null)
@@ -116,8 +116,8 @@ public class CIMSSController {
 		cimsService.alterGroup(Group.CreateEditGroup(alterGroupBean.getGroupId()).copyFromObject(alterGroupBean));
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "群組廣播文字訊息", description = "廣播文字訊息給所有成員")
-	@PutMapping("/broadcast/text")
+	@Operation(summary = "Broadcast text message", description = "Broadcast text message to everyone in the group.")
+	@PatchMapping("/broadcast/text")
 	public void broadcast(@RequestHeader(name = "Authorization") String accessToken,
 						  @NotNull @RequestBody ManageBean.BroadcastBean broadcastBean) {
 		if(!authorizationService.authorization(accessToken, broadcastBean.getGroupId()).managerPermission())
@@ -125,8 +125,8 @@ public class CIMSSController {
 		cimsService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage());
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "賦予成員管理員權限", description = "必須用該群組的API KEY，否則會驗證失敗")
-	@PutMapping("/permission/grant")
+	@Operation(summary = "Grant permission", description = "Grant manager permission to any member.")
+	@PatchMapping("/permission/grant")
 	public void grantPermission(@RequestHeader(name = "Authorization") String accessToken,
 								@NotNull @RequestBody ManageBean.GrantPermissionBean grantPermissionBean) {
 		if(!authorizationService.authorization(accessToken, grantPermissionBean.getGroupId()).managerPermission())
@@ -134,8 +134,8 @@ public class CIMSSController {
 		cimsService.grantPermission(grantPermissionBean.getUserId(), grantPermissionBean.getGroupId());
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "移除成員管理員權限", description = "必須用該群組的API KEY，否則會驗證失敗")
-	@PutMapping("/permission/revoke")
+	@Operation(summary = "Revoke permission", description = "Revoke manager permission to any member.")
+	@PatchMapping("/permission/revoke")
 	public void revokePermission(@RequestHeader(name = "Authorization") String accessToken,
 								 @NotNull @RequestBody ManageBean.GrantPermissionBean grantPermissionBean) {
 		if(!authorizationService.authorization(accessToken, grantPermissionBean.getGroupId()).managerPermission())
@@ -145,10 +145,10 @@ public class CIMSSController {
 
 	//delete method
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "刪除群組", description = "不可逆操作，請小心使用")
+	@Operation(summary = "Delete group", description = "Delete the group by group id.")
 	@DeleteMapping("/groups/{groupId}/delete")
 	public void deleteGroup(@RequestHeader(name = "Authorization") String accessToken,
-							@Parameter(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+							@Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 							@PathVariable String groupId) {
 		if(!authorizationService.authorization(accessToken,groupId).managerPermission())
 			throw new UnauthorizedException();

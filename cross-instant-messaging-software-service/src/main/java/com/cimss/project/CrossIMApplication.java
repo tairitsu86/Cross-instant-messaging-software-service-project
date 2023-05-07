@@ -6,10 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class InstantMessageApplication {
-    private final Logger log = LoggerFactory.getLogger(InstantMessageApplication.class);
+public class CrossIMApplication {
+    private final Logger log = LoggerFactory.getLogger(CrossIMApplication.class);
 
     public static void main(String[] args) {
-        SpringApplication.run(InstantMessageApplication.class, args);
+        SpringApplication.run(CrossIMApplication.class, args);
     }
 }

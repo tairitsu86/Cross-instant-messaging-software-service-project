@@ -32,7 +32,7 @@ public class Member {
 		return new Member(userId.getInstantMessagingSoftware(), userId.getInstantMessagingSoftwareUserId(), groupId,false);
 	}
 	public static MemberData CreateMemberData(User user,Boolean isManager){
-		return new MemberData(user.getInstantMessagingSoftware(),user.getInstantMessagingSoftwareUserId(), user.getUserName(), isManager);
+		return new MemberData(user.toUserId(), user.getUserName(), isManager);
 	}
 	public UserId toUserId(){
 		return UserId.CreateUserId(instantMessagingSoftwareForeignKey,instantMessagingSoftwareUserIdForeignKey);
@@ -42,16 +42,14 @@ public class Member {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class MemberData{
-		@Schema(description = "該用戶使用的即時通訊軟體全大寫英文名稱",example = "LINE")
-		private String instantMessagingSoftware;
-		@Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
-		private String instantMessagingSoftwareUserId;
-		@Schema(description = "該用戶的名字",example = "王小明")
+		@Schema(description = "Data of the user")
+		private UserId userId;
+		@Schema(description = "User name",example = "David")
 		private String userName;
-		@Schema(description = "是否為管理員",example = "false")
+		@Schema(description = "Is manager",example = "false")
 		private Boolean isManager;
 		public User toUser(){
-			return new User(instantMessagingSoftware,instantMessagingSoftwareUserId,userName);
+			return User.CreateByUserId(userId,userName);
 		}
 	}
 }	

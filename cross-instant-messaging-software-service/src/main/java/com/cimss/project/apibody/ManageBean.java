@@ -10,81 +10,81 @@ public class ManageBean {
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class SendBean{
-        @Schema(description = "該用戶的資料")
+        @Schema(description = "Data of the user")
         private UserId userId;
-        @Schema(description = "要寄送的文字訊息",example = "你好!")
+        @Schema(description = "The text message.",example = "Hello!")
         private String message;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class BroadcastBean{
-        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
         private String groupId;
-        @Schema(description = "要寄送的文字訊息",example = "你好!")
+        @Schema(description = "The text message.",example = "Hello!")
         private String message;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class NewGroupBean{
-        @Schema(description = "該群組的名字",example = "我ㄉ群組")
+        @Schema(description = "Name of the group.",example = "My group")
         private String groupName;
-        @Schema(description = "該群組的敘述",example = "這是我的群組",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Description of the group.",example = "This is my group!",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupDescription;
-        @Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupWebhook;
-        @Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "The prefix of the command this group provide.",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupKeyword;
-        @Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?(預設true)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "This group is public or private.",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean isPublic;
-        @Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)(預設true)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Can any user join this group by group id?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean joinById;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class AlterGroupBean{
-        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
         private String groupId;
-        @Schema(description = "該群組的名字",example = "我ㄉ群組",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Name of the group.",example = "My group",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupName;
-        @Schema(description = "該群組的敘述",example = "這是我的群組",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Description of the group.",example = "This is my group!",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupDescription;
-        @Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupWebhook;
-        @Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "The prefix of the command this group provide.",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupKeyword;
-        @Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "This group is public or private.",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean isPublic;
-        @Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @Schema(description = "Can any user join this group by group id?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean joinById;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class AddBean{
-        @Schema(description = "該用戶的資料")
+        @Schema(description = "Data of the user")
         private UserId userId;
-        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
         private String groupId;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class SetWebhookBean{
-        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
         private String groupId;
-        @Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook")
+        @Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook")
         private String groupWebhook;
     }
     @Getter
     @Setter
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class GrantPermissionBean{
-        @Schema(description = "該用戶的資料")
+        @Schema(description = "Data of the user")
         private UserId userId;
-        @Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
         private String groupId;
     }
 }

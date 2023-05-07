@@ -1,7 +1,8 @@
-package com.cimss.project.telegrambot;
+package com.cimss.project.im.telegrambot;
 
 import java.io.IOException;
 
+import com.cimss.project.im.IMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,19 +12,19 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 
-@Service
-public class TelegramMessageService {
+@Service("TELEGRAM")
+public class TelegramMessageService implements IMService {
 	
 	@Autowired
 	private TelegramBot telegramBot;
-	
-	SendMessage request;
-	
-	public void sendTextMessage(Long chatId, String message) {
-		request = new SendMessage(chatId, message)
+
+	@Override
+	public String sendTextMessage(String userId, String textMessage) {
+		long chatId = Long.parseLong(userId);
+		SendMessage request = new SendMessage(chatId, textMessage)
 				.parseMode(ParseMode.HTML)
 				.disableWebPagePreview(false)
-		        .disableNotification(false);
+				.disableNotification(false);
 		System.out.println(request.toWebhookResponse());
 		telegramBot.execute(request, new Callback<SendMessage, SendResponse>() {
 			@Override
@@ -35,5 +36,6 @@ public class TelegramMessageService {
 				e.printStackTrace();
 			}
 		});
+		return null;
 	}
 }

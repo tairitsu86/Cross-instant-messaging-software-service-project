@@ -1,17 +1,16 @@
 package com.cimss.project.service.serviceImpl;
 
 
-import com.cimss.project.controller.exception.DataNotFoundException;
 import com.cimss.project.database.DatabaseService;
 import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.UserId;
-import com.cimss.project.linebot.LineMessageService;
+import com.cimss.project.im.IMService;
 import com.cimss.project.service.*;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.service.token.InstantMessagingSoftwareList;
-import com.cimss.project.telegrambot.TelegramMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +20,11 @@ public class CIMSServiceImpl implements CIMSService {
     @Autowired
     private DatabaseService dataBaseService;
     @Autowired
-    private LineMessageService lineMessageService;
+    @Qualifier("LINE")
+    private IMService lineMessageService;
     @Autowired
-    private TelegramMessageService telegramMessageService;
+    @Qualifier("TELEGRAM")
+    private IMService telegramMessageService;
 
 
     @Override
@@ -48,7 +49,7 @@ public class CIMSServiceImpl implements CIMSService {
     public String sendTextMessage(UserId userId, String textMessage) {
         switch(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(userId.getInstantMessagingSoftware())) {
             case LINE-> lineMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
-            case TELEGRAM-> telegramMessageService.sendTextMessage(Long.valueOf(userId.getInstantMessagingSoftwareUserId()),textMessage);
+            case TELEGRAM-> telegramMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
         }
         return "Success";
     }

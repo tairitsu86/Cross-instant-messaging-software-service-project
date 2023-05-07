@@ -1,4 +1,4 @@
-package com.cimss.project.telegrambot;
+package com.cimss.project.im.telegrambot;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import com.pengrad.telegrambot.BotUtils;
 public class TelegramController {
 	
 	@Autowired
-	private TelegramHandler handler;
+	private TelegramHandler telegramHandler;
 
 	@PostMapping("${TELEGRAM_WEBHOOK}")
 	public void tgWebhook(@RequestBody String update) {
 		System.out.println(update);
-		handler.handleUpdate(BotUtils.parseUpdate(update));
+		telegramHandler.handleUpdate(BotUtils.parseUpdate(update));
 	}
 }

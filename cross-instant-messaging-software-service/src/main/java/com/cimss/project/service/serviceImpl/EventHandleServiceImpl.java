@@ -87,7 +87,7 @@ public class EventHandleServiceImpl implements EventHandleService {
                             List<Member.MemberData> members = cimsService.getMembers(groupId);
                             result = String.format("Members in \"%s\":",cimsService.groupDetail(groupId).getGroupName());
                             for(Member.MemberData member:members){
-                                result = String.format("%s\n%s %s\n%s\n%s\n",result,member.getUserName(),member.getIsManager()?"Group Manager":"Normal Member",member.getInstantMessagingSoftware(),member.getInstantMessagingSoftwareUserId());
+                                result = String.format("%s\n%s %s\n%s\n%s\n",result,member.getUserName(),member.getIsManager()?"Group Manager":"Normal Member",member.getUserId().getInstantMessagingSoftware(),member.getUserId().getInstantMessagingSoftwareUserId());
                             }
                         }
                         case "detail"->{

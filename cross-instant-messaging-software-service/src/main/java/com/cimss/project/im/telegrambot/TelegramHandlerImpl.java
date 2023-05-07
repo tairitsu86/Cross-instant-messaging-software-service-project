@@ -1,4 +1,4 @@
-package com.cimss.project.telegrambot;
+package com.cimss.project.im.telegrambot;
 
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.CIMSService;

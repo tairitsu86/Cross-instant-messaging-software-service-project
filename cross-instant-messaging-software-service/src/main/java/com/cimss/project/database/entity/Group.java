@@ -20,28 +20,28 @@ import lombok.ToString;
 @Entity
 @Table(name = "[GROUP]")
 public class Group {
-	@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+	@Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 	@Id
 	private String groupId;
-	@Schema(description = "該群組的名字",example = "我ㄉ群組")
+	@Schema(description = "Name of the group.",example = "My group")
 	@Column
 	private String groupName;
-	@Schema(description = "該群組的敘述",example = "這是我的群組")
+	@Schema(description = "Description of the group.",example = "This is my group!")
 	@Column
 	private String groupDescription;
-	@Schema(description = "該群組的Webhook",example = "https://myWebService/cimssWebhook")
+	@Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook")
 	@Column
 	private String groupWebhook;
-	@Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService")
+	@Schema(description = "The prefix of the command this group provide.",example = "myService")
 	@Column
 	private String groupKeyword;
-	@Schema(description = "該群組的API KEY",example = "1b619a98-55b4-4d80-8f50-e7aa9fde8cc5")
+	@Schema(description = "API key of the group.",example = "1b619a98-55b4-4d80-8f50-e7aa9fde8cc5")
 	@Column
 	private String authorizationKey;
-	@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true")
+	@Schema(description = "This group is public or private.",example = "true")
 	@Column
 	private Boolean isPublic;
-	@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?",example = "true")
+	@Schema(description = "Can any user join this group by group id?",example = "true")
 	@Column
 	private Boolean joinById;
 	public static GroupData CreateDataBean(Group group){
@@ -53,34 +53,12 @@ public class Group {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	public static class GroupData{
-		@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
+		@Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 		private String groupId;
-		@Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
+		@Schema(description = "Name of the group.",example = "My group")
 		private String groupName;
-		@Schema(description = "該群組的敘述",example = "這是我的群組")
+		@Schema(description = "Description of the group.",example = "This is my group!")
 		private String groupDescription;
-	}
-	public static GroupDetail CreateDetailBean(Group group){
-		return new GroupDetail(group.groupId,group.groupName,group.groupDescription, group.groupKeyword, group.isPublic,group.joinById);
-	}
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class GroupDetail{
-		@Schema(description = "該群組的ID，由6位英數字組合的字串", example = "AbCd12")
-		private String groupId;
-		@Schema(description = "該用戶的即時通訊軟體ID",example = "U11111111111111111111111111111111")
-		private String groupName;
-		@Schema(description = "該群組的敘述",example = "這是我的群組")
-		private String groupDescription;
-		@Schema(description = "若文字訊息開頭符合關鍵字，將觸發Webhook寄送事件",example = "myService")
-		private String groupKeyword;
-		@Schema(description = "該群組是否為公開(能被搜尋功能找到)群組?",example = "true")
-		private Boolean isPublic;
-		@Schema(description = "其他使用者是否可以透過系統指令和group id加入此群組?(對API無影響)",example = "true")
-		private Boolean joinById;
 	}
 	public static Group CreateServiceGroup(){
 		return new Group(null,null,null,null,null, null,true,true);

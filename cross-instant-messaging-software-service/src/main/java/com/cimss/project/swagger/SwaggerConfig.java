@@ -18,8 +18,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info().title("Cross-instant messaging software microservices API")
-                        .description("Cross-instant messaging software microservices Restful API")
+                .info(new Info().title("Cross-IM Services API")
+                        .description("Cross-IM Services Restful API")
                         .version("v1.0.0")
 //                        .termsOfService("https://www.jianshu.com/u/c8c1e5ac61e0")
 //                        .license(new License().name("****").url("https://www.jiahetng.com"))
