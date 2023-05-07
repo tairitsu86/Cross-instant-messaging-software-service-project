@@ -1,4 +1,4 @@
-package com.cimss.project.telegrambot;
+package com.cimss.project.im.telegrambot;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
