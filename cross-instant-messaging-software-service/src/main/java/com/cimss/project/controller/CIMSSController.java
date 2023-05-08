@@ -100,7 +100,16 @@ public class CIMSSController {
 		webhookService.testWebhook(groupId);
 	}
 
-
+	//Put method
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Operation(summary = "Broadcast text message", description = "Broadcast text message to everyone in the group.")
+	@PutMapping("/broadcast/text")
+	public void broadcast(@RequestHeader(name = "Authorization") String accessToken,
+						  @NotNull @RequestBody ManageBean.BroadcastBean broadcastBean) {
+		if(!authorizationService.authorization(accessToken, broadcastBean.getGroupId()).managerPermission())
+			throw new UnauthorizedException();
+		cimsService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage());
+	}
 
 
 	//Patch method
@@ -115,15 +124,7 @@ public class CIMSSController {
 			throw new UnauthorizedException();
 		cimsService.alterGroup(Group.CreateEditGroup(alterGroupBean.getGroupId()).copyFromObject(alterGroupBean));
 	}
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "Broadcast text message", description = "Broadcast text message to everyone in the group.")
-	@PatchMapping("/broadcast/text")
-	public void broadcast(@RequestHeader(name = "Authorization") String accessToken,
-						  @NotNull @RequestBody ManageBean.BroadcastBean broadcastBean) {
-		if(!authorizationService.authorization(accessToken, broadcastBean.getGroupId()).managerPermission())
-			throw new UnauthorizedException();
-		cimsService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage());
-	}
+
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Grant permission", description = "Grant manager permission to any member.")
 	@PatchMapping("/permission/grant")
