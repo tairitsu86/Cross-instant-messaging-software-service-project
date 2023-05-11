@@ -28,8 +28,10 @@ public class CIMSServiceImpl implements CIMSService {
 
 
     @Override
-    public String broadcast(String groupId,String text) {
+    public String broadcast(String groupId,String text,List<UserId> ignoreList) {
         List<User> users = dataBaseService.getUsers(groupId);
+        if(ignoreList!=null)
+            users.removeAll(ignoreList);
         for(User user:users) {
             sendTextMessage(user.toUserId(),text);
         }

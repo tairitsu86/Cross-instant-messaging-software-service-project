@@ -108,7 +108,9 @@ public class CIMSSController {
 						  @NotNull @RequestBody ManageBean.BroadcastBean broadcastBean) {
 		if(!authorizationService.authorization(accessToken, broadcastBean.getGroupId()).managerPermission())
 			throw new UnauthorizedException();
-		cimsService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage());
+		if(broadcastBean.getGroupId()==null) throw new RequestNotFoundException("groupId");
+		if(broadcastBean.getMessage()==null) throw new RequestNotFoundException("message");
+		cimsService.broadcast(broadcastBean.getGroupId(), broadcastBean.getMessage(),broadcastBean.getIgnoreList());
 	}
 
 

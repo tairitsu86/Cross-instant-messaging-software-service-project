@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CIMSService {
 
-    String broadcast(String groupId,String text);
+    String broadcast(String groupId,String text,List<UserId> ignoreList);
 
     String broadcastAll(String text);
 

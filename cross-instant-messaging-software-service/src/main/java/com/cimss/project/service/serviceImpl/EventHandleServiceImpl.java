@@ -94,7 +94,7 @@ public class EventHandleServiceImpl implements EventHandleService {
                             Group group = cimsService.groupDetail(groupId);
                             result = String.format("Group:%s\nID:%s\nDescription:\n%s\n\nAuthorizationKey: %s\nKeyword: %s\nWebhook: %s\nisPublic: %s\njoinById: %s",group.getGroupName(),group.getGroupId(),group.getGroupDescription(),group.getAuthorizationKey(),group.getGroupKeyword(),group.getGroupWebhook(),group.getIsPublic(),group.getJoinById());
                         }
-                        case "broadcast"-> result = cimsService.broadcast(groupId,command.split(" ",4)[3]);
+                        case "broadcast"-> result = cimsService.broadcast(groupId,command.split(" ",4)[3],null);
                         case "remove"-> result = cimsService.leave(UserId.CreateUserId(command.split(" ",5)[3],command.split(" ",5)[4]),groupId);
                         case "alter"-> result = cimsService.alterGroup(groupId,command.split(" ",5)[3],command.split(" ",5)[4]);
                     }

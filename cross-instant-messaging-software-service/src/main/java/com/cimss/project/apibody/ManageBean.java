@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.util.List;
+
 public class ManageBean {
     @Getter
     @Setter
@@ -23,6 +25,8 @@ public class ManageBean {
         private String groupId;
         @Schema(description = "The text message.",example = "Hello!")
         private String message;
+        @Schema(description = "User in ignore list will not get the broadcast message.")
+        private List<UserId> ignoreList;
     }
     @Getter
     @Setter
