@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,10 +31,14 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String broadcast(String groupId,String text,List<UserId> ignoreList) {
         List<User> users = dataBaseService.getUsers(groupId);
-        if(ignoreList!=null)
-            users.removeAll(ignoreList);
+        List<UserId> userIdList = new ArrayList<>();
         for(User user:users) {
-            sendTextMessage(user.toUserId(),text);
+            userIdList.add(user.toUserId());
+        }
+        if(ignoreList!=null)
+            userIdList.removeAll(ignoreList);
+        for(UserId userId:userIdList) {
+            sendTextMessage(userId,text);
         }
         return "Broadcast done!";
     }
