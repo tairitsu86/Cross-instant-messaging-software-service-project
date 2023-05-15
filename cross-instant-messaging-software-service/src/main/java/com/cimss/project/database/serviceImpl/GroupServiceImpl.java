@@ -23,8 +23,6 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Group createGroup(Group group) {
 		group.setGroupId(newId());
-		group.setAuthorizationKey(UUID.randomUUID().toString());
-		if(group.getGroupDescription()==null) group.setGroupDescription("None");
 		return groupRepository.save(group);
 	}
 	public String newId(){
@@ -96,14 +94,5 @@ public class GroupServiceImpl implements GroupService {
 		groupRepository.deleteAll();
 	}
 
-	@Override
-	public String getGroupIdByAuthorizationKey(String authorizationKey) {
-		List<Group> groups = getAllGroups();
-		for (Group group:groups){
-			if(group.getAuthorizationKey().equals(authorizationKey))
-				return group.getGroupId();
-		}
-		return null;
-	}
 
 }

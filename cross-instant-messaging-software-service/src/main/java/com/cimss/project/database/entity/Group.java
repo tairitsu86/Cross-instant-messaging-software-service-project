@@ -18,31 +18,29 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "[GROUP]")
+@Table(name = "CIMSS_GROUP")
 public class Group {
 	@Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 	@Id
+	@Column(name = "group_id")
 	private String groupId;
 	@Schema(description = "Name of the group.",example = "My group")
-	@Column
+	@Column(nullable=false)
 	private String groupName;
 	@Schema(description = "Description of the group.",example = "This is my group!")
 	@Column
 	private String groupDescription;
-	@Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook")
-	@Column
-	private String groupWebhook;
-	@Schema(description = "The prefix of the command this group provide.",example = "myService")
-	@Column
-	private String groupKeyword;
-	@Schema(description = "API key of the group.",example = "1b619a98-55b4-4d80-8f50-e7aa9fde8cc5")
-	@Column
-	private String authorizationKey;
-	@Schema(description = "This group is public or private.",example = "true")
-	@Column
+	@Schema(description = "The delivery mode of this group.",example = "NONE")
+	@Column(nullable=false)
+	private String deliveryMode;
+	@Schema(description = "The function list of this group.",example = "{}")
+	@Column(columnDefinition = "json")
+	private String functionList;
+	@Schema(description = "Is this group public?",example = "false")
+	@Column(nullable=false)
 	private Boolean isPublic;
-	@Schema(description = "Can any user join this group by group id?",example = "true")
-	@Column
+	@Schema(description = "Can any user join this group by group id?",example = "false")
+	@Column(nullable=false)
 	private Boolean joinById;
 	public static GroupData CreateDataBean(Group group){
 		return new GroupData(group.groupId,group.groupName,group.groupDescription);
@@ -60,14 +58,14 @@ public class Group {
 		@Schema(description = "Description of the group.",example = "This is my group!")
 		private String groupDescription;
 	}
-	public static Group CreateServiceGroup(){
-		return new Group(null,null,null,null,null, null,true,true);
+	public static Group CreateGroup(){
+		return new Group(null,null,"None","NONE",null,true,true);
 	}
-	public static Group CreatePrivateGroup(String groupName){
-		return new Group(null,groupName,null,null,null, null,false,true);
+	public static Group CreateGroup(String groupName){
+		return new Group(null,groupName,null,null,null,false,true);
 	}
 	public static Group CreateEditGroup(String groupId){
-		return new Group(groupId,null,null,null,null,null,null,null);
+		return new Group(groupId,null,null,null,null,null,null);
 	}
 	public Group copyFromObject(Object o){
 		if(o==null){
@@ -87,8 +85,8 @@ public class Group {
 		}
 		groupName = newGroup.groupName==null?groupName:newGroup.groupName;
 		groupDescription = newGroup.groupDescription==null?groupDescription:newGroup.groupDescription;
-		groupWebhook = newGroup.groupWebhook==null?groupWebhook: newGroup.groupWebhook;
-		groupKeyword = newGroup.groupKeyword==null?groupKeyword:newGroup.groupKeyword;
+		functionList = newGroup.functionList==null?functionList:newGroup.functionList;
+		deliveryMode = newGroup.deliveryMode==null?deliveryMode:newGroup.deliveryMode;
 		isPublic = newGroup.isPublic==null?isPublic:newGroup.isPublic;
 		joinById = newGroup.joinById==null?joinById:newGroup.joinById;
 		return this;

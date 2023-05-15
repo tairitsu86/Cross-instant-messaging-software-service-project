@@ -9,7 +9,6 @@ public interface GroupService {
     String alterGroup(Group group);
 	Group getGroupById(String groupId);
     List<Group.GroupData> getGroupByName(String groupName);
-    String getGroupIdByAuthorizationKey(String authorizationKey);
     List<Group> getAllGroups();
     String deleteGroup(String groupId);
     void deleteAllGroups();

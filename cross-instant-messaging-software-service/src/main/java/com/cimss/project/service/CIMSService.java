@@ -41,7 +41,6 @@ public interface CIMSService {
     List<Group> getGroups(UserId userId);
     User getUserById(UserId userId);
     Group getGroupById(String groupId);
-    String getGroupIdByAuthorizationKey(String authorizationKey);
     boolean isMember(UserId userId, String groupId);
     boolean isManager(UserId userId,String groupId);
     boolean isUserExist(UserId userId);

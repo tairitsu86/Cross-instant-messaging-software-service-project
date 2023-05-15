@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        if(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(user.getInstantMessagingSoftware())==null)
+        if(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(user.getUserId().getInstantMessagingSoftware())==null)
             return null;
         return userRepository.save(user);
     }

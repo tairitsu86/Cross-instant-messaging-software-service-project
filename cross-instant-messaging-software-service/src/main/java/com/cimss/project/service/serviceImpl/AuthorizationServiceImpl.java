@@ -27,10 +27,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if(authorization(accessToken)==PermissionList.ADMIN)
             return PermissionList.ADMIN;
         if(userId==null) throw new RequestNotFoundException("userId");
-        String groupId = cimsService.getGroupIdByAuthorizationKey(accessToken);
-        if(groupId==null) return PermissionList.NONE;
-        if(cimsService.isMember(userId,groupId))
-            return PermissionList.MANAGER;
         return PermissionList.NONE;
     }
     @Override
@@ -40,8 +36,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         if(groupId==null) throw new RequestNotFoundException("groupId");
         Group group = cimsService.getGroupById(groupId);
         if(group==null) throw new DataNotFoundException("groupId",groupId);
-        if(accessToken.equals(cimsService.getGroupById(groupId).getAuthorizationKey()))
-            return PermissionList.MANAGER;
         return PermissionList.NONE;
     }
     @Override

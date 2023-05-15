@@ -55,7 +55,7 @@ public class EventHandleServiceImpl implements EventHandleService {
                 String groupName = command.split(" ", 3)[2];
                 Group newGroup;
                 try {
-                    newGroup = cimsService.newGroup(Group.CreatePrivateGroup(groupName));
+                    newGroup = cimsService.newGroup(Group.CreateGroup(groupName));
                     cimsService.join(userId,newGroup.getGroupId());
                     cimsService.grantPermission(userId,newGroup.getGroupId());
                 }catch (Exception e){
@@ -87,13 +87,10 @@ public class EventHandleServiceImpl implements EventHandleService {
                             List<Member.MemberData> members = cimsService.getMembers(groupId);
                             result = String.format("Members in \"%s\":",cimsService.groupDetail(groupId).getGroupName());
                             for(Member.MemberData member:members){
-                                result = String.format("%s\n%s %s\n%s\n%s\n",result,member.getUserName(),member.getIsManager()?"Group Manager":"Normal Member",member.getUserId().getInstantMessagingSoftware(),member.getUserId().getInstantMessagingSoftwareUserId());
+                                result = String.format("%s\n%s %s\n%s\n%s\n",result,member.getUser().getUserName(),member.getIsManager()?"Group Manager":"Normal Member",member.getUser().getUserId().getInstantMessagingSoftware(),member.getUser().getUserId().getInstantMessagingSoftwareUserId());
                             }
                         }
-                        case "detail"->{
-                            Group group = cimsService.groupDetail(groupId);
-                            result = String.format("Group:%s\nID:%s\nDescription:\n%s\n\nAuthorizationKey: %s\nKeyword: %s\nWebhook: %s\nisPublic: %s\njoinById: %s",group.getGroupName(),group.getGroupId(),group.getGroupDescription(),group.getAuthorizationKey(),group.getGroupKeyword(),group.getGroupWebhook(),group.getIsPublic(),group.getJoinById());
-                        }
+                        case "detail"->result = cimsService.groupDetail(groupId).toString();
                         case "broadcast"-> result = cimsService.broadcast(groupId,command.split(" ",4)[3],null);
                         case "remove"-> result = cimsService.leave(UserId.CreateUserId(command.split(" ",5)[3],command.split(" ",5)[4]),groupId);
                         case "alter"-> result = cimsService.alterGroup(groupId,command.split(" ",5)[3],command.split(" ",5)[4]);

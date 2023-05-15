@@ -47,10 +47,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         return groupService.getGroupByName(groupName);
     }
 
-    @Override
-    public String getGroupIdByAuthorizationKey(String authorizationKey) {
-        return groupService.getGroupIdByAuthorizationKey(authorizationKey);
-    }
+
 
     @Override
     public List<Group> getAllGroups() {

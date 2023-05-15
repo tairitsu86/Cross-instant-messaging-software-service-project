@@ -16,26 +16,22 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "[MEMBER]")
+@Table(name = "CIMSS_MEMBER")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@IdClass(MemberId.class)
 public class Member {
-	@Id
-	private String instantMessagingSoftwareForeignKey;
-	@Id
-	private String instantMessagingSoftwareUserIdForeignKey;
-	@Id
-	private String groupIdForeignKey;
+	@EmbeddedId
+	private MemberId memberId;
+
 	@Column
 	private Boolean isManager;
 	public static Member CreateNewMember(UserId userId, String groupId){
-		return new Member(userId.getInstantMessagingSoftware(), userId.getInstantMessagingSoftwareUserId(), groupId,false);
+		return new Member(MemberId.CreateMemberId(userId,groupId),false);
 	}
 	public static MemberData CreateMemberData(User user,Boolean isManager){
-		return new MemberData(user.toUserId(), user.getUserName(), isManager);
+		return new MemberData(user, isManager);
 	}
-	public UserId toUserId(){
-		return UserId.CreateUserId(instantMessagingSoftwareForeignKey,instantMessagingSoftwareUserIdForeignKey);
+	public MemberData toMemberData(){
+		return CreateMemberData(memberId.getUser(),isManager);
 	}
 	@Getter
 	@Setter
@@ -43,13 +39,11 @@ public class Member {
 	@NoArgsConstructor
 	public static class MemberData{
 		@Schema(description = "Data of the user")
-		private UserId userId;
-		@Schema(description = "User name",example = "David")
-		private String userName;
-		@Schema(description = "Is manager",example = "false")
+		private User user;
+		@Schema(description = "Is this user is manager?")
 		private Boolean isManager;
 		public User toUser(){
-			return User.CreateByUserId(userId,userName);
+			return user;
 		}
 	}
 }	

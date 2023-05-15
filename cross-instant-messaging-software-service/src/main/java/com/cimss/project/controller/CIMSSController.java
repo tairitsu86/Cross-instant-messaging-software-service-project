@@ -76,7 +76,7 @@ public class CIMSSController {
 	@PostMapping("/groups/new")
 	public Group newGroup(@RequestBody ManageBean.NewGroupBean newGroupBean) {
 		if(newGroupBean.getGroupName()==null) throw new RequestNotFoundException("groupName");
-		return cimsService.newGroup(Group.CreateServiceGroup().copyFromObject(newGroupBean));
+		return cimsService.newGroup(Group.CreateGroup().copyFromObject(newGroupBean));
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Send text message to order user", description = "The user must be in the group that api key mapping.")

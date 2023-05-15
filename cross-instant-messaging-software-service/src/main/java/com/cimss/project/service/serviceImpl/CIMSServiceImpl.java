@@ -63,7 +63,7 @@ public class CIMSServiceImpl implements CIMSService {
 
     @Override
     public User userRegister(UserId userId, String userName) {
-        return dataBaseService.createUser(User.CreateByUserId(userId,userName));
+        return dataBaseService.createUser(User.CreateUser(userId,userName));
     }
 
     @Override
@@ -179,10 +179,7 @@ public class CIMSServiceImpl implements CIMSService {
         return dataBaseService.getGroupById(groupId);
     }
 
-    @Override
-    public String getGroupIdByAuthorizationKey(String authorizationKey) {
-        return dataBaseService.getGroupIdByAuthorizationKey(authorizationKey);
-    }
+
 
     @Override
     public boolean isMember(UserId userId, String groupId) {

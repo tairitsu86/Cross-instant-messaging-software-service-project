@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Columns;
 
 @Getter
 @Setter
@@ -16,19 +17,20 @@ import lombok.ToString;
 @ToString
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "[USER]")
-@IdClass(UserId.class)
+@Table(name = "CIMSS_USER")
 public class User {
-	@Id
-	private String instantMessagingSoftware;
-	@Id
-	private String instantMessagingSoftwareUserId;
+	@EmbeddedId
+	private UserId userId;
+	@Schema(description = "User name",example = "David")
 	@Column
 	private String userName;
-	public static User CreateByUserId(UserId userId,String userName){
-		return new User(userId.getInstantMessagingSoftware(), userId.getInstantMessagingSoftwareUserId(), userName);
+	public static User CreateUser(UserId userId, String userName){
+		return new User(userId, userName);
+	}
+	public static User CreateUser(UserId userId){
+		return new User(userId, "");
 	}
 	public UserId toUserId(){
-		return UserId.CreateUserId(instantMessagingSoftware,instantMessagingSoftwareUserId);
+		return userId;
 	}
 }
