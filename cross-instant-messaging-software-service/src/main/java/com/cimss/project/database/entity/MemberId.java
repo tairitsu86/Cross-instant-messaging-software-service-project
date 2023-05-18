@@ -1,5 +1,7 @@
 package com.cimss.project.database.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
@@ -28,4 +30,15 @@ public class MemberId implements Serializable {
     public static MemberId CreateMemberId(UserId userId, String groupId){
         return new MemberId(User.CreateUser(userId),Group.CreateEditGroup(groupId));
     }
+    public static MemberId CreateMemberId(String jsonMemberId){
+        ObjectMapper objectMapper = new ObjectMapper();
+        MemberId memberId = null;
+        try {
+            memberId = objectMapper.readValue(objectMapper.writeValueAsString(jsonMemberId), MemberId.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return memberId;
+    }
+
 }

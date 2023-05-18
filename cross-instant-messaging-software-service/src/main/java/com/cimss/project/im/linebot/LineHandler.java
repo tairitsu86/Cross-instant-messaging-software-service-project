@@ -4,7 +4,7 @@ import com.cimss.project.CrossIMApplication;
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.EventHandleService;
 import com.cimss.project.service.CIMSService;
-import com.cimss.project.service.token.InstantMessagingSoftwareList;
+import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import org.slf4j.Logger;
@@ -37,8 +37,8 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         String userId = event.getSource().getUserId();
-        cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.LINE.name(),userId),getUserProfile(userId).getDisplayName());
-        eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.LINE.name(),userId),text);
+        cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),getUserProfile(userId).getDisplayName());
+        eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
     }
 
     @EventMapping

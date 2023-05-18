@@ -1,10 +1,8 @@
 package com.cimss.project.database.serviceImpl;
 
 import com.cimss.project.database.*;
-import com.cimss.project.database.entity.Group;
-import com.cimss.project.database.entity.Member;
-import com.cimss.project.database.entity.User;
-import com.cimss.project.database.entity.UserId;
+import com.cimss.project.database.entity.*;
+import com.cimss.project.database.entity.token.GroupRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,14 +103,10 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public String grantPermission(UserId userId, String groupId) {
-        return memberService.grantPermission(userId,groupId);
+    public String alterPermission(UserId userId, String groupId, GroupRole groupRole) {
+        return memberService.alterPermission(userId,groupId, groupRole);
     }
 
-    @Override
-    public String revokePermission(UserId userId, String groupId) {
-        return memberService.revokePermission(userId,groupId);
-    }
 
     @Override
     public List<User> getUsers(String groupId) {
@@ -145,7 +139,14 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public boolean isManager(UserId userId, String groupId) {
-        return memberService.isManager(userId,groupId);
+    public Member getMemberById(MemberId memberId) {
+        return memberService.getMemberById(memberId);
     }
+
+    @Override
+    public List<String> getRoles(UserId userId) {
+        return memberService.getRoles(userId);
+    }
+
+
 }

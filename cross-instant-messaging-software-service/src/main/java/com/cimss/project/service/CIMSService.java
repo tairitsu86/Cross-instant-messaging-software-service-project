@@ -1,9 +1,7 @@
 package com.cimss.project.service;
 
-import com.cimss.project.database.entity.Group;
-import com.cimss.project.database.entity.Member;
-import com.cimss.project.database.entity.User;
-import com.cimss.project.database.entity.UserId;
+import com.cimss.project.database.entity.*;
+import com.cimss.project.database.entity.token.GroupRole;
 
 import java.util.List;
 
@@ -25,6 +23,7 @@ public interface CIMSService {
     String grantPermission(UserId userId, String groupId);
 
     String revokePermission(UserId userId, String groupId);
+    String alterPermission(UserId userId, String groupId, GroupRole groupRole);
 
     Group newGroup(Group group);
 
@@ -42,7 +41,7 @@ public interface CIMSService {
     User getUserById(UserId userId);
     Group getGroupById(String groupId);
     boolean isMember(UserId userId, String groupId);
-    boolean isManager(UserId userId,String groupId);
     boolean isUserExist(UserId userId);
+    Member getMemberById(MemberId memberId);
 
 }

@@ -2,13 +2,10 @@ package com.cimss.project.service.serviceImpl;
 
 
 import com.cimss.project.database.DatabaseService;
-import com.cimss.project.database.entity.Member;
-import com.cimss.project.database.entity.UserId;
+import com.cimss.project.database.entity.*;
+import com.cimss.project.database.entity.token.GroupRole;
 import com.cimss.project.im.IMService;
 import com.cimss.project.service.*;
-import com.cimss.project.database.entity.Group;
-import com.cimss.project.database.entity.User;
-import com.cimss.project.service.token.InstantMessagingSoftwareList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -33,7 +30,7 @@ public class CIMSServiceImpl implements CIMSService {
         List<User> users = dataBaseService.getUsers(groupId);
         List<UserId> userIdList = new ArrayList<>();
         for(User user:users) {
-            userIdList.add(user.toUserId());
+            userIdList.add(user.getUserId());
         }
         if(ignoreList!=null)
             userIdList.removeAll(ignoreList);
@@ -47,14 +44,14 @@ public class CIMSServiceImpl implements CIMSService {
     public String broadcastAll(String text) {
         List<User> users = dataBaseService.getAllUsers();
         for(User user:users) {
-            sendTextMessage(user.toUserId(),text);
+            sendTextMessage(user.getUserId(),text);
         }
         return "Broadcast to every user done!";
     }
 
     @Override
     public String sendTextMessage(UserId userId, String textMessage) {
-        switch(InstantMessagingSoftwareList.getInstantMessagingSoftwareToken(userId.getInstantMessagingSoftware())) {
+        switch(userId.getInstantMessagingSoftware()) {
             case LINE-> lineMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
             case TELEGRAM-> telegramMessageService.sendTextMessage(userId.getInstantMessagingSoftwareUserId(),textMessage);
         }
@@ -94,7 +91,7 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String grantPermission(UserId userId, String groupId) {
         try{
-            dataBaseService.grantPermission(userId,groupId);
+            dataBaseService.alterPermission(userId,groupId, GroupRole.GROUP_MANAGER);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -104,7 +101,16 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public String revokePermission(UserId userId, String groupId) {
         try{
-            dataBaseService.revokePermission(userId,groupId);
+            dataBaseService.alterPermission(userId,groupId, GroupRole.GROUP_MEMBER);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "Success!";
+    }
+    @Override
+    public String alterPermission(UserId userId, String groupId, GroupRole groupRole) {
+        try{
+            dataBaseService.alterPermission(userId,groupId, groupRole);
         }catch (Exception e){
             return e.getMessage();
         }
@@ -186,14 +192,15 @@ public class CIMSServiceImpl implements CIMSService {
         return dataBaseService.isMember(userId,groupId);
     }
 
-    @Override
-    public boolean isManager(UserId userId, String groupId) {
-        return dataBaseService.isManager(userId,groupId);
-    }
 
     @Override
     public boolean isUserExist(UserId userId) {
         return dataBaseService.isUserExist(userId);
+    }
+
+    @Override
+    public Member getMemberById(MemberId memberId) {
+        return null;
     }
 
 }

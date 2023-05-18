@@ -7,6 +7,7 @@ import com.cimss.project.database.GroupService;
 import com.cimss.project.database.MemberService;
 import com.cimss.project.database.UserService;
 import com.cimss.project.database.entity.*;
+import com.cimss.project.database.entity.token.GroupRole;
 import com.cimss.project.database.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class MemberServicImpl implements MemberService {
 	@Override
 	public String join(UserId userId, String groupId) {
 		try {
-			memberRepository.save(Member.CreateNewMember(userId,groupId));
+			memberRepository.save(Member.CreateMember(userId,groupId));
 		}catch (Exception e){
 			return String.format("Error with Exception:%s",e.getMessage());
 		}
@@ -49,19 +50,9 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
-	public String grantPermission(UserId userId, String groupId) {
+	public String alterPermission(UserId userId, String groupId, GroupRole groupRole) {
 		Member member = memberRepository.getReferenceById(MemberId.CreateMemberId(userId,groupId));
-		if(member.getIsManager()) return "Already been manager!";
-		member.setIsManager(true);
-		memberRepository.save(member);
-		return "Success";
-	}
-
-	@Override
-	public String revokePermission(UserId userId, String groupId) {
-		Member member = memberRepository.getReferenceById(MemberId.CreateMemberId(userId,groupId));
-		if(!member.getIsManager()) return "Not manager!";
-		member.setIsManager(false);
+		member.setGroupRole(groupRole);
 		memberRepository.save(member);
 		return "Success";
 	}
@@ -90,7 +81,7 @@ public class MemberServicImpl implements MemberService {
 		List<Member> members = memberRepository.findAll();
 		List<Group> groups = new ArrayList<>();
 		for(Member member: members)
-			if(member.getMemberId().getUser().toUserId().equals(userId))
+			if(member.getMemberId().getUser().getUserId().equals(userId))
 				groups.add(member.getMemberId().getGroup());
 		return groups;
 	}
@@ -111,11 +102,20 @@ public class MemberServicImpl implements MemberService {
 	}
 
 	@Override
-	public boolean isManager(UserId userId, String groupId) {
-		MemberId memberId = MemberId.CreateMemberId(userId,groupId);
-		if(!memberRepository.existsById(memberId))
-			return false;
-		return memberRepository.getReferenceById(memberId).getIsManager();
+	public Member getMemberById(MemberId memberId) {
+		//TODO
+		return memberRepository.getReferenceById(memberId);
 	}
+
+	@Override
+	public List<String> getRoles(UserId userId) {
+		List<Member> members = memberRepository.findAll();
+		List<String> roles = new ArrayList<>();
+		for(Member member: members)
+			if(member.getMemberId().getUser().getUserId().equals(userId))
+				roles.add(String.format("%s %s",member.getMemberId().getGroup().getGroupId(),member.getGroupRole().name()));
+		return roles;
+	}
+
 
 }

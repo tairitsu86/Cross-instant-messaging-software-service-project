@@ -1,8 +1,8 @@
 package com.cimss.project.apibody;
 
 import com.cimss.project.database.entity.UserId;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.util.List;
@@ -10,29 +10,32 @@ import java.util.List;
 public class ManageBean {
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class SendBean{
         @Schema(description = "Data of the user")
+        @NotEmpty
         private UserId userId;
         @Schema(description = "The text message.",example = "Hello!")
+        @NotEmpty
         private String message;
     }
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class BroadcastBean{
         @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
+        @NotEmpty
         private String groupId;
         @Schema(description = "The text message.",example = "Hello!")
+        @NotEmpty
         private String message;
         @Schema(description = "User in ignore list will not get the broadcast message.")
+        @NotEmpty
         private List<UserId> ignoreList;
     }
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class NewGroupBean{
         @Schema(description = "Name of the group.",example = "My group")
+        @NotEmpty
         private String groupName;
         @Schema(description = "Description of the group.",example = "This is my group!",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupDescription;
@@ -47,9 +50,9 @@ public class ManageBean {
     }
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class AlterGroupBean{
         @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
+        @NotEmpty
         private String groupId;
         @Schema(description = "Name of the group.",example = "My group",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupName;
@@ -66,29 +69,22 @@ public class ManageBean {
     }
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class AddBean{
         @Schema(description = "Data of the user")
+        @NotEmpty
         private UserId userId;
         @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
+        @NotEmpty
         private String groupId;
     }
     @Getter
     @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class SetWebhookBean{
-        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
-        private String groupId;
-        @Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook")
-        private String groupWebhook;
-    }
-    @Getter
-    @Setter
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class GrantPermissionBean{
         @Schema(description = "Data of the user")
+        @NotEmpty
         private UserId userId;
         @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
+        @NotEmpty
         private String groupId;
     }
 }

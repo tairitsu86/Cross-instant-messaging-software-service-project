@@ -17,6 +17,9 @@ Leave the group you joined
 Show all group you joined now
 /cimss groups
 
+Show your system access key
+/cimss key
+
 Require manager permission command:
 
 Get the detail data about the group

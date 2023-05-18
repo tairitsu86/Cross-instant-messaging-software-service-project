@@ -1,9 +1,6 @@
-package com.cimss.project.controller;
+package com.cimss.project.controller.exception;
 
 import com.cimss.project.apibody.MessageBean;
-import com.cimss.project.controller.exception.DataNotFoundException;
-import com.cimss.project.controller.exception.RequestNotFoundException;
-import com.cimss.project.controller.exception.UnauthorizedException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,10 +9,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class CIMSSExceptionHandler {
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler(NoPermissionException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public MessageBean unauthorizedExceptionHandler(UnauthorizedException e) {
-        return MessageBean.CreateMessageBean("Authorization error!");
+    public MessageBean unauthorizedExceptionHandler(@NotNull NoPermissionException e) {
+        return MessageBean.CreateMessageBean(e.getErrorMessage());
     }
     @ExceptionHandler(RequestNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

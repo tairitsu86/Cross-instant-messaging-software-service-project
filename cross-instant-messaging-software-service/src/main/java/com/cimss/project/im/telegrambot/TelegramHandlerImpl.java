@@ -3,7 +3,7 @@ package com.cimss.project.im.telegrambot;
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.EventHandleService;
-import com.cimss.project.service.token.InstantMessagingSoftwareList;
+import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +34,8 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.name(),chatId.toString()),message.chat().lastName()+message.chat().firstName());
-		eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftwareList.TELEGRAM.name(),chatId.toString()),text);
+		cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftware.TELEGRAM,chatId.toString()),message.chat().lastName()+message.chat().firstName());
+		eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftware.TELEGRAM,chatId.toString()),text);
 	}
 
 }

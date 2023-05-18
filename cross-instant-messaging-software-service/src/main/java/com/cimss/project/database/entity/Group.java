@@ -62,7 +62,7 @@ public class Group {
 		return new Group(null,null,"None","NONE",null,true,true);
 	}
 	public static Group CreateGroup(String groupName){
-		return new Group(null,groupName,null,null,null,false,true);
+		return new Group(null,groupName,"None","NONE",null,false,true);
 	}
 	public static Group CreateEditGroup(String groupId){
 		return new Group(groupId,null,null,null,null,null,null);

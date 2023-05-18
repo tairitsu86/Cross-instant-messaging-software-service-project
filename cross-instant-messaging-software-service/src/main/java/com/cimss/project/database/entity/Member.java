@@ -1,5 +1,6 @@
 package com.cimss.project.database.entity;
 
+import com.cimss.project.database.entity.token.GroupRole;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -18,21 +19,27 @@ import lombok.ToString;
 @Entity
 @Table(name = "CIMSS_MEMBER")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Member {
+public class Member{
 	@EmbeddedId
 	private MemberId memberId;
 
 	@Column
-	private Boolean isManager;
-	public static Member CreateNewMember(UserId userId, String groupId){
-		return new Member(MemberId.CreateMemberId(userId,groupId),false);
+	@Enumerated(EnumType.STRING)
+	private GroupRole groupRole;
+	public static Member CreateMember(UserId userId, String groupId){
+		return new Member(MemberId.CreateMemberId(userId,groupId), GroupRole.GROUP_MEMBER);
 	}
-	public static MemberData CreateMemberData(User user,Boolean isManager){
-		return new MemberData(user, isManager);
+	public static Member CreateMember(UserId userId){
+		return new Member(MemberId.CreateMemberId(userId,null), null);
+	}
+	public static MemberData CreateMemberData(User user, GroupRole groupRole){
+		return new MemberData(user, groupRole);
 	}
 	public MemberData toMemberData(){
-		return CreateMemberData(memberId.getUser(),isManager);
+		return CreateMemberData(memberId.getUser(), groupRole);
 	}
+
+
 	@Getter
 	@Setter
 	@AllArgsConstructor
@@ -41,7 +48,7 @@ public class Member {
 		@Schema(description = "Data of the user")
 		private User user;
 		@Schema(description = "Is this user is manager?")
-		private Boolean isManager;
+		private GroupRole groupRole;
 		public User toUser(){
 			return user;
 		}
