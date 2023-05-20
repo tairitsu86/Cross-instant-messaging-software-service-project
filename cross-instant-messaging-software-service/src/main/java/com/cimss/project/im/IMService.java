@@ -1,5 +1,6 @@
 package com.cimss.project.im;
 
 public interface IMService {
-    String sendTextMessage(String userId, String textMessage);
+    void sendTextMessage(String userId, String textMessage);
+    void sendButtonListMessage(String userId, ButtonList buttonList);
 }

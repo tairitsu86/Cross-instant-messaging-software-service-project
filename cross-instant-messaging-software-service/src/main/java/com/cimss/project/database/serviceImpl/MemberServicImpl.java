@@ -18,43 +18,33 @@ public class MemberServicImpl implements MemberService {
 	@Autowired
 	private MemberRepository memberRepository;
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private GroupService groupService;
 	
 	@Override
-	public String join(UserId userId, String groupId) {
-		try {
-			memberRepository.save(Member.CreateMember(userId,groupId));
-		}catch (Exception e){
-			return String.format("Error with Exception:%s",e.getMessage());
-		}
-		return "Success";
+	public void join(UserId userId, String groupId) {
+		//TODO
+//		memberRepository.save(Member.CreateMember(userId,groupId));
 	}
 
 	@Override
-	public String joinWithProperty(UserId userId, String groupId) {
+	public void joinWithProperty(UserId userId, String groupId) {
 		Group group = groupService.getGroupById(groupId);
-		if(group==null||!group.getJoinById()) return "That group not allow join by group id";
-		return join(userId,groupId);
+		if(group==null||!group.getJoinById()) return;
+		join(userId,groupId);
 	}
 
 	@Override
-	public String leave(UserId userId, String groupId) {
-		try {
-			memberRepository.deleteById(MemberId.CreateMemberId(userId,groupId));
-		}catch (Exception e){
-			return String.format("Error with Exception:%s",e.getMessage());
-		}
-		return "Success";
+	public void leave(UserId userId, String groupId) {
+//		TODO
+//		memberRepository.deleteById(MemberId.CreateMemberId(userId,groupId));
 	}
 
 	@Override
-	public String alterPermission(UserId userId, String groupId, GroupRole groupRole) {
-		Member member = memberRepository.getReferenceById(MemberId.CreateMemberId(userId,groupId));
-		member.setGroupRole(groupRole);
-		memberRepository.save(member);
-		return "Success";
+	public void alterPermission(UserId userId, String groupId, GroupRole groupRole) {
+		//TODO
+//		Member member = memberRepository.getReferenceById(MemberId.CreateMemberId(userId,groupId));
+//		member.setGroupRole(groupRole);
+//		memberRepository.save(member);
 	}
 
 	@Override
@@ -98,12 +88,13 @@ public class MemberServicImpl implements MemberService {
 
 	@Override
 	public boolean isMember(UserId userId, String groupId) {
-		return memberRepository.existsById(MemberId.CreateMemberId(userId,groupId));
+//		TODO
+//		return memberRepository.existsById(MemberId.CreateMemberId(userId,groupId));
+		return true;
 	}
 
 	@Override
 	public Member getMemberById(MemberId memberId) {
-		//TODO
 		return memberRepository.getReferenceById(memberId);
 	}
 

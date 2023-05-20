@@ -3,7 +3,6 @@ package com.cimss.project.database.serviceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.cimss.project.database.GroupService;
 import com.cimss.project.database.entity.Group;
@@ -41,17 +40,12 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public String alterGroup(Group newGroup) {
+	public void alterGroup(Group newGroup) {
 		Group oldGroup = getGroupById(newGroup.getGroupId());
-		if(oldGroup==null) return "Group id not exist";
+		if(oldGroup==null) return;
 		oldGroup.copyFromObject(newGroup);
-		if(oldGroup==null) return "Copy error";
-		try {
-			groupRepository.save(oldGroup);
-		}catch (Exception e){
-			return String.format("Error with Exception:%s",e.getMessage());
-		}
-		return "Success!";
+		if(oldGroup==null) return;
+		groupRepository.save(oldGroup);
 	}
 
 	@Override
@@ -80,13 +74,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public String deleteGroup(String groupId) {
-		try {
-			groupRepository.deleteById(groupId);
-		}catch (Exception e){
-			return String.format("Error with Exception:%s",e.getMessage());
-		}
-		return "Success";
+	public void deleteGroup(String groupId) {
+		groupRepository.deleteById(groupId);
 	}
 
 	@Override

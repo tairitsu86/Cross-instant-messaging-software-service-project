@@ -45,4 +45,13 @@ public class UserController {
 	public Group newGroup(@Valid @RequestBody ManageBean.NewGroupBean newGroupBean) {
 		return apiHandlerService.newGroup(newGroupBean);
 	}
+
+	//post method
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Operation(summary = "Send text message to order user", description = "The user must be in the group that api key mapping.")
+	@PostMapping("/send/text")
+	public void sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
+								@Valid @RequestBody ManageBean.SendBean sendBean) {
+		apiHandlerService.sendTextMessage(accessToken,sendBean);
+	}
 }

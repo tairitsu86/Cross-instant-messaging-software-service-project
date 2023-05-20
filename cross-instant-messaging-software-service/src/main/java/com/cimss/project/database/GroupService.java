@@ -6,10 +6,10 @@ import com.cimss.project.database.entity.Group;
 
 public interface GroupService {
 	Group createGroup(Group group);
-    String alterGroup(Group group);
+    void alterGroup(Group group);
 	Group getGroupById(String groupId);
     List<Group.GroupData> getGroupByName(String groupName);
     List<Group> getAllGroups();
-    String deleteGroup(String groupId);
+    void deleteGroup(String groupId);
     void deleteAllGroups();
 }

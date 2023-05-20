@@ -40,3 +40,6 @@ Property can be groupName,groupDescription,isPublic,joinById, or allMessageBroad
 When property is groupName or groupDescription, value can be any string
 Else, value only can be true or false
 
+font
+/cimss <command type> <group id> <software> <userId> <var>
+

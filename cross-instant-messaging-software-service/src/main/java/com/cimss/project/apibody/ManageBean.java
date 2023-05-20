@@ -1,6 +1,8 @@
 package com.cimss.project.apibody;
 
+import com.cimss.project.database.entity.FunctionList;
 import com.cimss.project.database.entity.UserId;
+import com.cimss.project.database.entity.token.DeliveryMode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -40,9 +42,11 @@ public class ManageBean {
         @Schema(description = "Description of the group.",example = "This is my group!",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupDescription;
         @Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        private String groupWebhook;
-        @Schema(description = "The prefix of the command this group provide.",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        private String groupKeyword;
+        private List<DeliveryMode> deliveryMode;
+        @Schema(description = "The config file of delivery.",example = "")
+        private DeliveryMode.DeliveryConfig deliveryConfig;
+        @Schema(description = "The function list of this group.",example = "{}")
+        private FunctionList functionList;
         @Schema(description = "This group is public or private.",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean isPublic;
         @Schema(description = "Can any user join this group by group id?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -58,10 +62,12 @@ public class ManageBean {
         private String groupName;
         @Schema(description = "Description of the group.",example = "This is my group!",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private String groupDescription;
-        @Schema(description = "Webhook of the group.",example = "https://myWebService/cimssWebhook",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        private String groupWebhook;
-        @Schema(description = "The prefix of the command this group provide.",example = "myService",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-        private String groupKeyword;
+        @Schema(description = "The delivery mode of this group.",example = "")
+        private List<DeliveryMode> deliveryMode;
+        @Schema(description = "The config file of delivery.",example = "")
+        private DeliveryMode.DeliveryConfig deliveryConfig;
+        @Schema(description = "The function list of this group.",example = "{}")
+        private FunctionList functionList;
         @Schema(description = "This group is public or private.",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean isPublic;
         @Schema(description = "Can any user join this group by group id?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)

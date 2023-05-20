@@ -31,8 +31,8 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public String alterGroup(Group group) {
-        return groupService.alterGroup(group);
+    public void alterGroup(Group group) {
+        groupService.alterGroup(group);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public String deleteGroup(String groupId) {
-        return groupService.deleteGroup(groupId);
+    public void deleteGroup(String groupId) {
+        groupService.deleteGroup(groupId);
     }
 
     @Override
@@ -88,23 +88,23 @@ public class DatabaseServiceImpl implements DatabaseService {
     }
 
     @Override
-    public String join(UserId userId, String groupId) {
-        return memberService.join(userId,groupId);
+    public void join(UserId userId, String groupId) {
+        memberService.join(userId,groupId);
     }
 
     @Override
-    public String joinWithProperty(UserId userId, String groupId) {
-        return memberService.joinWithProperty(userId,groupId);
+    public void joinWithProperty(UserId userId, String groupId) {
+        memberService.joinWithProperty(userId,groupId);
     }
 
     @Override
-    public String leave(UserId userId, String groupId) {
-        return memberService.leave(userId,groupId);
+    public void leave(UserId userId, String groupId) {
+        memberService.leave(userId,groupId);
     }
 
     @Override
-    public String alterPermission(UserId userId, String groupId, GroupRole groupRole) {
-        return memberService.alterPermission(userId,groupId, groupRole);
+    public void alterPermission(UserId userId, String groupId, GroupRole groupRole) {
+        memberService.alterPermission(userId,groupId, groupRole);
     }
 
 

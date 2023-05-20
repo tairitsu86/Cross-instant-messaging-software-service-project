@@ -40,14 +40,7 @@ public class ManagerController {
 		return apiHandlerService.groupDetail(accessToken,groupId);
 	}
 
-	//patch method
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "Send text message to order user", description = "The user must be in the group that api key mapping.")
-	@PostMapping("/send/text")
-	public void sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
-								@Valid @RequestBody ManageBean.SendBean sendBean) {
-		apiHandlerService.sendTextMessage(accessToken,sendBean);
-	}
+	//post method
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Webhook test", description = "Send a test event to the webhook of the group.")
 	@PostMapping("/groups/{groupId}/webhook/test")

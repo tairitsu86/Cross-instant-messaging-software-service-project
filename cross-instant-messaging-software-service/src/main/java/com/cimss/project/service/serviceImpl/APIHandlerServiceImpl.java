@@ -10,19 +10,23 @@ import com.cimss.project.database.entity.token.GroupRole;
 import com.cimss.project.security.JwtUtilities;
 import com.cimss.project.service.APIHandlerService;
 import com.cimss.project.service.CIMSService;
-import com.cimss.project.service.WebhookService;
+import com.cimss.project.service.NotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.cimss.project.database.entity.token.GroupRole.NOT_MEMBER;
+
+@Service
 public class APIHandlerServiceImpl implements APIHandlerService {
     @Autowired
     private CIMSService cimsService;
 
     @Autowired
-    private WebhookService webhookService;
+    private NotifyService notifyService;
 
     @Autowired
     private JwtUtilities jwtUtilities;
@@ -31,11 +35,15 @@ public class APIHandlerServiceImpl implements APIHandlerService {
 
     public GroupRole getGroupRole(String accessToken, String groupId){
         UserId userId = jwtUtilities.jwtDecode(accessToken);
-        if(userId==null) return null;
+        if(userId==null) return NOT_MEMBER;
+        User user = databaseService.getUserById(userId);
+        if(user==null) return NOT_MEMBER;
+        Group group = databaseService.getGroupById(groupId);
+        if(group==null) return NOT_MEMBER;
         MemberId memberId = MemberId.CreateMemberId(userId,groupId);
-        if(memberId==null) return null;
+        if(memberId==null) return NOT_MEMBER;
         Member member = databaseService.getMemberById(memberId);
-        if(member==null) return null;
+        if(member==null) return NOT_MEMBER;
         return member.getGroupRole();
     }
     //user
@@ -51,8 +59,11 @@ public class APIHandlerServiceImpl implements APIHandlerService {
 
     @Override
     public Group newGroup(ManageBean.NewGroupBean newGroupBean) {
-        if(newGroupBean.getGroupName()==null) throw new RequestNotFoundException("groupName");
         return cimsService.newGroup(Group.CreateGroup().copyFromObject(newGroupBean));
+    }
+    @Override
+    public void sendTextMessage(String accessToken, ManageBean.SendBean sendBean) {
+        cimsService.sendTextMessage(sendBean.getUserId(), sendBean.getMessage());
     }
 
     //manager
@@ -71,17 +82,10 @@ public class APIHandlerServiceImpl implements APIHandlerService {
     }
 
     @Override
-    public void sendTextMessage(String accessToken, ManageBean.SendBean sendBean) {
-        if(sendBean.getUserId()==null) throw new RequestNotFoundException("userId");
-        if(sendBean.getMessage()==null) throw new RequestNotFoundException("message");
-        cimsService.sendTextMessage(sendBean.getUserId(), sendBean.getMessage());
-    }
-
-    @Override
     public void webhookTest(String accessToken, String groupId) {
         if(!getGroupRole(accessToken,groupId).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,groupId));
-        webhookService.testWebhook(groupId);
+        notifyService.testWebhook(groupId);
     }
 
     @Override

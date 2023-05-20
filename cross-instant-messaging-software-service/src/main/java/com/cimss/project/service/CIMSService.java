@@ -2,38 +2,41 @@ package com.cimss.project.service;
 
 import com.cimss.project.database.entity.*;
 import com.cimss.project.database.entity.token.GroupRole;
+import com.cimss.project.im.ButtonList;
 
 import java.util.List;
 
 public interface CIMSService {
 
-    String broadcast(String groupId,String text,List<UserId> ignoreList);
+    void broadcast(String groupId,String text,List<UserId> ignoreList);
 
-    String broadcastAll(String text);
+    void broadcastAll(String text);
 
-    String sendTextMessage(UserId userId, String textMessage);
+    void sendTextMessage(UserId userId, String textMessage);
+
+    void sendButtonListMessage(UserId userId, ButtonList buttonList);
 
     User userRegister(UserId userId, String userName);
 
-    String join(UserId userId,String groupId);
-    String joinWithProperty(UserId userId,String groupId);
+    void join(UserId userId,String groupId);
+    void joinWithProperty(UserId userId,String groupId);
 
-    String leave(UserId userId, String groupId);
+    void leave(UserId userId, String groupId);
 
-    String grantPermission(UserId userId, String groupId);
+    void grantPermission(UserId userId, String groupId);
 
-    String revokePermission(UserId userId, String groupId);
-    String alterPermission(UserId userId, String groupId, GroupRole groupRole);
+    void revokePermission(UserId userId, String groupId);
+    void alterPermission(UserId userId, String groupId, GroupRole groupRole);
 
     Group newGroup(Group group);
 
-    String alterGroup(String groupId,String property,String value);
+    void alterGroup(String groupId,String property,String value);
 
-    String alterGroup(Group group);
+    void alterGroup(Group group);
 
     Group groupDetail(String groupId);
 
-    String deleteGroup(String groupId);
+    void deleteGroup(String groupId);
 
     List<Group.GroupData> searchGroup(String groupName);
     List<Member.MemberData> getMembers(String groupId);

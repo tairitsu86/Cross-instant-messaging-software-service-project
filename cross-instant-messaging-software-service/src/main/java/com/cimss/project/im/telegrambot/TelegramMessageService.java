@@ -2,6 +2,7 @@ package com.cimss.project.im.telegrambot;
 
 import java.io.IOException;
 
+import com.cimss.project.im.ButtonList;
 import com.cimss.project.im.IMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class TelegramMessageService implements IMService {
 	private TelegramBot telegramBot;
 
 	@Override
-	public String sendTextMessage(String userId, String textMessage) {
+	public void sendTextMessage(String userId, String textMessage) {
 		long chatId = Long.parseLong(userId);
 		SendMessage request = new SendMessage(chatId, textMessage)
 				.parseMode(ParseMode.HTML)
@@ -36,6 +37,10 @@ public class TelegramMessageService implements IMService {
 				e.printStackTrace();
 			}
 		});
-		return null;
+	}
+
+	@Override
+	public void sendButtonListMessage(String userId,ButtonList buttonList) {
+
 	}
 }

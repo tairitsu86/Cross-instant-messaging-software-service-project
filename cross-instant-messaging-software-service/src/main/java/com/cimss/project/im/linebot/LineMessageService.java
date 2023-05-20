@@ -1,8 +1,19 @@
 package com.cimss.project.im.linebot;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.cimss.project.im.ButtonList;
 import com.cimss.project.im.IMService;
+import com.linecorp.bot.model.action.Action;
+import com.linecorp.bot.model.action.MessageAction;
+import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TemplateMessage;
+import com.linecorp.bot.model.message.template.ButtonsTemplate;
+import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +27,35 @@ public class LineMessageService implements IMService {
 	
 	@Autowired
 	private LineMessagingClient lineMessagingClient;
-    @Override
-	public String sendTextMessage(String userId, String textMessage){
-		TextMessage message = new TextMessage(textMessage);
+
+	public void pushMessage(String userId, Message message){
 		PushMessage pushMessage = new PushMessage(userId, message);
 		System.out.println(pushMessage.getTo()+"\n"+pushMessage.getMessages());
-        BotApiResponse response = null;
+		BotApiResponse response = null;
 		try {
 			response = lineMessagingClient.pushMessage(pushMessage).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
-        return null;
+	}
+    @Override
+	public void sendTextMessage(String userId, String textMessage){
+		TextMessage message = new TextMessage(textMessage);
+		pushMessage(userId,message);
+	}
+
+	@Override
+	public void sendButtonListMessage(String userId, ButtonList buttonList) {
+		List<Action> actions = new ArrayList<>();
+		buttonList.getButtons().forEach((key,value)->actions.add(new MessageAction(key, value)));
+		TemplateMessage templateMessage = new TemplateMessage(
+				"Line button list",
+				ButtonsTemplate.builder()
+						.title(buttonList.getTitle())
+						.text(buttonList.getText())
+						.actions(actions).build()
+		);
+		pushMessage(userId,templateMessage);
 	}
 
 }
