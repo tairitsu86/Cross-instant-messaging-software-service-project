@@ -4,27 +4,28 @@ import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public enum DeliveryMode {
+public enum DeliveryMode implements Serializable {
     WEBHOOK,RABBITMQ;
     @Data
     @AllArgsConstructor
-    public static class DeliveryConfig {
+    public static class DeliveryConfig implements Serializable  {
         @Embedded
         private WebhookConfig webhookConfig;
         @Embedded
         private RabbitMQConfig rabbitMQConfig;
         @Data
         @AllArgsConstructor
-        public static class WebhookConfig{
+        public static class WebhookConfig implements Serializable {
             private String url;
             @Embedded
             private Map<String,String> header;
         }
         @Data
         @AllArgsConstructor
-        public static class RabbitMQConfig{
+        public static class RabbitMQConfig implements Serializable {
             private String serverIP;
             private String username;
             private String password;

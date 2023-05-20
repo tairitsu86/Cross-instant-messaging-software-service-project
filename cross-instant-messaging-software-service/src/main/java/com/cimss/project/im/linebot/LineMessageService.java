@@ -10,6 +10,7 @@ import com.cimss.project.im.ButtonList;
 import com.cimss.project.im.IMService;
 import com.linecorp.bot.model.action.Action;
 import com.linecorp.bot.model.action.MessageAction;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.template.ButtonsTemplate;
@@ -47,7 +48,7 @@ public class LineMessageService implements IMService {
 	@Override
 	public void sendButtonListMessage(String userId, ButtonList buttonList) {
 		List<Action> actions = new ArrayList<>();
-		buttonList.getButtons().forEach((key,value)->actions.add(new MessageAction(key, value)));
+		buttonList.getButtons().forEach((key,value)->actions.add(new PostbackAction(key, value,null,null,null,null)));
 		TemplateMessage templateMessage = new TemplateMessage(
 				"Line button list",
 				ButtonsTemplate.builder()

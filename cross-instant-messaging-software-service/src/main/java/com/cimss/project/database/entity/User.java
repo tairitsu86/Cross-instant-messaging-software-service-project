@@ -4,11 +4,7 @@ import com.cimss.project.database.entity.token.LoginRole;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,17 +19,21 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "CIMSS_USER")
 public class User  implements Serializable, UserDetails {
 	@EmbeddedId
+	@EqualsAndHashCode.Include
 	private UserId userId;
 	@Schema(description = "User name",example = "David")
 	@Column
+	@EqualsAndHashCode.Exclude
 	private String userName;
 	@Schema(description = "System role",example = "NORMAL")
 	@Column
+	@EqualsAndHashCode.Exclude
 	@Enumerated(EnumType.STRING)
 	private LoginRole loginRole;
 	public static User CreateUser(UserId userId, String userName){
@@ -52,6 +52,7 @@ public class User  implements Serializable, UserDetails {
 	public String getUserName() {
 		return userName;
 	}
+
 
 	@Override
 	public String getPassword() {

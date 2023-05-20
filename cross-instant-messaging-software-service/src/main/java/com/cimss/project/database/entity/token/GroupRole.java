@@ -1,6 +1,8 @@
 package com.cimss.project.database.entity.token;
 
-public enum GroupRole {
+import java.io.Serializable;
+
+public enum GroupRole implements Serializable {
     NOT_MEMBER,GROUP_MEMBER,GROUP_MANAGER,GROUP_OWNER;
     public boolean ownerPermission(){
         return this==GROUP_OWNER;

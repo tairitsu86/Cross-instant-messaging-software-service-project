@@ -7,11 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +16,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @ToString
 @Entity
 @Table(name = "CIMSS_GROUP")
@@ -27,30 +24,38 @@ public class Group {
 	@Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 	@Id
 	@Column(name = "group_id")
+	@EqualsAndHashCode.Include
 	private String groupId;
 	@Schema(description = "Name of the group.",example = "My group")
 	@Column(nullable=false)
+	@EqualsAndHashCode.Exclude
 	private String groupName;
 	@Schema(description = "Description of the group.",example = "This is my group!")
 	@Column
+	@EqualsAndHashCode.Exclude
 	private String groupDescription;
 	@Schema(description = "The delivery mode of this group.",example = "")
 	@Column(nullable=false)
 	@ElementCollection
+	@EqualsAndHashCode.Exclude
 	private List<DeliveryMode> deliveryMode;
 	@Schema(description = "The config file of delivery.",example = "")
 	@Column(nullable=false)
 	@Embedded
+	@EqualsAndHashCode.Exclude
 	private DeliveryMode.DeliveryConfig deliveryConfig;
 	@Schema(description = "The function list of this group.",example = "{}")
 	@Column
 	@Embedded
+	@EqualsAndHashCode.Exclude
 	private FunctionList functionList;
 	@Schema(description = "Is this group public?",example = "false")
 	@Column(nullable=false)
+	@EqualsAndHashCode.Exclude
 	private Boolean isPublic;
 	@Schema(description = "Can any user join this group by group id?",example = "false")
 	@Column(nullable=false)
+	@EqualsAndHashCode.Exclude
 	private Boolean joinById;
 	public static GroupData CreateDataBean(Group group){
 		return new GroupData(group.groupId,group.groupName,group.groupDescription);

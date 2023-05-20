@@ -6,6 +6,7 @@ import com.cimss.project.service.EventHandleService;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,15 +37,23 @@ public class LineHandler {
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
-        String userId = event.getSource().getUserId();
+        final String userId = event.getSource().getUserId();
         cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),getUserProfile(userId).getDisplayName());
-        eventHandleService.TextEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
+        eventHandleService.textEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
     }
-
+    @EventMapping
+    public void handlePostbackEvent(PostbackEvent event) {
+        log.info("event: " + event);
+        final String text = event.getPostbackContent().getData();
+        final String userId = event.getSource().getUserId();
+        eventHandleService.commandEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
+    }
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {
         System.out.println("event: " + event);
     }
+
+
     public UserProfileResponse getUserProfile(String userId){
         UserProfileResponse userProfileResponse = null;
         try {

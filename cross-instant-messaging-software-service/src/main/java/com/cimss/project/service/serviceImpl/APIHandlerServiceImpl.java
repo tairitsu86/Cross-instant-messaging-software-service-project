@@ -4,6 +4,7 @@ import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.apibody.MessageBean;
 import com.cimss.project.controller.exception.NoPermissionException;
 import com.cimss.project.controller.exception.RequestNotFoundException;
+import com.cimss.project.controller.exception.WrongFormatException;
 import com.cimss.project.database.DatabaseService;
 import com.cimss.project.database.entity.*;
 import com.cimss.project.database.entity.token.GroupRole;
@@ -99,11 +100,18 @@ public class APIHandlerServiceImpl implements APIHandlerService {
 
     @Override
     public void alterGroup(String accessToken, ManageBean.AlterGroupBean alterGroupBean) {
-        if(alterGroupBean.getGroupId()==null)
-            throw new RequestNotFoundException("groupId");
         if(!getGroupRole(accessToken,alterGroupBean.getGroupId()).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,alterGroupBean.getGroupId()));
         cimsService.alterGroup(Group.CreateEditGroup(alterGroupBean.getGroupId()).copyFromObject(alterGroupBean));
+    }
+
+    @Override
+    public void alterList(String accessToken,ManageBean.FunctionListBean functionListBean) {
+        if(!getGroupRole(accessToken,functionListBean.getGroupId()).managerPermission())
+            throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,functionListBean.getGroupId()));
+        if(!functionListBean.getFunctionList().decodeTest("/"))
+            throw new WrongFormatException();
+        cimsService.alterGroup(Group.CreateEditGroup(functionListBean.getGroupId()).copyFromObject(functionListBean));
     }
 
     //owner

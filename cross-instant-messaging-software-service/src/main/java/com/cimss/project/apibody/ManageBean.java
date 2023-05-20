@@ -45,8 +45,6 @@ public class ManageBean {
         private List<DeliveryMode> deliveryMode;
         @Schema(description = "The config file of delivery.",example = "")
         private DeliveryMode.DeliveryConfig deliveryConfig;
-        @Schema(description = "The function list of this group.",example = "{}")
-        private FunctionList functionList;
         @Schema(description = "This group is public or private.",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean isPublic;
         @Schema(description = "Can any user join this group by group id?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -66,8 +64,6 @@ public class ManageBean {
         private List<DeliveryMode> deliveryMode;
         @Schema(description = "The config file of delivery.",example = "")
         private DeliveryMode.DeliveryConfig deliveryConfig;
-        @Schema(description = "The function list of this group.",example = "{}")
-        private FunctionList functionList;
         @Schema(description = "This group is public or private.",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
         private Boolean isPublic;
         @Schema(description = "Can any user join this group by group id?",example = "true",requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -92,5 +88,14 @@ public class ManageBean {
         @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
         @NotEmpty
         private String groupId;
+    }
+    @Getter
+    @Setter
+    public static class FunctionListBean{
+        @Schema(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
+        @NotEmpty
+        private String groupId;
+        @Schema(description = "The function list of this group.",example = "{}")
+        private FunctionList functionList;
     }
 }

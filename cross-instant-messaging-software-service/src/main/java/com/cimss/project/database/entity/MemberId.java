@@ -1,5 +1,6 @@
 package com.cimss.project.database.entity;
 
+import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Embeddable;
@@ -9,11 +10,11 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-@EqualsAndHashCode
 @Getter
 @Setter
 public class MemberId implements Serializable {
@@ -41,4 +42,16 @@ public class MemberId implements Serializable {
         return memberId;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(this==obj) return true;
+        if(!(obj instanceof MemberId)) return false;
+        MemberId m = (MemberId) obj;
+        return (Objects.equals(user, m.user))&&(Objects.equals(group, m.group));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(user.getUserId())+Objects.hashCode(group.getGroupId());
+    }
 }

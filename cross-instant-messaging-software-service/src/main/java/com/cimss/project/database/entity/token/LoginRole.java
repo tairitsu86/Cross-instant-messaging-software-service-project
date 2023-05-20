@@ -1,5 +1,7 @@
 package com.cimss.project.database.entity.token;
 
-public enum LoginRole {
+import java.io.Serializable;
+
+public enum LoginRole implements Serializable {
     NORMAL,ADMIN;
 }

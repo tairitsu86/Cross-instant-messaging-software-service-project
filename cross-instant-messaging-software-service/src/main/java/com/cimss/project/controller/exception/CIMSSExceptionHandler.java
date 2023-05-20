@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CIMSSExceptionHandler {
     @ExceptionHandler(NoPermissionException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public MessageBean unauthorizedExceptionHandler(@NotNull NoPermissionException e) {
         return MessageBean.CreateMessageBean(e.getErrorMessage());
     }
@@ -18,6 +18,11 @@ public class CIMSSExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public MessageBean requestNotFoundExceptionHandler(@NotNull RequestNotFoundException e) {
         return MessageBean.CreateMessageBean(e.RequestValue());
+    }
+    @ExceptionHandler(WrongFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public MessageBean wrongFormatExceptionHandler(@NotNull WrongFormatException e) {
+        return MessageBean.CreateMessageBean("Wrong format!");
     }
     @ExceptionHandler(DataNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

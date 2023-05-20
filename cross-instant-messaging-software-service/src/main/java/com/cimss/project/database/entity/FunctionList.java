@@ -3,9 +3,10 @@ package com.cimss.project.database.entity;
 import com.cimss.project.im.ButtonList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -13,18 +14,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FunctionList {
+public class FunctionList implements Serializable{
     private String title;
     private String text;
     private String path;
-    @Embedded
+    @ElementCollection
+    @Column(length = 65535)
     private Map<String,TextButton> textButtons;
 
     @Autowired
@@ -36,7 +38,7 @@ public class FunctionList {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class TextButton{
+    public static class TextButton implements Serializable {
         private boolean isEndPoint;
         @Embedded
         private Object data;
@@ -49,6 +51,7 @@ public class FunctionList {
             throw new RuntimeException(e);
         }
     }
+    //TODO key<=20 char,all json<=65535 char, textButtons.size()<=4,endPoint data<=300
     public boolean decodeTest(String path){
         this.path = path;
         try{
@@ -56,6 +59,7 @@ public class FunctionList {
                 if(value.isEndPoint) return;
                 FunctionList functionList = FunctionList.MappingFromObject(value.data);
                 functionList.decodeTest(String.format("%s%s/",path,key));
+                value.data = functionList;
             });
         }catch (RuntimeException e){
             return false;

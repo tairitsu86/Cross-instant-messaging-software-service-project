@@ -34,10 +34,9 @@ public class WebSecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeHttpRequests()
-            .requestMatchers("/","/swagger-ui/**","/v3/api-docs/**").permitAll()
+            .requestMatchers("/","/swagger-ui/**","/v3/api-docs/**","/h2console/**").permitAll()
             .requestMatchers(System.getenv("LINE_WEBHOOK"),System.getenv("TELEGRAM_WEBHOOK")).permitAll()
-            .requestMatchers("/h2console/**").permitAll()
-            .requestMatchers("/manage/**").hasAuthority(LoginRole.ADMIN.name())
+//            .requestMatchers("/manage/**").hasAuthority(LoginRole.ADMIN.name())
             .requestMatchers("/**").hasAuthority(LoginRole.NORMAL.name())
             .anyRequest().authenticated();
         http.addFilterBefore(oncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);

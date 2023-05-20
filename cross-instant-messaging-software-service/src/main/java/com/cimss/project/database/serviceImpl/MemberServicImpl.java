@@ -22,8 +22,7 @@ public class MemberServicImpl implements MemberService {
 	
 	@Override
 	public void join(UserId userId, String groupId) {
-		//TODO
-//		memberRepository.save(Member.CreateMember(userId,groupId));
+		memberRepository.save(Member.CreateMember(userId,groupId));
 	}
 
 	@Override
@@ -35,16 +34,14 @@ public class MemberServicImpl implements MemberService {
 
 	@Override
 	public void leave(UserId userId, String groupId) {
-//		TODO
-//		memberRepository.deleteById(MemberId.CreateMemberId(userId,groupId));
+		memberRepository.deleteById(MemberId.CreateMemberId(userId,groupId));
 	}
 
 	@Override
 	public void alterPermission(UserId userId, String groupId, GroupRole groupRole) {
-		//TODO
-//		Member member = memberRepository.getReferenceById(MemberId.CreateMemberId(userId,groupId));
-//		member.setGroupRole(groupRole);
-//		memberRepository.save(member);
+		Member member = memberRepository.getReferenceById(MemberId.CreateMemberId(userId,groupId));
+		member.setGroupRole(groupRole);
+		memberRepository.save(member);
 	}
 
 	@Override
@@ -88,9 +85,7 @@ public class MemberServicImpl implements MemberService {
 
 	@Override
 	public boolean isMember(UserId userId, String groupId) {
-//		TODO
-//		return memberRepository.existsById(MemberId.CreateMemberId(userId,groupId));
-		return true;
+		return memberRepository.existsById(MemberId.CreateMemberId(userId,groupId));
 	}
 
 	@Override

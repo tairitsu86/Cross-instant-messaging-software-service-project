@@ -30,19 +30,26 @@ public class EventHandleServiceImpl implements EventHandleService {
     private JwtUtilities jwtUtilities;
 
     @Override
-    public void TextEventHandler(UserId userId, String text) {
+    public void textEventHandler(UserId userId, String text) {
         if(text.startsWith("/cimss")){
-            String executeResult = CIMSSdecoder(userId,text);
-            cimsService.sendTextMessage(userId,executeResult);
+            commandEventHandler(userId, text);
             return;
         }
         //TODO
         notifyService.webhookSendEvent(userId, EventBean.createTextMessageEventBean(cimsService.getUserById(userId) ,null,text));
     }
-//    /cimss <command type> <group id> <software> <userId> <var>
+
+    @Override
+    public void commandEventHandler(UserId userId, String text) {
+        String executeResult = CIMSSdecoder(userId,text);
+        if(executeResult!=null)
+            cimsService.sendTextMessage(userId,executeResult);
+    }
+
+    //    /cimss <command type> <group id> <software> <userId> <var>
     public String CIMSSdecoder(UserId userId,String stringCommand){
         Command command = CreateCommandObject(stringCommand);
-        String result = "no result";
+        String result = null;
         //switch case for no require permission command
         switch (command.commandType) {
             case "test" ->cimsService.sendButtonListMessage(userId,cimsService.getGroupById(command.groupId).getFunctionList().toButtonList(command.getGroupId()));

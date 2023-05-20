@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -67,5 +66,12 @@ public class ManagerController {
 	public void alterGroup(@RequestHeader(name = "Authorization") String accessToken,
 						   @Valid @RequestBody ManageBean.AlterGroupBean alterGroupBean) {
 		apiHandlerService.alterGroup(accessToken,alterGroupBean);
+	}
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@Operation(summary = "Alter the group function list", description = "Request body must have groupId.")
+	@PatchMapping("/groups/alter/list")
+	public void alterList(@RequestHeader(name = "Authorization") String accessToken,
+						  @Valid @RequestBody ManageBean.FunctionListBean functionListBean) {
+		apiHandlerService.alterList(accessToken,functionListBean);
 	}
 }
