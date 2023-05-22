@@ -73,9 +73,10 @@ public class WaitingEventHandlerImpl implements WaitingEventHandler {
                         reply = String.format("%s\n\nGroup:%s,id:%s\nIntroduce:\n%s", reply, group.getGroupName(), group.getGroupId(), group.getGroupDescription());
                     }
                     reply = String.format("%s\n\n%s", reply,"Want to join?\nJust enter the group id!\nOr push the Exit button!");
+                    addWaitingUser(executorUser,WaitingType.JOIN_GROUP_ID,null);
+                    replyButtonList = createButtonListService.exitMenu();
                 }
-                addWaitingUser(executorUser,WaitingType.JOIN_GROUP_ID,null);
-                replyButtonList = createButtonListService.exitMenu();
+
             }
             case MENU_GROUP_ID->cimsService.sendButtonListMessage(executorUser,createButtonListService.createGroupMenu(executorUser,data));
             case JOIN_GROUP_ID->{
