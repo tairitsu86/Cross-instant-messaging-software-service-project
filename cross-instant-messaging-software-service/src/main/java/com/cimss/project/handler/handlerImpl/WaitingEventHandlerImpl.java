@@ -4,14 +4,10 @@ import com.cimss.project.database.DatabaseService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.database.entity.token.GroupRole;
-import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.cimss.project.handler.WaitingEventHandler;
 import com.cimss.project.im.ButtonList;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.CreateButtonListService;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

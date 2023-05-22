@@ -41,7 +41,7 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getPostbackContent().getData();
         final String userId = event.getSource().getUserId();
-        eventHandler.commandEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
+        eventHandler.textEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
     }
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {
