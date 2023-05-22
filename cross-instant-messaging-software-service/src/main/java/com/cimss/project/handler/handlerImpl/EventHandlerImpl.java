@@ -34,7 +34,6 @@ public class EventHandlerImpl implements EventHandler {
 
     @Override
     public void textEventHandler(UserId userId, String text) {
-        if(waitingEventHandler.checkWaiting(userId,text)) return;
         if(!cimsService.isUserExist(userId)){
             waitingEventHandler.addWaitingUser(
                     userId,
@@ -44,7 +43,8 @@ public class EventHandlerImpl implements EventHandler {
             cimsService.sendTextMessage(userId,"Hello!\nWelcome to Cross-IM Service!\nPlease tell me your name!");
         }else if(text.startsWith("/cimss")){
             commandEventHandler(userId, text);
-        }else {
+        }else if(waitingEventHandler.checkWaiting(userId,text)){
+        }else{
             cimsService.sendButtonListMessage(userId,createButtonListService.createCIMSSMenu());
         }
     }
@@ -105,10 +105,7 @@ public class EventHandlerImpl implements EventHandler {
                 reply = "Please enter the group name!";
             }
             case PROFILE -> replyButtonList = createButtonListService.createProfileMenu(executorUser);
-            case EXIT -> {
-                waitingEventHandler.exitWaiting(executorUser);
-                reply = waitingEventHandler.exitWaiting(executorUser)?"Exit success!":"Nothing to exit!";
-            }
+            case EXIT -> reply = waitingEventHandler.exitWaiting(executorUser)?"Exit success!":"Nothing to exit!";
             case ALTER_USERNAME -> {
                 waitingEventHandler.addWaitingUser(executorUser, WaitingEventHandler.WaitingType.ALTER_USERNAME,null);
                 reply = "Please enter your new name";

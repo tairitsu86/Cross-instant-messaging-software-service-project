@@ -43,7 +43,7 @@ public class WaitingEventHandlerImpl implements WaitingEventHandler {
 
     @Override
     public boolean exitWaiting(UserId userId) {
-        return waitingUsers.remove(userId)==null;
+        return waitingUsers.remove(userId)!=null;
     }
 
     public void waitingEventHandler(UserId executorUser, MetaData metaData, String data){
