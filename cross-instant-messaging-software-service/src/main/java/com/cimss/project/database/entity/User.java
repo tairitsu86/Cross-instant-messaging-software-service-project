@@ -30,7 +30,8 @@ public class User  implements Serializable, UserDetails {
 	@Schema(description = "User name",example = "David")
 	@Column
 	@EqualsAndHashCode.Exclude
-	private String userName;
+	private String userDisplayName;
+
 	@Schema(description = "System role",example = "NORMAL")
 	@Column
 	@EqualsAndHashCode.Exclude
@@ -48,9 +49,6 @@ public class User  implements Serializable, UserDetails {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add((new SimpleGrantedAuthority(loginRole.name())));
 		return authorities;
-	}
-	public String getUserName() {
-		return userName;
 	}
 
 

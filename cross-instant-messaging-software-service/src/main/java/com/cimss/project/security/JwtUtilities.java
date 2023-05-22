@@ -1,14 +1,11 @@
 package com.cimss.project.security;
 
-import com.cimss.project.database.DatabaseService;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.entity.UserId;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
@@ -72,6 +69,9 @@ public class JwtUtilities{
             log.trace("Unsupported JWT token trace: {}", e);
         } catch (IllegalArgumentException e) {
             log.info("JWT token compact of handler are invalid.");
+            log.trace("JWT token compact of handler are invalid trace: {}", e);
+        } catch (Exception e){
+            log.info(String.format("JWT token Exception. With %s",e.getMessage()));
             log.trace("JWT token compact of handler are invalid trace: {}", e);
         }
         return false;

@@ -1,5 +1,6 @@
 package com.cimss.project.database.entity;
 
+import com.cimss.project.handler.EventHandler;
 import com.cimss.project.im.ButtonList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,7 +52,7 @@ public class FunctionList implements Serializable{
             throw new RuntimeException(e);
         }
     }
-    //TODO key<=20 char,all json<=65535 char, textButtons.size()<=4,endPoint data<=300
+    //TODO key<=20 char,all json<=65535 char, textButtons.size()<=4,endPoint data<=300, text<=60 char
     public boolean decodeTest(String path){
         this.path = path;
         try{
@@ -69,11 +70,22 @@ public class FunctionList implements Serializable{
     public ButtonList toButtonList(String groupId){
         Map<String,String> buttons = new HashMap<>();
         textButtons.forEach((key,value)->{
-            //    /cimss <command type> <group id> <software> <userId> <var>
             if(value.isEndPoint) {
-                buttons.put(key,String.format("/cimss notify %s   %s",groupId,(String)value.data));
+                buttons.put(
+                        key,
+                        EventHandler.CommandBuilder(EventHandler.CommandType.NOTIFY)
+                                .setGroupId(groupId)
+                                .setParameter((String)value.data)
+                                .build().toString()
+                        );
             }else {
-                buttons.put(key,String.format("/cimss toPath %s   %s%s/",groupId,path,key));
+                buttons.put(
+                        key,
+                        EventHandler.CommandBuilder(EventHandler.CommandType.TO_PATH)
+                                .setGroupId(groupId)
+                                .setParameter(String.format("%s%s/",path,key))
+                                .build().toString()
+                       );
             }
         });
         return ButtonList.CreateButtonList(title,text,buttons);

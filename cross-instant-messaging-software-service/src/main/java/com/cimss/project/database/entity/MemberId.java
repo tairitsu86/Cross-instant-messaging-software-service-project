@@ -1,6 +1,5 @@
 package com.cimss.project.database.entity;
 
-import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.Embeddable;

@@ -10,7 +10,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,7 +40,7 @@ public class Group {
 	@Column(nullable=false)
 	@ElementCollection
 	@EqualsAndHashCode.Exclude
-	private List<DeliveryMode> deliveryMode;
+	private Set<DeliveryMode> deliveryMode;
 	@Schema(description = "The config file of delivery.",example = "")
 	@Column(nullable=false)
 	@Embedded
@@ -74,10 +76,10 @@ public class Group {
 		private String groupDescription;
 	}
 	public static Group CreateGroup(){
-		return new Group(null,null,"None",new ArrayList<>(),null,null,true,true);
+		return new Group(null,null,"None",new HashSet<>(),null,null,true,true);
 	}
 	public static Group CreateGroup(String groupName){
-		return new Group(null,groupName,"None",new ArrayList<>(),null,null,false,true);
+		return new Group(null,groupName,"None",new HashSet<>(),null,null,false,true);
 	}
 	public static Group CreateEditGroup(String groupId){
 		return new Group(groupId,null,null,null,null,null,null,null);

@@ -2,8 +2,7 @@ package com.cimss.project.im.linebot;
 
 import com.cimss.project.CrossIMApplication;
 import com.cimss.project.database.entity.UserId;
-import com.cimss.project.service.EventHandleService;
-import com.cimss.project.service.CIMSService;
+import com.cimss.project.handler.EventHandler;
 import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.PostbackEvent;
@@ -24,11 +23,8 @@ import java.util.concurrent.ExecutionException;
 public class LineHandler {
 	
     private final Logger log = LoggerFactory.getLogger(CrossIMApplication.class);
-    
     @Autowired
-    private CIMSService cimsService;
-    @Autowired
-    private EventHandleService eventHandleService;
+    private EventHandler eventHandler;
     @Autowired
     private LineMessagingClient lineMessagingClient;
 
@@ -38,15 +34,14 @@ public class LineHandler {
         log.info("event: " + event);
         final String text = event.getMessage().getText();
         final String userId = event.getSource().getUserId();
-        cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),getUserProfile(userId).getDisplayName());
-        eventHandleService.textEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
+        eventHandler.textEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
     }
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) {
         log.info("event: " + event);
         final String text = event.getPostbackContent().getData();
         final String userId = event.getSource().getUserId();
-        eventHandleService.commandEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
+        eventHandler.commandEventHandler(UserId.CreateUserId(InstantMessagingSoftware.LINE,userId),text);
     }
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {

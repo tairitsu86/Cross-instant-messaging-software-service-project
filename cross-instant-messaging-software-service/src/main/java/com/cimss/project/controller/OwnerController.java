@@ -1,12 +1,11 @@
 package com.cimss.project.controller;
 
 import com.cimss.project.apibody.ManageBean;
-import com.cimss.project.service.APIHandlerService;
+import com.cimss.project.handler.APIHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OwnerController {
 	@Autowired
-	private APIHandlerService apiHandlerService;
+	private APIHandler apiHandler;
 
 	//Patch method
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -24,14 +23,14 @@ public class OwnerController {
 	@PatchMapping("/permission/grant")
 	public void grantPermission(@RequestHeader(name = "Authorization") String accessToken,
 								@Valid @RequestBody ManageBean.GrantPermissionBean grantPermissionBean) {
-		apiHandlerService.grantPermission(accessToken,grantPermissionBean);
+		apiHandler.grantPermission(accessToken,grantPermissionBean);
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Revoke permission", description = "Revoke manager permission to any member.")
 	@PatchMapping("/permission/revoke")
 	public void revokePermission(@RequestHeader(name = "Authorization") String accessToken,
 								 @Valid @RequestBody ManageBean.GrantPermissionBean grantPermissionBean) {
-		apiHandlerService.revokePermission(accessToken,grantPermissionBean);
+		apiHandler.revokePermission(accessToken,grantPermissionBean);
 	}
 
 	//delete method
@@ -41,6 +40,6 @@ public class OwnerController {
 	public void deleteGroup(@RequestHeader(name = "Authorization") String accessToken,
 							@Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 							@PathVariable String groupId) {
-		apiHandlerService.deleteGroup(accessToken,groupId);
+		apiHandler.deleteGroup(accessToken,groupId);
 	}
 }

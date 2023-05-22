@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class CIMSServiceImpl implements CIMSService {
@@ -72,6 +70,14 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
+    public void alterUserName(UserId userId, String userName) {
+        User user = dataBaseService.getUserById(userId);
+        if(user==null) return;
+        user.setUserDisplayName(userName);
+        dataBaseService.createUser(user);
+    }
+
+    @Override
     public void join(UserId userId, String groupId) {
         dataBaseService.join(userId,groupId);
     }
@@ -106,26 +112,31 @@ public class CIMSServiceImpl implements CIMSService {
     }
 
     @Override
-    public void alterGroup(String groupId, String property, String value) {
+    public void alterGroupName(String groupId, String data) {
         Group group = Group.CreateEditGroup(groupId);
-        Boolean val = null;
-        switch(value){
-            case "true" -> val = true;
-            case "false" -> val = false;
-            default ->{
-//                if(!(property.equals("groupName")||property.equals("groupDescription")))
-//                    return "Alter command error!";
-                //TODO
-            }
-        }
-        switch (property){
-            case "groupName"-> group.setGroupName(value);
-            case "groupDescription"-> group.setGroupDescription(value);
-            case "isPublic" -> group.setIsPublic(val);
-            case "joinById" -> group.setJoinById(val);
-//            default -> {return "Property not exist!";}
-            //TODO
-        }
+        group.setGroupName(data);
+        dataBaseService.alterGroup(group);
+    }
+
+    @Override
+    public void alterGroupDescription(String groupId, String data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setGroupDescription(data);
+        dataBaseService.alterGroup(group);
+    }
+
+    @Override
+    public void alterGroupIsPublic(String groupId, boolean data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setIsPublic(data);
+        dataBaseService.alterGroup(group);
+    }
+
+    @Override
+    public void alterGroupJoinById(String groupId, boolean data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setJoinById(data);
+        dataBaseService.alterGroup(group);
     }
 
     @Override
@@ -184,6 +195,11 @@ public class CIMSServiceImpl implements CIMSService {
     @Override
     public Member getMemberById(MemberId memberId) {
         return null;
+    }
+
+    @Override
+    public GroupRole getGroupRole(UserId userId, String groupId) {
+        return dataBaseService.getMemberById(MemberId.CreateMemberId(userId,groupId)).getGroupRole();
     }
 
 }

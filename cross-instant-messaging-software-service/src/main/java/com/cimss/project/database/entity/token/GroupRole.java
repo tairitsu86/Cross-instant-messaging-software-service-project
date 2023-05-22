@@ -1,19 +1,28 @@
 package com.cimss.project.database.entity.token;
 
+import lombok.AllArgsConstructor;
+
 import java.io.Serializable;
 
+@AllArgsConstructor
 public enum GroupRole implements Serializable {
-    NOT_MEMBER,GROUP_MEMBER,GROUP_MANAGER,GROUP_OWNER;
+    NOT_MEMBER(0),
+    GROUP_MEMBER(1),
+    GROUP_MANAGER(2),
+    GROUP_OWNER(3);
+
+    private int permissionNumber;
     public boolean ownerPermission(){
-        return this==GROUP_OWNER;
+        return permissionNumber>=GROUP_OWNER.permissionNumber;
     }
     public boolean managerPermission(){
-        if(ownerPermission()) return true;
-        return this==GROUP_MANAGER;
+        return permissionNumber>=GROUP_MANAGER.permissionNumber;
     }
     public boolean memberPermission(){
-        if(managerPermission()) return true;
-        return this==GROUP_MEMBER;
+        return permissionNumber>=GROUP_MEMBER.permissionNumber;
+    }
+    public boolean permission(GroupRole requireRole){
+        return this.permissionNumber>=requireRole.permissionNumber;
     }
 
 }

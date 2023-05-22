@@ -1,4 +1,4 @@
-package com.cimss.project.service.serviceImpl;
+package com.cimss.project.handler.handlerImpl;
 
 import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.apibody.MessageBean;
@@ -9,7 +9,7 @@ import com.cimss.project.database.DatabaseService;
 import com.cimss.project.database.entity.*;
 import com.cimss.project.database.entity.token.GroupRole;
 import com.cimss.project.security.JwtUtilities;
-import com.cimss.project.service.APIHandlerService;
+import com.cimss.project.handler.APIHandler;
 import com.cimss.project.service.CIMSService;
 import com.cimss.project.service.NotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.List;
 import static com.cimss.project.database.entity.token.GroupRole.NOT_MEMBER;
 
 @Service
-public class APIHandlerServiceImpl implements APIHandlerService {
+public class APIHandlerImpl implements APIHandler {
     @Autowired
     private CIMSService cimsService;
 
@@ -83,10 +83,10 @@ public class APIHandlerServiceImpl implements APIHandlerService {
     }
 
     @Override
-    public void webhookTest(String accessToken, String groupId) {
+    public void notifyTest(String accessToken, String groupId) {
         if(!getGroupRole(accessToken,groupId).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,groupId));
-        notifyService.testWebhook(groupId);
+        notifyService.notifyTest(groupId);
     }
 
     @Override

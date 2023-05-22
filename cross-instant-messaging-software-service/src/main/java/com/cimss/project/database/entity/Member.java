@@ -29,11 +29,8 @@ public class Member{
 	public static Member CreateMember(UserId userId, String groupId){
 		return new Member(MemberId.CreateMemberId(userId,groupId), GroupRole.GROUP_MEMBER);
 	}
-	public static MemberData CreateMemberData(User user, GroupRole groupRole){
-		return new MemberData(user, groupRole);
-	}
 	public MemberData toMemberData(){
-		return CreateMemberData(memberId.getUser(), groupRole);
+		return new MemberData(memberId.getUser(), groupRole);
 	}
 
 

@@ -17,6 +17,7 @@ public interface CIMSService {
     void sendButtonListMessage(UserId userId, ButtonList buttonList);
 
     User userRegister(UserId userId, String userName);
+    void alterUserName(UserId userId, String userName);
 
     void join(UserId userId,String groupId);
     void joinWithProperty(UserId userId,String groupId);
@@ -30,7 +31,10 @@ public interface CIMSService {
 
     Group newGroup(Group group);
 
-    void alterGroup(String groupId,String property,String value);
+    void alterGroupName(String groupId,String data);
+    void alterGroupDescription(String groupId,String data);
+    void alterGroupIsPublic(String groupId,boolean data);
+    void alterGroupJoinById(String groupId,boolean data);
 
     void alterGroup(Group group);
 
@@ -46,5 +50,6 @@ public interface CIMSService {
     boolean isMember(UserId userId, String groupId);
     boolean isUserExist(UserId userId);
     Member getMemberById(MemberId memberId);
+    GroupRole getGroupRole(UserId userId,String groupId);
 
 }

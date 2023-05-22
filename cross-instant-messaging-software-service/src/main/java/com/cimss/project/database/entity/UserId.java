@@ -30,6 +30,18 @@ public class UserId implements Serializable {
     public static UserId CreateUserId(InstantMessagingSoftware instantMessagingSoftware, String instantMessagingSoftwareUserId){
         return new UserId(instantMessagingSoftware,instantMessagingSoftwareUserId);
     }
+    public static UserId CreateUserId(String StringUserId){
+        String tmp[] = StringUserId.split(" ");
+        if(tmp.length!=2) return null;
+        UserId userId = new UserId();
+        try {
+            userId.instantMessagingSoftware = InstantMessagingSoftware.valueOf(tmp[0]);
+        }catch (IllegalArgumentException e){
+            return null;
+        }
+        userId.instantMessagingSoftwareUserId = tmp[1];
+        return userId;
+    }
     public static UserId MappingFromJson(String json){
         ObjectMapper objectMapper = new ObjectMapper();
         try {

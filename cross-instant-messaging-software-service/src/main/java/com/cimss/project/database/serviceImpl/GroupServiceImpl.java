@@ -59,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
 	public List<Group.GroupData> getGroupByName(String groupName) {
 		List<Group> groups = getAllGroups();
 		List<Group.GroupData> result = new ArrayList<>();
-		if(groupName==null) groupName = "";
+		if(groupName==null) return result;
 		for(Group group:groups){
 			if(group.getGroupName()!=null&&group.getIsPublic()&&group.getGroupName().matches("(?i).*"+groupName+".*")){
 				result.add(Group.CreateDataBean(group));

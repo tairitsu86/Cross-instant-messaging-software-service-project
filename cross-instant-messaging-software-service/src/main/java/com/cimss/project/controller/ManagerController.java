@@ -3,7 +3,7 @@ package com.cimss.project.controller;
 import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.Member;
-import com.cimss.project.service.APIHandlerService;
+import com.cimss.project.handler.APIHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ManagerController {
 
 	@Autowired
-	private APIHandlerService apiHandlerService;
+	private APIHandler apiHandler;
 
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "Get data of all members", description = "Can get name,user id,the IM he/she used, and member kind.")
@@ -27,7 +27,7 @@ public class ManagerController {
 	public List<Member.MemberData> getMembers(@RequestHeader(name = "Authorization") String accessToken,
 											  @Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 											  @PathVariable String groupId){
-		return apiHandlerService.getMembers(accessToken,groupId);
+		return apiHandler.getMembers(accessToken,groupId);
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -36,17 +36,17 @@ public class ManagerController {
 	public Group groupDetail(@RequestHeader(name = "Authorization") String accessToken,
 							 @Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 							 @PathVariable String groupId) {
-		return apiHandlerService.groupDetail(accessToken,groupId);
+		return apiHandler.groupDetail(accessToken,groupId);
 	}
 
 	//post method
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@Operation(summary = "Webhook test", description = "Send a test event to the webhook of the group.")
-	@PostMapping("/groups/{groupId}/webhook/test")
+	@Operation(summary = "Notify test", description = "Send a test event.")
+	@PostMapping("/groups/{groupId}/notify/test")
 	public void webhookTest(@RequestHeader(name = "Authorization") String accessToken,
 							@Parameter(description = "The id of the group, composed of six alphanumerics.", example = "AbCd12")
 							@PathVariable String groupId){
-		apiHandlerService.webhookTest(accessToken,groupId);
+		apiHandler.notifyTest(accessToken,groupId);
 	}
 
 	//Put method
@@ -55,7 +55,7 @@ public class ManagerController {
 	@PutMapping("/broadcast/text")
 	public void broadcast(@RequestHeader(name = "Authorization") String accessToken,
 						  @Valid @RequestBody ManageBean.BroadcastBean broadcastBean) {
-		apiHandlerService.broadcast(accessToken,broadcastBean);
+		apiHandler.broadcast(accessToken,broadcastBean);
 	}
 
 
@@ -65,13 +65,13 @@ public class ManagerController {
 	@PatchMapping("/groups/alter")
 	public void alterGroup(@RequestHeader(name = "Authorization") String accessToken,
 						   @Valid @RequestBody ManageBean.AlterGroupBean alterGroupBean) {
-		apiHandlerService.alterGroup(accessToken,alterGroupBean);
+		apiHandler.alterGroup(accessToken,alterGroupBean);
 	}
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@Operation(summary = "Alter the group function list", description = "Request body must have groupId.")
 	@PatchMapping("/groups/alter/list")
 	public void alterList(@RequestHeader(name = "Authorization") String accessToken,
 						  @Valid @RequestBody ManageBean.FunctionListBean functionListBean) {
-		apiHandlerService.alterList(accessToken,functionListBean);
+		apiHandler.alterList(accessToken,functionListBean);
 	}
 }

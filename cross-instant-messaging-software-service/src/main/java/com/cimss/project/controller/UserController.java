@@ -3,7 +3,7 @@ package com.cimss.project.controller;
 import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.apibody.MessageBean;
 import com.cimss.project.database.entity.Group;
-import com.cimss.project.service.APIHandlerService;
+import com.cimss.project.handler.APIHandler;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,13 +21,13 @@ import java.util.List;
 public class UserController {
 	
 	@Autowired
-    private APIHandlerService apiHandlerService;
+    private APIHandler apiHandler;
 
 	//get method
 	@Hidden
 	@GetMapping("/")
 	public ResponseEntity<MessageBean> homeTest() {
-		return apiHandlerService.homeTest();
+		return apiHandler.homeTest();
 	}
 
 	@ResponseStatus(HttpStatus.OK)
@@ -35,7 +35,7 @@ public class UserController {
 	@GetMapping("/groups/{keyword}/search")
 	public List<Group.GroupData> searchGroup(@Parameter(description = "Any word", example = "my group")
 											 @PathVariable String keyword) {
-		return apiHandlerService.searchGroup(keyword);
+		return apiHandler.searchGroup(keyword);
 	}
 
 	//patch method
@@ -43,7 +43,7 @@ public class UserController {
 	@Operation(summary = "Create new group", description = "Create your own group.")
 	@PostMapping("/groups/new")
 	public Group newGroup(@Valid @RequestBody ManageBean.NewGroupBean newGroupBean) {
-		return apiHandlerService.newGroup(newGroupBean);
+		return apiHandler.newGroup(newGroupBean);
 	}
 
 	//post method
@@ -52,6 +52,6 @@ public class UserController {
 	@PostMapping("/send/text")
 	public void sendTextMessage(@RequestHeader(name = "Authorization") String accessToken,
 								@Valid @RequestBody ManageBean.SendBean sendBean) {
-		apiHandlerService.sendTextMessage(accessToken,sendBean);
+		apiHandler.sendTextMessage(accessToken,sendBean);
 	}
 }

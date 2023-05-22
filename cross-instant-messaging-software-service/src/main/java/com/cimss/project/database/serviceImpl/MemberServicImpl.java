@@ -46,7 +46,7 @@ public class MemberServicImpl implements MemberService {
 
 	@Override
 	public List<User> getUsers(String groupId) {
-		List<Member> members = memberRepository.findAll();
+		List<Member> members = getAllMembers();
 		List<User> users = new ArrayList<User>();
 		for(Member member: members)
 			if(member.getMemberId().getGroup().getGroupId().equals(groupId))
@@ -55,7 +55,7 @@ public class MemberServicImpl implements MemberService {
 	}
 	@Override
 	public List<Member.MemberData> getMembers(String groupId) {
-		List<Member> members = memberRepository.findAll();
+		List<Member> members = getAllMembers();
 		List<Member.MemberData> memberData = new ArrayList<>();
 		for(Member member: members)
 			if(member.getMemberId().getGroup().getGroupId().equals(groupId))
@@ -65,7 +65,7 @@ public class MemberServicImpl implements MemberService {
 
 	@Override
 	public List<Group> getGroups(UserId userId) {
-		List<Member> members = memberRepository.findAll();
+		List<Member> members = getAllMembers();
 		List<Group> groups = new ArrayList<>();
 		for(Member member: members)
 			if(member.getMemberId().getUser().getUserId().equals(userId))

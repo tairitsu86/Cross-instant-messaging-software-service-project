@@ -49,11 +49,12 @@ public class LineMessageService implements IMService {
 	public void sendButtonListMessage(String userId, ButtonList buttonList) {
 		List<Action> actions = new ArrayList<>();
 		buttonList.getButtons().forEach((key,value)->actions.add(new PostbackAction(key, value,null,null,null,null)));
+		String text = buttonList.getText();
 		TemplateMessage templateMessage = new TemplateMessage(
 				"Line button list",
 				ButtonsTemplate.builder()
 						.title(buttonList.getTitle())
-						.text(buttonList.getText())
+						.text(text.substring(0,Math.min(text.length(),60)))
 						.actions(actions).build()
 		);
 		pushMessage(userId,templateMessage);

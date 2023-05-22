@@ -6,48 +6,37 @@ import com.cimss.project.database.entity.User;
 import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import lombok.*;
 
-public class EventBean {
+public abstract class EventBean {
+
+    public abstract String getEventType();
 
     public static TestEvent createTestEventBean(){
         return new TestEvent();
     }
-    public static TextMessageEvent createTextMessageEventBean(User user, GroupRole groupRole, String message){
-        return new TextMessageEvent(Member.CreateMemberData(user, groupRole),message);
+
+    public static FunctionListEvent CreateFunctionListEvent(String message){
+        return new FunctionListEvent(message);
     }
-    public static TransferEvent createTransferEventBean(InstantMessagingSoftware instantMessagingSoftware, Object eventObject){
-        return new TransferEvent(instantMessagingSoftware,eventObject);
-    }
-    public String getEventType(){
-        return null;
-    }
-    @Getter
-    @Setter
     @NoArgsConstructor
-    @ToString
+    @Data
     public static class TestEvent extends EventBean{
         private final String eventType="Test";
     }
-    @Getter
-    @Setter
+
     @AllArgsConstructor
     @NoArgsConstructor
-    @ToString
-    public static class TextMessageEvent extends EventBean{
-        private final String eventType="TextMessage";
-        private Member.MemberData member;
+    @Data
+    public static class FunctionListEvent extends EventBean{
+        private final String eventType="FunctionList";
         private String message;
-        public User getUser(){
-            return this.member.toUser();
-        }
     }
-    @Getter
-    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    @ToString
-    public static class TransferEvent extends EventBean{
-        private final String eventType = "Transfer";
-        private InstantMessagingSoftware instantMessagingSoftware;
-        private Object eventObject;
+    @Data
+    public static class ReplyEvent extends EventBean{
+        private final String eventType="ReplyEvent";
+        private String reportMessage;
+        private String broadcastMessage;
+        private Boolean broadcastIgnoreExecutor;
     }
 }

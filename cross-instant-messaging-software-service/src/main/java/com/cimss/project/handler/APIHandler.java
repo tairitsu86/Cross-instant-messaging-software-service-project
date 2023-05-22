@@ -1,4 +1,4 @@
-package com.cimss.project.service;
+package com.cimss.project.handler;
 
 import com.cimss.project.apibody.ManageBean;
 import com.cimss.project.apibody.MessageBean;
@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface APIHandlerService {
+public interface APIHandler {
     
     ResponseEntity<MessageBean> homeTest();
     
@@ -21,7 +21,7 @@ public interface APIHandlerService {
     
     void sendTextMessage(String accessToken,ManageBean.SendBean sendBean);
     
-    void webhookTest(String accessToken,String groupId);
+    void notifyTest(String accessToken,String groupId);
 
     void broadcast(String accessToken,ManageBean.BroadcastBean broadcastBean);
 

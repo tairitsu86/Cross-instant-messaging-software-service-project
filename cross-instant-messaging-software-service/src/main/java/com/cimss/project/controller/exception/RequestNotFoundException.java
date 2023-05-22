@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class RequestNotFoundException extends RuntimeException{
             result = String.format("%s,%s",result,values.get(i));
         return result;
     }
-    public RequestNotFoundException(@NotNull String... values){
+    public RequestNotFoundException(String... values){
         this.values = new ArrayList<>();
         for(String value:values)
             this.values.add(value);
