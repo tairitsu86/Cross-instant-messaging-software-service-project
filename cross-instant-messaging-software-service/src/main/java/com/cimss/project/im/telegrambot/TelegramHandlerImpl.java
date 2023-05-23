@@ -34,7 +34,6 @@ public class TelegramHandlerImpl implements TelegramHandler {
 		Long chatId = message.chat().id();
 		LOG.debug("Chat id:" + chatId);
 		LOG.debug("Text : " + text);
-		cimsService.userRegister(UserId.CreateUserId(InstantMessagingSoftware.TELEGRAM,chatId.toString()),message.chat().lastName()+message.chat().firstName());
 		eventHandler.textEventHandler(UserId.CreateUserId(InstantMessagingSoftware.TELEGRAM,chatId.toString()),text);
 	}
 
