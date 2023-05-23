@@ -58,7 +58,7 @@ public class EventHandlerImpl implements EventHandler {
     public void replyEventHandler(UserId userId,String groupId,EventBean.ReplyEvent replyEvent) {
         if(replyEvent==null) return;
         List<UserId> ignoreUser = new ArrayList<>();
-        if(replyEvent.getBroadcastIgnoreExecutor()!=null&&!replyEvent.getBroadcastIgnoreExecutor())
+        if(replyEvent.getBroadcastIgnoreExecutor()!=null&&replyEvent.getBroadcastIgnoreExecutor())
             ignoreUser.add(userId);
         if(!(replyEvent.getBroadcastMessage()==null)&&!replyEvent.getBroadcastMessage().equals(""))
             cimsService.broadcast(groupId,replyEvent.getBroadcastMessage(),ignoreUser);
