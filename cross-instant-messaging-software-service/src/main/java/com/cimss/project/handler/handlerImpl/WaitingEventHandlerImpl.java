@@ -132,6 +132,15 @@ public class WaitingEventHandlerImpl implements WaitingEventHandler {
                 cimsService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_OWNER);
                 reply = "Alter success!";
             }
+            case DELETE_GROUP_COMMIT->{
+                String groupId = metaData.getTempData();
+                if (data.equals(databaseService.getGroupById(groupId).getGroupName())){
+                    cimsService.deleteGroup(groupId);
+                    reply = "Delete success!";
+                }else {
+                    reply = "Delete cancel!";
+                }
+            }
 
         }
         if(reply!=null)

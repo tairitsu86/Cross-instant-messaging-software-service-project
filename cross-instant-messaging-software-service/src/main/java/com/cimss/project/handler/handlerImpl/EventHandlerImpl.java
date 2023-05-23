@@ -34,16 +34,16 @@ public class EventHandlerImpl implements EventHandler {
 
     @Override
     public void textEventHandler(UserId userId, String text) {
-        if(!cimsService.isUserExist(userId)){
+        if(text.startsWith("/cimss")){
+            commandEventHandler(userId, text);
+        }else if(waitingEventHandler.checkWaiting(userId,text)){
+        }else if(!cimsService.isUserExist(userId)){
             waitingEventHandler.addWaitingUser(
                     userId,
                     WaitingEventHandler.WaitingType.INIT_USERNAME,
                     text
             );
             cimsService.sendTextMessage(userId,"Hello!\nWelcome to Cross-IM Service!\nPlease tell me your name!");
-        }else if(text.startsWith("/cimss")){
-            commandEventHandler(userId, text);
-        }else if(waitingEventHandler.checkWaiting(userId,text)){
         }else{
             cimsService.sendButtonListMessage(userId,createButtonListService.createCIMSSMenu());
         }
@@ -178,8 +178,8 @@ public class EventHandlerImpl implements EventHandler {
                 reply = "Please enter the IM and ID of that member,IM and ID please split by one space!";
             }
             case DELETE_GROUP -> {
-                cimsService.deleteGroup(groupId);
-                reply = "Delete Success";
+                waitingEventHandler.addWaitingUser(executorUser, WaitingEventHandler.WaitingType.DELETE_GROUP_COMMIT,groupId);
+                reply = "Enter the full group name to delete.\nOr enter some either to cancel.";
             }
         }
         if(reply!=null)

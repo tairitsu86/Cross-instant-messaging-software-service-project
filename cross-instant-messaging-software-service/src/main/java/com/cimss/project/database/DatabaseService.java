@@ -23,6 +23,7 @@ public interface DatabaseService {
     void joinWithProperty(UserId userId,String groupId);
     void leave(UserId userId,String groupId);
     void alterPermission(UserId userId, String groupId, GroupRole groupRole);
+    GroupRole getGroupRole(UserId userId, String groupId);
     List<User> getUsers(String groupId);
     List<Member.MemberData> getMembers(String groupId);
     List<Group> getGroups(UserId userId);

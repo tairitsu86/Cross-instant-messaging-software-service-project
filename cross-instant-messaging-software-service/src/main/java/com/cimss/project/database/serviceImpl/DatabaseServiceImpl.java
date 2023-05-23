@@ -106,7 +106,10 @@ public class DatabaseServiceImpl implements DatabaseService {
     public void alterPermission(UserId userId, String groupId, GroupRole groupRole) {
         memberService.alterPermission(userId,groupId, groupRole);
     }
-
+    @Override
+    public GroupRole getGroupRole(UserId userId, String groupId) {
+        return getMemberById(MemberId.CreateMemberId(userId,groupId)).getGroupRole();
+    }
 
     @Override
     public List<User> getUsers(String groupId) {

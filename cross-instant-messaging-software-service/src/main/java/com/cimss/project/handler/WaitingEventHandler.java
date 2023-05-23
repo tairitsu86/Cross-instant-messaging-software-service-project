@@ -39,7 +39,8 @@ public interface WaitingEventHandler {
         REMOVE_MEMBER_IM_USER_ID,
         TO_MEMBER_IM_USER_ID,
         TO_MANAGER_IM_USER_ID,
-        TO_OWNER_IM_USER_ID;
+        TO_OWNER_IM_USER_ID,
+        DELETE_GROUP_COMMIT;
     }
 
 }

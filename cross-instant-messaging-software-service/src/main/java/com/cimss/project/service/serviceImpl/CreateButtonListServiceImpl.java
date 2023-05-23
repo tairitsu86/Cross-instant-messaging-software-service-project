@@ -87,12 +87,16 @@ public class CreateButtonListServiceImpl implements CreateButtonListService {
                         .setGroupId(groupId)
                         .build().toString()
         );
-        //manager
-        buttons.put("Manage",
-                EventHandler.CommandBuilder(EventHandler.CommandType.MANAGER_MENU)
-                        .setGroupId(groupId)
-                        .build().toString()
-        );
+        if(databaseService.getGroupRole(userId,groupId).managerPermission()) {
+            //manager
+            if (databaseService.getGroupRole(userId, groupId).managerPermission()) {
+                buttons.put("Manage",
+                        EventHandler.CommandBuilder(EventHandler.CommandType.MANAGER_MENU)
+                                .setGroupId(groupId)
+                                .build().toString()
+                );
+            }
+        }
         return ButtonList.CreateButtonList(
                 databaseService.getGroupById(groupId).getGroupName(),
                 databaseService.getGroupById(groupId).getGroupDescription(),
@@ -124,16 +128,19 @@ public class CreateButtonListServiceImpl implements CreateButtonListService {
                         .setGroupId(groupId)
                         .build().toString()
         );
-        //owner
-        buttons.put("Delete group",
-                EventHandler.CommandBuilder(EventHandler.CommandType.DELETE_GROUP)
-                        .setGroupId(groupId)
-                        .build().toString()
-        );
+        if(databaseService.getGroupRole(userId,groupId).ownerPermission()) {
+            //owner
+            buttons.put("Delete group",
+                    EventHandler.CommandBuilder(EventHandler.CommandType.DELETE_GROUP)
+                            .setGroupId(groupId)
+                            .build().toString()
+            );
+        }
         return ButtonList.CreateButtonList(
                 "Manage",
                 String.format("Manage %s group!",databaseService.getGroupById(groupId).getGroupName()),
                 buttons);
+
     }
 
     @Override
@@ -193,22 +200,24 @@ public class CreateButtonListServiceImpl implements CreateButtonListService {
                         .setGroupId(groupId)
                         .build().toString()
         );
-        //owner
-        buttons.put("Owner",
-                EventHandler.CommandBuilder(EventHandler.CommandType.ALTER_MEMBER_ROLE_OWNER)
-                        .setGroupId(groupId)
-                        .build().toString()
-        );
-        buttons.put("Manager",
-                EventHandler.CommandBuilder(EventHandler.CommandType.ALTER_MEMBER_ROLE_MANAGER)
-                        .setGroupId(groupId)
-                        .build().toString()
-        );
-        buttons.put("Member",
-                EventHandler.CommandBuilder(EventHandler.CommandType.ALTER_MEMBER_ROLE_MEMBER)
-                        .setGroupId(groupId)
-                        .build().toString()
-        );
+        if(databaseService.getGroupRole(userId,groupId).ownerPermission()) {
+            //owner
+            buttons.put("Owner",
+                    EventHandler.CommandBuilder(EventHandler.CommandType.ALTER_MEMBER_ROLE_OWNER)
+                            .setGroupId(groupId)
+                            .build().toString()
+            );
+            buttons.put("Manager",
+                    EventHandler.CommandBuilder(EventHandler.CommandType.ALTER_MEMBER_ROLE_MANAGER)
+                            .setGroupId(groupId)
+                            .build().toString()
+            );
+            buttons.put("Member",
+                    EventHandler.CommandBuilder(EventHandler.CommandType.ALTER_MEMBER_ROLE_MEMBER)
+                            .setGroupId(groupId)
+                            .build().toString()
+            );
+        }
         return ButtonList.CreateButtonList(
                 "Alter member role",
                 "What role do you want to give this member?",
