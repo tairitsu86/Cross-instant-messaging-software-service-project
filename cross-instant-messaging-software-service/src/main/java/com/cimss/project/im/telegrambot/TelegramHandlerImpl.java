@@ -2,7 +2,6 @@ package com.cimss.project.im.telegrambot;
 
 import com.cimss.project.database.entity.UserId;
 import com.cimss.project.handler.EventHandler;
-import com.cimss.project.service.CIMSService;
 import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -17,9 +16,6 @@ import com.pengrad.telegrambot.model.Update;
 public class TelegramHandlerImpl implements TelegramHandler {
 
 	private Logger LOG = LoggerFactory.getLogger(TelegramHandlerImpl.class);
-	
-	@Autowired
-	private CIMSService cimsService;
 
 	@Autowired
 	private EventHandler eventHandler;
