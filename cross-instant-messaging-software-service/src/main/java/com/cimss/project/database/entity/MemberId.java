@@ -30,16 +30,6 @@ public class MemberId implements Serializable {
     public static MemberId CreateMemberId(UserId userId, String groupId){
         return new MemberId(User.CreateUser(userId),Group.CreateEditGroup(groupId));
     }
-    public static MemberId CreateMemberId(String jsonMemberId){
-        ObjectMapper objectMapper = new ObjectMapper();
-        MemberId memberId = null;
-        try {
-            memberId = objectMapper.readValue(objectMapper.writeValueAsString(jsonMemberId), MemberId.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return memberId;
-    }
 
     @Override
     public boolean equals(Object obj) {

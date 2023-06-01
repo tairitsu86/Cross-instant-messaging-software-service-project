@@ -34,6 +34,12 @@ spring:
     console:
       enabled: true
       path: /h2console/
+  rabbitmq:
+    host: cimss.csie.fju.edu.tw
+    port: 5672
+  activemq:
+    user: guest
+    password: guest
 logging:                                
   level:
     root: INFO

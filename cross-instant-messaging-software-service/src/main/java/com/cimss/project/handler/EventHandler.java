@@ -14,6 +14,7 @@ public interface EventHandler {
     void textEventHandler(UserId userId, String text);
     void commandEventHandler(UserId userId, String text);
     void replyEventHandler(UserId userId,String groupId,EventBean.ReplyEvent replyEvent);
+    void replyEventHandler(EventBean.ReplyEvent replyEvent);
 
     static CommandType GetCommandType(String type){
         CommandType commandType = null;

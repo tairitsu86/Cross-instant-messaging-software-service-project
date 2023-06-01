@@ -24,15 +24,13 @@ public enum DeliveryMode implements Serializable {
         public static class WebhookConfig implements Serializable {
             private String url;
             @Embedded
-            private Map<String,String> header;
+            private Map<String,String> headers;
         }
         @Data
         @AllArgsConstructor
         @NoArgsConstructor
         public static class RabbitMQConfig implements Serializable {
-            private String serverIP;
-            private String username;
-            private String password;
+            private String topic;
             @Embedded
             private Map<String,String> metadata;
         }

@@ -4,6 +4,7 @@ import com.cimss.project.apibody.EventBean;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.UserId;
+import com.cimss.project.database.entity.token.InstantMessagingSoftware;
 import com.cimss.project.handler.WaitingEventHandler;
 import com.cimss.project.im.ButtonList;
 import com.cimss.project.security.JwtUtilities;
@@ -66,6 +67,18 @@ public class EventHandlerImpl implements EventHandler {
             cimsService.sendTextMessage(userId,replyEvent.getReportMessage());
     }
 
+    @Override
+    public void replyEventHandler(EventBean.ReplyEvent replyEvent) {
+        if(replyEvent==null) return;
+        String tmp[] = replyEvent.getReplyToken().split(" ");
+        if(tmp.length!=3) return;
+        replyEventHandler(
+                UserId.CreateUserId(InstantMessagingSoftware.valueOf(tmp[0]), tmp[1]),
+                tmp[2],
+                replyEvent
+        );
+    }
+
     public void decoder(UserId executorUser, String stringCommand){
         Command command = EventHandler.CreateCommandObject(stringCommand);
         if (command.getCommandType()==CommandType.UNKNOWN) return;
@@ -116,7 +129,12 @@ public class EventHandlerImpl implements EventHandler {
             case NOTIFY -> replyEventHandler(
                     executorUser,
                     groupId,
-                    notifyService.notify(groupId,EventBean.CreateFunctionListEvent(parameter)));
+                    notifyService.notify(groupId,EventBean.CreateFunctionListEvent(
+                            String.format("%s %s %s",executorUser.getInstantMessagingSoftware(),executorUser.getInstantMessagingSoftwareUserId(),groupId),
+                            parameter
+                    )
+                    )
+            );
             case TO_PATH -> replyButtonList = createButtonListService.createGroupServiceMenu(groupId,parameter);
             case LEAVE -> {
                 cimsService.leave(executorUser, groupId);

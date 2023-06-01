@@ -1,5 +1,6 @@
 package com.cimss.project.security;
 
+import com.cimss.project.database.entity.MemberId;
 import com.cimss.project.database.entity.User;
 import com.cimss.project.database.entity.UserId;
 import io.jsonwebtoken.*;
