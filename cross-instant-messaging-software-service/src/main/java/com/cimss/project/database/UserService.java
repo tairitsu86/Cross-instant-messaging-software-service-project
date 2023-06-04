@@ -8,6 +8,8 @@ import com.cimss.project.database.entity.UserId;
 
 public interface UserService {
     User createUser(User user);
+
+    void alterUserDisplayName(UserId userId, String newName);
     User getUserById(UserId userId);
     List<User> getAllUsers();
     void deleteAllUsers();

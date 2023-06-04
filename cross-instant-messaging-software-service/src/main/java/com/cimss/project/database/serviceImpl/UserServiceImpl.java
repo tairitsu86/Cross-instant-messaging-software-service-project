@@ -22,6 +22,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void alterUserDisplayName(UserId userId, String newName) {
+        User user = getUserById(userId);
+        if(user==null)
+            return;
+        user.setUserDisplayName(newName);
+        userRepository.save(user);
+    }
+
+    @Override
     public User getUserById(UserId userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         return optionalUser.get();

@@ -43,8 +43,5 @@ public class Member{
 		private User user;
 		@Schema(description = "Is this user is manager?")
 		private GroupRole groupRole;
-		public User toUser(){
-			return user;
-		}
 	}
 }	

@@ -151,5 +151,43 @@ public class DatabaseServiceImpl implements DatabaseService {
         return memberService.getRoles(userId);
     }
 
+    @Override
+    public User userRegister(UserId userId, String userDisplayName) {
+        return userService.createUser(User.CreateUser(userId,userDisplayName));
+    }
+
+    @Override
+    public void alterUserDisplayName(UserId userId, String newName) {
+        userService.alterUserDisplayName(userId,newName);
+    }
+
+    @Override
+    public void alterGroupName(String groupId, String data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setGroupName(data);
+        alterGroup(group);
+    }
+
+    @Override
+    public void alterGroupDescription(String groupId, String data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setGroupDescription(data);
+        alterGroup(group);
+    }
+
+    @Override
+    public void alterGroupIsPublic(String groupId, boolean data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setIsPublic(data);
+        alterGroup(group);
+    }
+
+    @Override
+    public void alterGroupJoinById(String groupId, boolean data) {
+        Group group = Group.CreateEditGroup(groupId);
+        group.setJoinById(data);
+        alterGroup(group);
+    }
+    
 
 }

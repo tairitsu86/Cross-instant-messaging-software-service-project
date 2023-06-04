@@ -55,12 +55,12 @@ public class APIHandlerImpl implements APIHandler {
 
     @Override
     public List<Group.GroupData> searchGroup(String keyword) {
-        return cimsService.searchGroup(keyword);
+        return databaseService.getGroupByName(keyword);
     }
 
     @Override
     public Group newGroup(ManageBean.NewGroupBean newGroupBean) {
-        return cimsService.newGroup(Group.CreateGroup().copyFromObject(newGroupBean));
+        return databaseService.createGroup(Group.CreateGroup().copyFromObject(newGroupBean));
     }
     @Override
     public void sendTextMessage(String accessToken, ManageBean.SendBean sendBean) {
@@ -72,14 +72,14 @@ public class APIHandlerImpl implements APIHandler {
     public List<Member.MemberData> getMembers(String accessToken, String groupId) {
         if(!getGroupRole(accessToken,groupId).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,groupId));
-        return cimsService.getMembers(groupId);
+        return databaseService.getMembers(groupId);
     }
 
     @Override
     public Group groupDetail(String accessToken, String groupId) {
         if(!getGroupRole(accessToken,groupId).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,groupId));
-        return cimsService.groupDetail(groupId);
+        return databaseService.getGroupById(groupId);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class APIHandlerImpl implements APIHandler {
     public void alterGroup(String accessToken, ManageBean.AlterGroupBean alterGroupBean) {
         if(!getGroupRole(accessToken,alterGroupBean.getGroupId()).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,alterGroupBean.getGroupId()));
-        cimsService.alterGroup(Group.CreateEditGroup(alterGroupBean.getGroupId()).copyFromObject(alterGroupBean));
+        databaseService.alterGroup(Group.CreateEditGroup(alterGroupBean.getGroupId()).copyFromObject(alterGroupBean));
     }
 
     @Override
@@ -111,29 +111,29 @@ public class APIHandlerImpl implements APIHandler {
             throw new NoPermissionException(GroupRole.GROUP_MANAGER,getGroupRole(accessToken,functionListBean.getGroupId()));
         if(!functionListBean.getFunctionList().decodeTest("/"))
             throw new WrongFormatException();
-        cimsService.alterGroup(Group.CreateEditGroup(functionListBean.getGroupId()).copyFromObject(functionListBean));
+        databaseService.alterGroup(Group.CreateEditGroup(functionListBean.getGroupId()).copyFromObject(functionListBean));
     }
 
     //owner
     @Override
     public void grantPermission(String accessToken, ManageBean.GrantPermissionBean grantPermissionBean) {
-        if(!getGroupRole(accessToken,grantPermissionBean.getGroupId()).managerPermission())
-            throw new NoPermissionException(GroupRole.GROUP_OWNER,getGroupRole(accessToken,grantPermissionBean.getGroupId()));
-        cimsService.grantPermission(grantPermissionBean.getUserId(), grantPermissionBean.getGroupId());
+//        if(!getGroupRole(accessToken,grantPermissionBean.getGroupId()).managerPermission())
+//            throw new NoPermissionException(GroupRole.GROUP_OWNER,getGroupRole(accessToken,grantPermissionBean.getGroupId()));
+//        cimsService.grantPermission(grantPermissionBean.getUserId(), grantPermissionBean.getGroupId());
     }
 
     @Override
     public void revokePermission(String accessToken, ManageBean.GrantPermissionBean grantPermissionBean) {
-        if(!getGroupRole(accessToken,grantPermissionBean.getGroupId()).managerPermission())
-            throw new NoPermissionException(GroupRole.GROUP_OWNER,getGroupRole(accessToken,grantPermissionBean.getGroupId()));
-        cimsService.revokePermission(grantPermissionBean.getUserId(), grantPermissionBean.getGroupId());
+//        if(!getGroupRole(accessToken,grantPermissionBean.getGroupId()).managerPermission())
+//            throw new NoPermissionException(GroupRole.GROUP_OWNER,getGroupRole(accessToken,grantPermissionBean.getGroupId()));
+//        cimsService.revokePermission(grantPermissionBean.getUserId(), grantPermissionBean.getGroupId());
     }
 
     @Override
     public void deleteGroup(String accessToken, String groupId) {
         if(!getGroupRole(accessToken,groupId).managerPermission())
             throw new NoPermissionException(GroupRole.GROUP_OWNER,getGroupRole(accessToken,groupId));
-        cimsService.deleteGroup(groupId);
+        databaseService.deleteGroup(groupId);
     }
 
     //admin

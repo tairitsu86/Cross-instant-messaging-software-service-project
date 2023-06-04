@@ -37,8 +37,8 @@ public class User  implements Serializable, UserDetails {
 	@EqualsAndHashCode.Exclude
 	@Enumerated(EnumType.STRING)
 	private LoginRole loginRole;
-	public static User CreateUser(UserId userId, String userName){
-		return new User(userId, userName,LoginRole.NORMAL);
+	public static User CreateUser(UserId userId, String userDisplayName){
+		return new User(userId, userDisplayName,LoginRole.NORMAL);
 	}
 	public static User CreateUser(UserId userId){
 		return new User(userId, "",null);

@@ -33,14 +33,14 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2console/
+      path: /h2-console/
   rabbitmq:
     host: ${RABBITMQ_HOST}
     port: ${RABBITMQ_PORT}
   activemq:
     user: ${RABBITMQ_USERNAME}
     password: ${RABBITMQ_PASSWORD}
-logging:                                
+logging:
   level:
     root: INFO
     org.hibernate: INFO

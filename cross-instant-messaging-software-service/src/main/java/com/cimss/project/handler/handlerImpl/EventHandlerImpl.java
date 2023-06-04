@@ -1,6 +1,7 @@
 package com.cimss.project.handler.handlerImpl;
 
 import com.cimss.project.apibody.EventBean;
+import com.cimss.project.database.DatabaseService;
 import com.cimss.project.database.entity.Group;
 import com.cimss.project.database.entity.Member;
 import com.cimss.project.database.entity.UserId;
@@ -27,6 +28,8 @@ public class EventHandlerImpl implements EventHandler {
     @Autowired
     private CIMSService cimsService;
     @Autowired
+    private DatabaseService databaseService;
+    @Autowired
     private JwtUtilities jwtUtilities;
     @Autowired
     private CreateButtonListService createButtonListService;
@@ -38,7 +41,7 @@ public class EventHandlerImpl implements EventHandler {
         if(text.startsWith("/cimss")){
             commandEventHandler(userId, text);
         }else if(waitingEventHandler.checkWaiting(userId,text)){
-        }else if(!cimsService.isUserExist(userId)){
+        }else if(!databaseService.isUserExist(userId)){
             waitingEventHandler.addWaitingUser(
                     userId,
                     WaitingEventHandler.WaitingType.INIT_USERNAME,
@@ -87,7 +90,7 @@ public class EventHandlerImpl implements EventHandler {
         UserId userId = command.getUserId();
         String parameter = command.getParameter();
         if(commandType.getRequireRole()!=null){
-            if(!cimsService.getGroupRole(executorUser,groupId).permission(commandType.getRequireRole()))
+            if(!databaseService.getGroupRole(executorUser,groupId).permission(commandType.getRequireRole()))
                 return;
         }
         String reply = null;
@@ -95,7 +98,7 @@ public class EventHandlerImpl implements EventHandler {
         switch (commandType) {
             //no permission
             case GROUPS -> {
-                List<Group> joinedGroup = cimsService.getGroups(executorUser);
+                List<Group> joinedGroup = databaseService.getGroups(executorUser);
                 if(joinedGroup.size()==0){
                     reply = "Didn't join any group now!";
                     break;
@@ -108,7 +111,7 @@ public class EventHandlerImpl implements EventHandler {
                 reply = String.format("%s\n\n%s",reply,"Want to open the group list?\nJust enter the group id!\nOr push the Exit button!");
                 replyButtonList = createButtonListService.exitMenu();
             }
-            case KEY -> reply = jwtUtilities.generateToken(cimsService.getUserById(executorUser));
+            case KEY -> reply = jwtUtilities.generateToken(databaseService.getUserById(executorUser));
             case SEARCH_GROUP -> {
                 waitingEventHandler.addWaitingUser(executorUser, WaitingEventHandler.WaitingType.SEARCH_KEYWORD,null);
                 reply = "Please enter the search keyword!";
@@ -137,7 +140,7 @@ public class EventHandlerImpl implements EventHandler {
             );
             case TO_PATH -> replyButtonList = createButtonListService.createGroupServiceMenu(groupId,parameter);
             case LEAVE -> {
-                cimsService.leave(executorUser, groupId);
+                databaseService.leave(executorUser, groupId);
                 reply = "Leave success!";
             }
 
@@ -145,8 +148,8 @@ public class EventHandlerImpl implements EventHandler {
 
             //manager permission
             case MEMBERS->{
-                List<Member.MemberData> members = cimsService.getMembers(groupId);
-                reply = String.format("Members in \"%s\":",cimsService.groupDetail(groupId).getGroupName());
+                List<Member.MemberData> members = databaseService.getMembers(groupId);
+                reply = String.format("Members in \"%s\":",databaseService.getGroupById(groupId).getGroupName());
                 for(Member.MemberData member:members){
                     //TODO debug member.getUser().getUserDisplayName()==""
                     reply = String.format("%s\n%s %s\n%s\n%s\n",reply,member.getUser().getUserDisplayName(),member.getGroupRole(),member.getUser().getUserId().getInstantMessagingSoftware(),member.getUser().getUserId().getInstantMessagingSoftwareUserId());

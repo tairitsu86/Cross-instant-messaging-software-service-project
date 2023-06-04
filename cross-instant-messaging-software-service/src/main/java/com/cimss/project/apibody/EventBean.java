@@ -16,8 +16,8 @@ public abstract class EventBean {
         return new FunctionListEvent(replyToken,message);
     }
 
-    public static MQEvent CreateMQEvent(Map<String,String> metadata,EventBean eventBean){
-        return new MQEvent(metadata,eventBean);
+    public static MessageQueueEvent CreateMQEvent(Map<String,String> metadata, EventBean eventBean){
+        return new MessageQueueEvent(metadata,eventBean);
     }
     @NoArgsConstructor
     @Data
@@ -46,8 +46,8 @@ public abstract class EventBean {
     @AllArgsConstructor
     @NoArgsConstructor
     @Data
-    public static class MQEvent extends EventBean{
-        private final String eventType="MQEvent";
+    public static class MessageQueueEvent extends EventBean{
+        private final String eventType="MessageQueueEvent";
         private Map<String,String> metadata;
         private EventBean event;
     }

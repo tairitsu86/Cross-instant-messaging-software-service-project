@@ -32,4 +32,12 @@ public interface DatabaseService {
     boolean isMember(UserId userId, String groupId);
     Member getMemberById(MemberId memberId);
     List<String> getRoles(UserId userId);
+
+    User userRegister(UserId userId, String userName);
+
+    abstract void alterUserDisplayName(UserId userId, String newName);
+    void alterGroupName(String groupId,String data);
+    void alterGroupDescription(String groupId,String data);
+    void alterGroupIsPublic(String groupId,boolean data);
+    void alterGroupJoinById(String groupId,boolean data);
 }

@@ -51,16 +51,16 @@ public class WaitingEventHandlerImpl implements WaitingEventHandler {
         ButtonList replyButtonList = null;
         switch (metaData.getWaitingType()){
             case INIT_USERNAME->{
-                cimsService.userRegister(executorUser,data);
+                databaseService.userRegister(executorUser,data);
                 reply = String.format("%s!\nGlad you joined this service!",data);
             }
             case ALTER_USERNAME->{
-                cimsService.alterUserName(executorUser,data);
+                databaseService.alterUserDisplayName(executorUser,data);
                 reply = String.format("Alter success!\nHello %s!",data);
             }
             case SEARCH_KEYWORD->{
                 String keyword = data;
-                List<Group.GroupData> searchResult = cimsService.searchGroup(keyword);
+                List<Group.GroupData> searchResult = databaseService.getGroupByName(keyword);
                 if(searchResult.size()==0) {
                     reply = String.format("No found with key word \"%s\"!", keyword);
                 }else {
@@ -76,31 +76,31 @@ public class WaitingEventHandlerImpl implements WaitingEventHandler {
             }
             case MENU_GROUP_ID->cimsService.sendButtonListMessage(executorUser,createButtonListService.createGroupMenu(executorUser,data));
             case JOIN_GROUP_ID->{
-                cimsService.joinWithProperty(executorUser,data);
+                databaseService.joinWithProperty(executorUser,data);
                 //TODO add check
                 reply = "Join success!";
             }
             case CREATE_GROUP_NAME->{
                 String groupName = data;
-                Group newGroup = cimsService.newGroup(Group.CreateGroup(groupName));
-                cimsService.join(executorUser,newGroup.getGroupId());
-                cimsService.alterPermission(executorUser,newGroup.getGroupId(), GroupRole.GROUP_OWNER);
+                Group newGroup = databaseService.createGroup(Group.CreateGroup(groupName));
+                databaseService.join(executorUser,newGroup.getGroupId());
+                databaseService.alterPermission(executorUser,newGroup.getGroupId(), GroupRole.GROUP_OWNER);
                 reply = String.format("Create success,this is your group id:\n%s",newGroup.getGroupId());
             }
             case ALTER_GROUP_NAME->{
-                cimsService.alterGroupName(metaData.getTempData(), data);
+                databaseService.alterGroupName(metaData.getTempData(), data);
                 reply = "Alter success!";
             }
             case ALTER_GROUP_DESCRIPTION->{
-                cimsService.alterGroupDescription(metaData.getTempData(), data);
+                databaseService.alterGroupDescription(metaData.getTempData(), data);
                 reply = "Alter success!";
             }
             case ALTER_GROUP_IS_PUBLIC->{
-                cimsService.alterGroupIsPublic(metaData.getTempData(), Boolean.parseBoolean(data));
+                databaseService.alterGroupIsPublic(metaData.getTempData(), Boolean.parseBoolean(data));
                 reply = "Alter success!";
             }
             case ALTER_GROUP_JOIN_BY_ID->{
-                cimsService.alterGroupJoinById(metaData.getTempData(), Boolean.parseBoolean(data));
+                databaseService.alterGroupJoinById(metaData.getTempData(), Boolean.parseBoolean(data));
                 reply = "Alter success!";
             }
             case BROADCAST_MESSAGE-> cimsService.broadcast(metaData.getTempData(),data,null);
@@ -108,34 +108,34 @@ public class WaitingEventHandlerImpl implements WaitingEventHandler {
                 UserId userId = UserId.CreateUserId(data);
                 //TODO add check
 //                databaseService.isUserExist(userId);
-                cimsService.leave(userId,metaData.getTempData());
+                databaseService.leave(userId,metaData.getTempData());
                 reply = "Alter success!";
             }
             case TO_MEMBER_IM_USER_ID->{
                 UserId userId = UserId.CreateUserId(data);
                 //TODO add check
 //                databaseService.isUserExist(userId);
-                cimsService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_MEMBER);
+                databaseService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_MEMBER);
                 reply = "Alter success!";
             }
             case TO_MANAGER_IM_USER_ID->{
                 UserId userId = UserId.CreateUserId(data);
                 //TODO add check
 //                databaseService.isUserExist(userId);
-                cimsService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_MANAGER);
+                databaseService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_MANAGER);
                 reply = "Alter success!";
             }
             case TO_OWNER_IM_USER_ID->{
                 UserId userId = UserId.CreateUserId(data);
                 //TODO add check
 //                databaseService.isUserExist(userId);
-                cimsService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_OWNER);
+                databaseService.alterPermission(userId,metaData.getTempData(),GroupRole.GROUP_OWNER);
                 reply = "Alter success!";
             }
             case DELETE_GROUP_COMMIT->{
                 String groupId = metaData.getTempData();
                 if (data.equals(databaseService.getGroupById(groupId).getGroupName())){
-                    cimsService.deleteGroup(groupId);
+                    databaseService.deleteGroup(groupId);
                     reply = "Delete success!";
                 }else {
                     reply = "Delete cancel!";
